@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+    <data>
+        <menuitem id="menu_scrum"
+            name="Scrum"
+            parent="base.menu_main_pm" sequence="3"/>
+        
+        
+        <!-- inherited view of edit_project (project.project) -->
+        <record id="view_project_project_form" model="ir.ui.view">
+            <field name="name">project.project.form</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="arch" type="xml">
+                <group name="misc" position="after">
+                    <group col="2" colspan="2">
+                        <separator string="Scrum Data" colspan="4"/>
+                        <field name="done"/>
+                        <field name="sprint_size"/>
+                        <field name="is_scrum"/>
+                        <field name="product_owner_id"/>
+                    </group>
+                </group>
+                <page string="Tasks Stages" position="after">
+                    <page string="Vision">
+                        <field name="vision"/>
+                    </page>
+                </page>
+            </field>
+        </record>
+        
+        <!-- development team -->
+        <record model="ir.ui.view" id="view_project_scrum_devteam_tree">
+            <field name="model">project.scrum.devteam</field>
+            <field name="name">"view.project.scrum.devteam.tree"</field>
+            <field name="arch" type="xml">
+                <tree string="Scrum Development Teams">
+                    <field name="name" />
+                    <field name="code" />
+                    <field name="active"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_project_scrum_devteam_form">
+            <field name="model">project.scrum.devteam</field>
+            <field name="name">view.project.scrum.devteam.form"</field>
+            <field name="arch" type="xml">
+                <form string="Scrum Development Teams" version="7.0">
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                            <field name="code" />
+                            <field name="sprint_ids" readonly="1"/>
+                            <field name="developer_ids" widget="many2many"/>
+                            <field name="active"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_project_scrum_devteam">
+            <field name="name">Team</field>
+            <field name="res_model">project.scrum.devteam</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem action="action_project_scrum_devteam" id="menu_action_project_scrum_devteam"
+                  parent="menu_scrum" name="Development teams" />
+        
+        <!-- project task work -->
+        <record id="view_task_work_form" model="ir.ui.view">
+            <field name="name">project.task.work.form</field>
+            <field name="model">project.task.work</field>
+            <field name="arch" type="xml">
+                <form string="Task Work" version="7.0">
+                    <group col="4">
+                        <field colspan="4" name="name"/>
+                        <field name="hours" widget="float_time"/>
+                        <field name="date"/>
+                        <field name="user_id" options='{"no_open": True}'/>
+                        <field name="company_id" groups="base.group_multi_company" widget="selection"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_task_work_tree" model="ir.ui.view">
+            <field name="name">project.task.work.tree</field>
+            <field name="model">project.task.work</field>
+            <field name="arch" type="xml">
+                <tree editable="top" string="Task Work">
+                    <field name="date"/>
+                    <field name="name"/>
+                    <field name="hours" widget="float_time"/>
+                    <field name="user_id"/>
+                </tree>
+            </field>
+        </record>
+        <!-- inherited view of res_users_form -->
+        <record model="ir.ui.view" id="view_project_scrum_inherit_res_users_form">
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/group/group/field[@name='company_id']" position="after">
+                    <!--<field name="scrum_devteam_id"/>-->
+                </xpath>
+            </field>
+        </record>
+    
+        <!-- release -->
+        <record model="ir.ui.view" id="view_project_scrum_release_tree">
+            <field name="model">project.scrum.release</field>
+            <field name="name">view.projectScrumRealease.tree</field>
+            <field name="arch" type="xml">
+                <tree string="Releases">
+                    <field name="name" />
+                    <field name="project_id" />
+                    <field name="delivery_date_estimated"/>
+                    <field name="delivery_date_effective"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_project_scrum_release_form">
+            <field name="model">project.scrum.release</field>
+            <field name="name">view.projectScrumRealease.form</field>
+            <field name="arch" type="xml">
+                <form string="Releases">
+                    <field name="name" />
+                    <field name="project_id" />
+                    <field name="delivery_date_estimated"/>
+                    <field name="delivery_date_effective"/>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_project_scrum_release">
+            <field name="name">Release</field>
+            <field name="res_model">project.scrum.release</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem action="action_project_scrum_release" id="menu_action_project_scrum_release"
+                  parent="menu_scrum" name="Releases" />
+        
+        <!-- sprint -->
+        <record model="ir.ui.view" id="view_project_scrum_sprint_tree">
+            <field name="model">project.scrum.sprint</field>
+            <field name="name">view.project.scrum.sprint.tree</field>
+            <field name="arch" type="xml">
+                <tree string="Sprint">
+                    <field name="name"/>
+                    <field name="project_id"/>
+                    <field name="scrum_master_id"/>
+                    <field name="product_owner_id" invisible="1"/>
+                    <field name="date_start"/>
+                    <field name="progress" widget="progressbar"/>
+                    <field name="effective_hours" sum="Effective hours" widget="float_time"/>
+                    <field name="expected_hours" sum="Planned hours" widget="float_time"/>
+                    <field name="state"/>
+                    <button type="object" string="Open" name="button_open" states="draft,pending" icon="terp-camera_test"/>
+                    <button type="object" string="Pending" name="button_pending" states="open" icon="gtk-media-pause"/>
+                    <button type="object" string="Close" name="button_close" states="open,pending" icon="terp-dialog-close"/>
+                    <button type="object" string="Set to Draft" name="button_draft" states="cancel,done" icon="gtk-convert"/>
+                    <button name="%(ddrapeau_project_scrum.report_scrum_sprint_burndown_chart)d" states="open,pending,close,cancel"
+                            string="Burndown Chart" type="action" icon="gtk-print"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_project_scrum_sprint_form">
+            <field name="model">project.scrum.sprint</field>
+            <field name="name">view.project.scrum.sprint.form</field>
+            <field name="arch" type="xml">
+                <form string="Sprint" version="7.0">
+                    <header>
+                        <button type="object" string="Open" name="button_open" states="draft,pending" icon="terp-camera_test"/>
+                        <button type="object" string="Pending" name="button_pending" states="open" icon="gtk-media-pause"/>
+                        <button type="object" string="Close" name="button_close" states="open,pending" icon="terp-dialog-close"/>
+                        <button type="object" string="Set to Draft" name="button_draft" states="cancel,done" icon="gtk-convert"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group> 
+                            <field name="name"/>
+                            <field name="sprint_goal"/>
+                            <field name="date_start"/>
+                            <field name="date_stop"/>
+                            <field name="release_id"/>
+                            <field name="product_owner_id"/>
+                            <field name="scrum_master_id"/>
+                            <field name="progress"/>
+                            <field name="effective_hours"/>
+                            <field name="expected_hours"/>
+                        </group> 
+
+                        <notebook>
+                            <page string="Sprint Review">
+                                <field name="review"/>
+                            </page>
+                            <page string="Retrospective">
+                                <field name="retrospective"/>
+                            </page>
+                            <page string="Development Team">
+                                <field name="scrum_devteam_id"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_project_scrum_sprint_calendar">
+            <field name="model">project.scrum.sprint</field>
+            <field name="name">view.project.scrum.sprint.calendar</field>
+            <field name="arch" type="xml">
+                <calendar string="Scrum Sprint" date_start="date_start">
+                    <field name="name"/>
+                    <field name="project_id"/>
+                </calendar>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_project_scrum_sprint">
+            <field name="name">Sprint</field>
+            <field name="res_model">project.scrum.sprint</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar</field>
+        </record>
+        <menuitem action="action_project_scrum_sprint"
+                  id="menu_action_project_scrum_sprint"
+                  parent="menu_scrum"
+                  name="Sprints" />
+        
+        <!-- Daily Meeting -->
+        <record model="ir.ui.view" id="view_project_scrum_meeting_calendar">
+            <field name="name">view.project.scrum.meeting.calendar</field>
+            <field name="model">project.scrum.meeting</field>
+            <field name="arch" type="xml">
+                <calendar string="Scrum Meeting" date_start="date" color="user_id">
+                    <field name="sprint_id"/>
+                </calendar>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_scrum_meeting_tree">
+            <field name="name">view.project.scrum.meeting.tree</field>
+            <field name="model">project.scrum.meeting</field>
+            <field name="arch" type="xml">
+                <tree string="Scrum Meeting">
+                    <field name="date"/>
+                    <field name="sprint_id"/>
+                    <field name="user_id"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_project_scrum_meeting_form">
+            <field name="name">view.project.scrum.meeting.form</field>
+            <field name="model">project.scrum.meeting</field>
+            <field name="arch" type="xml">
+                <form string="Scrum Meeting" version="7.0">
+                    <header></header>
+                    <sheet>
+                        <group colspan="4" col="8">
+                            <field name="date"/>
+                            <field name="sprint_id" domain="[('state', '=', 'open')]"/>
+                            <field name="user_id"/>
+                            <button name="%(action_project_scrum_email)d"  string="Send Email" type="action" icon="terp-mail-message-new" />
+                        </group>
+                        <notebook colspan="4">
+                            <page string="Scrum Meeting">
+                                <separator colspan="4" string="What did you do since the last meeting?"/>
+                                <field colspan="4" name="question_yesterday" nolabel="1"/>
+                                <separator colspan="4" string="What do you plan to do till the next meeting?"/>
+                                <field colspan="4" name="question_today" nolabel="1"/>
+                                <separator colspan="4" string="Are there anything blocking you?"/>
+                                <field colspan="4" name="question_blocks" nolabel="1"/>
+                                <separator colspan="4" string=""/>
+                            </page>
+                            <page string="Optional Info">
+                                <separator colspan="4" string="Are your Sprint Backlog estimate accurate ?"/>
+                                <field colspan="4" name="question_backlog" nolabel="1"/>
+                            </page>
+                            <page string="Links">
+                                <separator colspan="4" string="Tasks"/>
+                                <field colspan="4" name="task_ids" nolabel="1" domain="[('sprint_id','=',sprint_id)]"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        
+        <record model="ir.actions.act_window" id="action_meeting_form">
+            <field name="name">Scrum Meetings</field>
+            <field name="res_model">project.scrum.meeting</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar</field>
+            <field name="help">The scrum agile methodology is used in software development projects. In this methodology, a daily meeting is organized by the scrum master with his team in order to detect the difficulties the team faced/will face.</field>
+        </record>
+        <menuitem sequence="30"
+                  action="action_meeting_form"
+                  id="menu_action_meeting_form"
+                  parent="menu_scrum"/>
+
+        <!-- product backlog -->
+        <record model="ir.ui.view" id="view_project_scrum_product_backlog_kanban">
+            <field name="model">project.scrum.product.backlog</field>
+            <field name="name">view.project.scrum.product.backlog.kanban</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="scrum_done_id" class="oe_cogiscrum oe_kanban_quickcreate_textarea" version="7.0">
+                    <field name="state"/>
+                    <field name="role_id"/>
+                    <field name="name"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                        <!-- oe_kanban_color_#{kanban_getcolor(record.color.raw_value)}   #{record.group_fancy==1 ? 'oe_kanban_card_fancy' : ''}-->
+                        <div t-attf-class="oe_kanban_global_click_edit oe_semantic_html_override oe_kanban_card ">
+                            <div class="oe_dropdown_kanban">
+                                <span class="oe_dropdown_toggle">
+                                    <span class="oe_e">í</span>
+                                    
+                                    <!-- dropdown menu -->
+                                    <ul class="oe_dropdown_menu">
+                                        <li><a type="delete">Delete</a></li>
+                                        <li><ul class="oe_kanban_colorpicker" data-field="color"/></li>
+                                    </ul>
+                                </span>
+                                <div t-attf-class="oe_kanban_global_click_edit oe_semantic_html_override oe_kanban_card">
+                                    <field name="role_id"/>
+                                    <field name="name"/>
+                                </div>
+                                <div class="oe_clear"></div>
+                            </div>
+                        </div>
+                        </t>
+                        <!--
+                      <t t-name="kanban-box">
+                        <t t-set="record.group_fancy" t-value="1"  groups="note.group_note_fancy"/>
+                        <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_global_click_edit oe_semantic_html_override oe_kanban_card #{record.group_fancy==1 ? 'oe_kanban_card_fancy' : ''}">
+                          <div class="oe_dropdown_kanban">
+                            <span class="oe_dropdown_toggle">
+                              <span class="oe_e">í</span>
+                              <ul class="oe_dropdown_menu">
+                                <li><a type="delete">Delete</a></li>
+                                <li><ul class="oe_kanban_colorpicker" data-field="color"/></li>
+                              </ul>
+                            </span>
+                            <div style="display: inline">
+                              <a name="onclick_note_is_done" type="object" t-if="record.open.raw_value" class="oe_e">W</a>
+                              <a name="onclick_note_not_done" type="object" t-if="!record.open.raw_value" class="oe_e">W</a>
+                            </div>
+                          </div>
+                          <div t-attf-class="oe_kanban_content #{record.open.raw_value ? '' : 'note_text_line_through'}">
+                            <field name="name"/>
+                          </div>
+                          <div class="oe_clear"></div>
+                          <field name="tag_ids"/>
+                          <div class="oe_right">
+                            <t t-foreach="record.message_follower_ids.raw_value" t-as="follower">
+                              <img t-if="record.current_partner_id.raw_value!=follower" t-att-src="kanban_image('res.partner', 'image_small', follower)" width="24" height="24" class="oe_kanban_avatar" t-att-data-member_id="follower"/>
+                                </t>
+                          </div>
+                          <div class="oe_clear"></div>
+                        </div>
+                      </t>
+                        -->
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_project_scrum_product_backlog_tree">
+            <field name="model">project.scrum.product.backlog</field>
+            <field name="name">view.project.scrum.product.backlog.tree</field>
+            <field name="arch" type="xml">
+                <tree string="Product Backlog">
+                    <field name="role_id"/>
+                    <field name="name"/>
+                    <field name="for"/>
+                    <field name="state"/>
+                    <field name="complexity"/>
+                    <button type="action"
+                            name="%(action_scrum_backlog_to_task)d"
+                            states="pending" 
+                            string="Convert to Task"
+                            icon="terp-stock_effects-object-colorize"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="view_project_scrum_product_backlog_form">
+            <field name="model">project.scrum.product.backlog</field>
+            <field name="name">view.project.scrum.product.backlog.form</field>
+            <field name="arch" type="xml">
+                <form string="Product Backlog" version="7.0">
+                    <header>
+                        <button type="object" string="Cancel" name="button_cancel" states="draft,open,pending" icon="gtk-stop"/>
+                        <button type="object" string="Open" name="button_open" states="draft,pending" icon="terp-camera_test"/>
+                        <button type="object" string="Pending" name="button_pending" states="open" icon="gtk-media-pause"/>
+                        <button type="object" string="Close" name="button_close" states="open,pending" icon="terp-dialog-close"/>
+                        <button type="object" string="Set to Draft" name="button_draft" states="cancel,done" icon="gtk-convert"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="role_id" class="oe_inline"/>
+                                <field name="name" class="oe_inline"/>
+                                <field name="for" class="oe_inline"/>
+                            </group>    
+                            <group>
+                                <field name="active" class="oe_inline"/>
+                                <field name="progress" class="oe_inline"/>
+                                <field name="complexity" class="oe_inline"/>
+                            </group>
+                            <group>
+                                <field name="project_id" class="oe_inline"/>
+                                <field name="release_id" class="oe_inline" domain="[('project_id', '=', project_id)]"/>
+                                <field name="sprint_id" class="oe_inline" domain="[('release_id', '=', release_id)]"/>
+                             </group>
+                        </group>
+                        <notebook>
+                            <page string="General">
+                                <group>
+                                    <field name="user_id" class="oe_inline"/>
+                                    <field name="sequence" class="oe_inline"/>
+                                    <field name="effective_hours" class="oe_inline"/>
+                                    <field name="expected_hours" class="oe_inline"/>
+                                    <field name="task_hours" class="oe_inline"/>
+                                </group>
+                            </page>
+                            <page string="Tasks">
+                                <field colspan="4" name="tasks_id" nolabel="1" widget="one2many_list" context="{'default_project_id':project_id, 'default_sprint_id':sprint_id, 'default_product_backlog_id':active_id}">
+                                    <tree string="Tasks">
+                                        <field name="name"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Description">
+                                <field name="description"/>
+                            </page>
+                        </notebook>
+                        <button type="action"
+                                name="%(action_scrum_backlog_to_task)d"
+                                states="pending"
+                                string="Convert to Task"
+                                icon="terp-stock_effects-object-colorize"/>
+                        
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_project_scrum_product_backlog">
+            <field name="name">Product Backlog</field>
+            <field name="res_model">project.scrum.product.backlog</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+        <menuitem action="action_project_scrum_product_backlog"
+                  id="menu_action_project_scrum_product_backlog"
+                  parent="menu_scrum"
+                  name="Product Backlog" />
+        
+        <!-- tasks : inherited from project -->
+        <record id="view_task_form2" model="ir.ui.view">
+            <field name="name">project.task.scrum.form</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/group/group/field[@name='progress']" position="after">
+                    <field domain="[('project_id','=',project_id),]" name="product_backlog_id" select="1"/>
+                    <field name="sprint_id" domain="[('state', 'in', ['draft', 'open'])]" readonly="1"/>
+                </xpath>
+                <page string="Extra Info" position="after">
+                    <page string="Work">
+                        <field name="work_ids"/>
+                    </page>
+                </page>
+            </field>
+        </record>
+        
+        
+        <!-- Role : view form       -->
+        <record id="view_scrum_role_form" model="ir.ui.view">
+            <field name="name">view.scrum.role.form</field>
+            <field name="model">project.scrum.role</field>
+            <field name="arch" type="xml">
+                <form string="Role" version="7.0">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+    
+    
+</openerp>
