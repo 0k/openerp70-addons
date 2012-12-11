@@ -301,66 +301,46 @@
 
         <!-- product backlog -->
         <record model="ir.ui.view" id="view_project_scrum_product_backlog_kanban">
-            <field name="model">project.scrum.product.backlog</field>
             <field name="name">view.project.scrum.product.backlog.kanban</field>
+            <field name="model">project.scrum.product.backlog</field>
             <field name="arch" type="xml">
-                <kanban default_group_by="scrum_done_id" class="oe_cogiscrum oe_kanban_quickcreate_textarea" version="7.0">
-                    <field name="state"/>
+                <kanban default_group_by="project_id" class="oe_cogiscrum oe_kanban_quickcreate_textarea" version="7.0">
+                    <field name="color"/>
+                    <field name="state" groups="base.group_no_one"/>
                     <field name="role_id"/>
                     <field name="name"/>
                     <templates>
                         <t t-name="kanban-box">
-                        <!-- oe_kanban_color_#{kanban_getcolor(record.color.raw_value)}   #{record.group_fancy==1 ? 'oe_kanban_card_fancy' : ''}-->
-                        <div t-attf-class="oe_kanban_global_click_edit oe_semantic_html_override oe_kanban_card ">
-                            <div class="oe_dropdown_kanban">
-                                <span class="oe_dropdown_toggle">
-                                    <span class="oe_e">í</span>
-                                    
-                                    <!-- dropdown menu -->
-                                    <ul class="oe_dropdown_menu">
-                                        <li><a type="delete">Delete</a></li>
-                                        <li><ul class="oe_kanban_colorpicker" data-field="color"/></li>
-                                    </ul>
-                                </span>
+                        <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click_edit">
+                            <div class="oe_dropdown_toggle oe_dropdown_kanban">
+                                <span class="oe_e">i</span>
+                                <!-- dropdown menu -->
+                                <ul class="oe_dropdown_menu">
+                                    <t t-if="widget.view.is_action_enabled('edit')"><li><a type="edit">Edit...</a></li></t>
+                                    <t t-if="widget.view.is_action_enabled('delete')"><li><a type="delete">Delete</a></li></t>
+                                    <li>
+                                      <ul class="oe_kanban_project_times" groups="project.group_time_work_estimation_tasks">
+                                        <li><a name="set_remaining_time_1" type="object" class="oe_kanban_button">1</a></li>
+                                        <li><a name="set_remaining_time_2" type="object" class="oe_kanban_button">2</a></li>
+                                        <li><a name="set_remaining_time_5" type="object" class="oe_kanban_button">5</a></li>
+                                        <li><a name="set_remaining_time_10" type="object" class="oe_kanban_button">10</a></li>
+                                        <li><a name="do_open" states="draft" string="Validate planned time" type="object" class="oe_kanban_button oe_kanban_button_active">!</a></li>
+                                      </ul>
+                                    </li>
+                                    <li><ul class="oe_kanban_colorpicker" data-field="color"/></li>
+                                </ul>
+                            </div>
+                            
+                            <div class="oe_kanban_content">
+                                <div><b>[<field name="role_id"/>]</b> <field name="name"/></div>
                                 <div t-attf-class="oe_kanban_global_click_edit oe_semantic_html_override oe_kanban_card">
-                                    <field name="role_id"/>
-                                    <field name="name"/>
+                                    
+                                    <field name="for"/>
                                 </div>
                                 <div class="oe_clear"></div>
                             </div>
                         </div>
                         </t>
-                        <!--
-                      <t t-name="kanban-box">
-                        <t t-set="record.group_fancy" t-value="1"  groups="note.group_note_fancy"/>
-                        <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_global_click_edit oe_semantic_html_override oe_kanban_card #{record.group_fancy==1 ? 'oe_kanban_card_fancy' : ''}">
-                          <div class="oe_dropdown_kanban">
-                            <span class="oe_dropdown_toggle">
-                              <span class="oe_e">í</span>
-                              <ul class="oe_dropdown_menu">
-                                <li><a type="delete">Delete</a></li>
-                                <li><ul class="oe_kanban_colorpicker" data-field="color"/></li>
-                              </ul>
-                            </span>
-                            <div style="display: inline">
-                              <a name="onclick_note_is_done" type="object" t-if="record.open.raw_value" class="oe_e">W</a>
-                              <a name="onclick_note_not_done" type="object" t-if="!record.open.raw_value" class="oe_e">W</a>
-                            </div>
-                          </div>
-                          <div t-attf-class="oe_kanban_content #{record.open.raw_value ? '' : 'note_text_line_through'}">
-                            <field name="name"/>
-                          </div>
-                          <div class="oe_clear"></div>
-                          <field name="tag_ids"/>
-                          <div class="oe_right">
-                            <t t-foreach="record.message_follower_ids.raw_value" t-as="follower">
-                              <img t-if="record.current_partner_id.raw_value!=follower" t-att-src="kanban_image('res.partner', 'image_small', follower)" width="24" height="24" class="oe_kanban_avatar" t-att-data-member_id="follower"/>
-                                </t>
-                          </div>
-                          <div class="oe_clear"></div>
-                        </div>
-                      </t>
-                        -->
                     </templates>
                 </kanban>
             </field>
