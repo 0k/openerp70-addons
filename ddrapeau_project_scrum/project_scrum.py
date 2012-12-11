@@ -263,8 +263,10 @@ class projectScrumProductBacklog(osv.osv):
         return True
     
     _columns = {
+        'role_id': fields.many2one('project.scrum.role', "As", required=True),
         'name' : fields.char('I want', size=128, required=True),
         'for' : fields.char('For', size=128, required=True),
+        
         'description': fields.text("Description"),
         'sequence' : fields.integer('Sequence', help="Gives the sequence order when displaying a list of product backlog."),
         'expected_hours': fields.float('Planned Hours', help='Estimated total time to do the Backlog'),
@@ -276,7 +278,6 @@ class projectScrumProductBacklog(osv.osv):
         'release_id': fields.many2one('project.scrum.release', "Release", required=True),
         'sprint_id': fields.many2one('project.scrum.sprint', 'Sprint'),
         
-        'role_id': fields.many2one('project.scrum.role', "As", required=True),
         'user_id': fields.many2one('res.users', 'Author'),
         'tasks_id': fields.one2many('project.task', 'product_backlog_id', 'Tasks Details'),
         
@@ -285,7 +286,6 @@ class projectScrumProductBacklog(osv.osv):
         'task_hours': fields.function(_compute, multi="task_hours", method=True, string='Task Hours', help='Estimated time of the total hours of the tasks'),
         
         'color': fields.integer('Color Index'),
-        'scrum_done_id': fields.many2one('project.scrum.done', "Stage", required=True),
     }
     
     _defaults = {
