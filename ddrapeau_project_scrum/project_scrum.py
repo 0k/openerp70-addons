@@ -162,9 +162,6 @@ class projectScrumSprint(osv.osv):
         (_check_dates, 'Error! sprint start-date must be lower than project end-date.', ['date_start', 'date_stop'])
     ]
 
-    
-projectScrumSprint()
-
 class projectScrumDevTeamInherit(osv.osv):
     _inherit = "project.scrum.devteam"
     
@@ -172,8 +169,6 @@ class projectScrumDevTeamInherit(osv.osv):
         'developer_ids': fields.one2many('res.users', 'scrum_devteam_id', "Developers"),
         'sprint_ids': fields.one2many('project.scrum.sprint', 'scrum_devteam_id', "Sprints", help="Sprints done by this development team")
     }
-projectScrumDevTeamInherit()
-
 
 class projectScrumRole(osv.osv):
     _name = 'project.scrum.role'
@@ -181,9 +176,10 @@ class projectScrumRole(osv.osv):
     _columns = {
         'name' : fields.char('Name', size=128, required=True),
         'code' : fields.char('Code', size=16),
+        'persona_name' : fields.char('Persona Name', size=128),
+        'persona_description' : fields.text('Persona Description'),
     }
 projectScrumRole()
-
 
 class projectScrumDone(osv.osv):
     _name = 'project.scrum.done'
@@ -194,7 +190,6 @@ class projectScrumDone(osv.osv):
         'sequence': fields.integer("Sequence", required=True),
         'project_id': fields.many2one('project.project', "Project", required=True),
     }
-projectScrumDone()
     
 class projectScrumProductBacklog(osv.osv):
     _name = 'project.scrum.product.backlog'
@@ -296,7 +291,7 @@ class projectScrumProductBacklog(osv.osv):
     }
     
     _order = "sequence"
-projectScrumProductBacklog()
+
 
 class projectScrumTask(osv.osv):
     _inherit = 'project.task'
@@ -336,9 +331,6 @@ class projectScrumTask(osv.osv):
         project_id = self.pool.get('project.scrum.product.backlog').browse(cr, uid, backlog_id).project_id.id
         return {'value': {'project_id': project_id}}
 
-
-projectScrumTask()
-
     
 
 class projectScrumTaskWorkInherit(osv.osv):
@@ -347,7 +339,6 @@ class projectScrumTaskWorkInherit(osv.osv):
     _columns = {
         'task_id': fields.many2one('project.task', "Task"),
     }
-projectScrumTaskWorkInherit()
 
 
 class projectScrumMeeting(osv.osv):
@@ -420,5 +411,3 @@ class projectScrumMeeting(osv.osv):
         if not flag:
             return False
         return True
-
-projectScrumMeeting()

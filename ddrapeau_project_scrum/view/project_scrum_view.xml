@@ -6,6 +6,49 @@
             parent="base.menu_main_pm" sequence="3"/>
         
         
+        <!-- Roles -->
+        <record model="ir.ui.view" id="view_scrum_role_tree">
+            <field name="name">view.scrum.role.tree</field>
+            <field name="model">project.scrum.role</field>
+            <field name="arch" type="xml">
+                <tree string="Roles">
+                    <field name="name"/>
+                    <field name="code"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_scrum_role_form">
+            <field name="name">view.scrum.role.form</field>
+            <field name="model">project.scrum.role</field>
+            <field name="arch" type="xml">
+                <form string="Role" version="7.0">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                        </group>
+                        <notebook>
+                            <page string="Persona">
+                                <group colspan="4">
+                                    <field name="persona_name"/>
+                                    <field name="persona_description"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_project_scrum_role">
+            <field name="res_model">project.scrum.role</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem action="action_project_scrum_role"
+                  id="menu_action_project_scrum_role"
+                  parent="ddrapeau_project_scrum.menu_scrum"
+                  name="Roles" />
+        
         <!-- inherited view of edit_project (project.project) -->
         <record id="view_project_project_form" model="ir.ui.view">
             <field name="name">project.project.form</field>

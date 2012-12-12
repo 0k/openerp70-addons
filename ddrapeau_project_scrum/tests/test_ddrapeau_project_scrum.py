@@ -126,6 +126,17 @@ def test_role(vals):
         print fontColors.FAIL + "FAILED "+ fontColors.ENDC + "create role with vals ", vals
         return False
 
+# PERSONA ADDING TO ROLE
+def test_persona_adding_to_role(role_id, vals):
+    req_bool_value = sock.execute(dbname, uid, pwd, 'project.scrum.role', 'write', role_id, vals)
+    if req_bool_value:
+        print fontColors.OKGREEN + "OK "+ fontColors.ENDC + "add persona for role with vals ", vals
+        return True
+    else:
+        print fontColors.FAIL + "FAILED "+ fontColors.ENDC + "add persona for role with vals ", vals
+        return False
+
+
 # USER STORY DONE
 def create_scrum_done(fields):
     return sock.execute(dbname, uid, pwd, 'project.scrum.done', 'create', fields)
@@ -152,6 +163,7 @@ def test_product_backlog(vals):
         print fontColors.FAIL + "FAILED "+ fontColors.ENDC + "create user story with vals ", vals
         return False
 
+# TASK OF USER STORY
 def create_task_of_user_story(fields):
     return sock.execute(dbname, uid, pwd, 'project.task', 'create', fields)
 
@@ -214,10 +226,14 @@ delete_lines('res.partner', [('id', '>', 2)])
 print "delete addresses..."
 delete_lines('res.partner.address', [('id', '>', 2)])
 
+#NOTE Delete note stages for users created during tests
+print "delete note stages..."
+delete_lines('note.stage', [('user_id', '>', 2)])
+
 print "delete mail alias..."
 delete_lines('mail.alias', [('id', '>', 2)])
 
-#NOTE Do not delete res_users because deleted by mail.alias with DELETE ON CASCADE
+#NOTE Do not delete res_users because deleted by mail.alias will DELETE ON CASCADE
 #print "delete users..."
 #delete_lines('res.users', [('id', '>', 2)])
 
@@ -337,11 +353,22 @@ scrum_done_step04_id = test_scrum_done(scrum_done_value_step4)
 
 
 print "create roles..."
-scrum_role_id = test_role({'name':"role 01", 'code': "SR01"})
+role01_id = test_role({'name':"role 01", 'code': "SR01"})
+
+print "add persona name and description to roles..."
+persona_vals = {
+    'persona_name': "Name of persona",
+    'persona_description': """
+This the description of the persona.
+It describes the role and what user wants and list his job.
+    """,
+}
+test_persona_adding_to_role(role01_id, persona_vals)
+
 
 print "create user stories..."
 user_story_vals = {
-    'role_id': scrum_role_id,
+    'role_id': role01_id,
     'name': "create a group Cogitae",
     'for': "Describe rights for this role",
     'project_id': project01_id,
