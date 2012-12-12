@@ -465,23 +465,5 @@
             </field>
         </record>
         
-        
-        <!-- Role : view form       -->
-        <record id="view_scrum_role_form" model="ir.ui.view">
-            <field name="name">view.scrum.role.form</field>
-            <field name="model">project.scrum.role</field>
-            <field name="arch" type="xml">
-                <form string="Role" version="7.0">
-                    <sheet>
-                        <group>
-                            <field name="name"/>
-                            <field name="code"/>
-                        </group>
-                    </sheet>
-                </form>
-            </field>
-        </record>
     </data>
-    
-    
 </openerp>
