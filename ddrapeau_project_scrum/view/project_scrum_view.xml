@@ -48,12 +48,22 @@
                 <form string="Scrum Development Teams" version="7.0">
                     <sheet>
                         <group>
-                            <field name="name" />
-                            <field name="code" />
-                            <field name="sprint_ids" readonly="1"/>
-                            <field name="developer_ids" widget="many2many"/>
-                            <field name="active"/>
+                            <group>
+                                <field name="name" />
+                                <field name="active"/>
+                            </group>
+                            <group>
+                                <field name="code" />
+                            </group>
                         </group>
+                        <notebook>
+                            <page string="Team" name="team">
+                                <field name="developer_ids" widget="many2many" nolabel="1"/>
+                            </page>
+                            <page string="Sprints affected">
+                                <field name="sprint_ids" readonly="1" nolabel="1"/>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>
