@@ -4,7 +4,7 @@ import csv
 
 username = 'admin'
 pwd = 'admin'
-dbname = 'ddrapeau_project_scrum'
+dbname = 'test_scrum_70_02'
 
 class fontColors(object):
     OKGREEN = '\033[92m'
@@ -151,7 +151,19 @@ def test_product_backlog(vals):
     else:
         print fontColors.FAIL + "FAILED "+ fontColors.ENDC + "create user story with vals ", vals
         return False
-    
+
+def create_task_of_user_story(fields):
+    return sock.execute(dbname, uid, pwd, 'project.task', 'create', fields)
+
+def test_task_of_user_story(vals):
+    task_user_story_id = create_task_of_user_story(vals)
+    if task_user_story_id:
+        print fontColors.OKGREEN + "OK "+ fontColors.ENDC + "create user story with vals ", vals
+        return task_user_story_id
+    else:
+        print fontColors.FAIL + "FAILED "+ fontColors.ENDC + "create user story with vals ", vals
+        return False
+
 # DEV TEAM
 def create_devteam(fields):
     return sock.execute(dbname, uid, pwd, 'project.scrum.devteam', 'create', fields)
@@ -168,6 +180,9 @@ def test_devteam(vals):
 
 print "delete daily meetings..."
 delete_lines('project.scrum.meeting', [])
+
+print "delete tasks..."
+delete_lines('project.task', [])
 
 print "delete user stories..."
 delete_lines('project.scrum.product.backlog', [])
@@ -335,5 +350,9 @@ user_story_vals = {
 }
 user_story_id = test_product_backlog(user_story_vals)
 
-
-
+print "create task of user story..."
+task_vals = {
+    'name': "task 001 of user story",
+    'product_backlog_id': user_story_id,
+}
+user_story_task01_id = test_task_of_user_story(task_vals)
