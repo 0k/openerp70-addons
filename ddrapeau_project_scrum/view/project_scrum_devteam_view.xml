@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+    <data>
+        <!-- development team -->
+        <record model="ir.ui.view" id="view_project_scrum_devteam_tree">
+            <field name="model">project.scrum.devteam</field>
+            <field name="name">"view.project.scrum.devteam.tree"</field>
+            <field name="arch" type="xml">
+                <tree string="Scrum Development Teams">
+                    <field name="name" />
+                    <field name="code" />
+                    <field name="active"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_project_scrum_devteam_form">
+            <field name="model">project.scrum.devteam</field>
+            <field name="name">view.project.scrum.devteam.form"</field>
+            <field name="arch" type="xml">
+                <form string="Scrum Development Teams" version="7.0">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" />
+                                <field name="active"/>
+                            </group>
+                            <group>
+                                <field name="code" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Team" name="team">
+                                <field name="developer_ids" widget="many2many" nolabel="1"/>
+                            </page>
+                            <page string="Sprints affected">
+                                <field name="sprint_ids" readonly="1" nolabel="1"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_project_scrum_devteam">
+            <field name="name">Team</field>
+            <field name="res_model">project.scrum.devteam</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem action="action_project_scrum_devteam"
+                  id="menu_action_project_scrum_devteam"
+                  parent="menu_scrum"
+                  name="Development teams" />
+        
+    </data>
+</openerp>

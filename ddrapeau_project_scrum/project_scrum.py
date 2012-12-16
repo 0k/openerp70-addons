@@ -20,28 +20,6 @@ BACKLOG_STATES = [('draft','Draft'),
     ('done','Done'),
     ('cancel','Cancelled')]
 
-class projectScrumDevteam(osv.osv):
-    _name = 'project.scrum.devteam'
-    
-    _columns = {
-        'name': fields.char("Name", size=128, required=True),
-        'code': fields.char("Code", size=16),
-        'active': fields.boolean("Active"),
-    }
-    
-    _defaults = {
-        'active': True,
-    }
-projectScrumDevteam()
-
-class resUsersInherit(osv.osv):
-    _inherit = "res.users"
-    
-    _columns = {
-        'scrum_devteam_id': fields.many2one('project.scrum.devteam', "Scrum Development Team"),
-    }
-resUsersInherit()
-
 class projectScrumSprint(osv.osv):
     _name = 'project.scrum.sprint'
     _description = 'Project Scrum Sprint'
@@ -139,7 +117,6 @@ class projectScrumDevTeamInherit(osv.osv):
     _inherit = "project.scrum.devteam"
     
     _columns = {
-        'developer_ids': fields.one2many('res.users', 'scrum_devteam_id', "Developers"),
         'sprint_ids': fields.one2many('project.scrum.sprint', 'scrum_devteam_id', "Sprints", help="Sprints done by this development team")
     }
 
