@@ -36,6 +36,8 @@ Thanks to report questions to david.drapeau@cogitae.net
     'images' : [],
     'depends' : ["base", "project"],
     'data': [
+        "view/project_view.xml",
+        
         "security/ddrapeau_project_scrum_security.xml",
         "security/ir.model.access.csv",
         "project_scrum_report.xml",

@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <openerp>
     <data>
-        
-        
         <!-- Stages without menu -->
         <record model="ir.ui.view" id="view_project_scrum_stage_form">
           <field name="name">project.scrum.stage.form</field>
@@ -36,30 +34,6 @@
                   id="menu_action_project_scrum_stage"
                   name="User Stories Stages"
                   parent="menu_scrum"/>
-        
-        
-        <!-- inherited view of edit_project (project.project) -->
-        <record id="view_project_project_form" model="ir.ui.view">
-            <field name="name">project.project.form</field>
-            <field name="model">project.project</field>
-            <field name="inherit_id" ref="project.edit_project"/>
-            <field name="arch" type="xml">
-                <group name="misc" position="after">
-                    <group col="2" colspan="2">
-                        <separator string="Scrum Data" colspan="4"/>
-                        <field name="done"/>
-                        <field name="sprint_size"/>
-                        <field name="is_scrum"/>
-                        <field name="product_owner_id"/>
-                    </group>
-                </group>
-                <page string="Tasks Stages" position="after">
-                    <page string="Vision">
-                        <field name="vision"/>
-                    </page>
-                </page>
-            </field>
-        </record>
         
         <!-- development team -->
         <record model="ir.ui.view" id="view_project_scrum_devteam_tree">
