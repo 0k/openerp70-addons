@@ -122,40 +122,6 @@
                 </xpath>
             </field>
         </record>
-    
-        <!-- release -->
-        <record model="ir.ui.view" id="view_project_scrum_release_tree">
-            <field name="model">project.scrum.release</field>
-            <field name="name">view.projectScrumRealease.tree</field>
-            <field name="arch" type="xml">
-                <tree string="Releases">
-                    <field name="name" />
-                    <field name="project_id" />
-                    <field name="delivery_date_estimated"/>
-                    <field name="delivery_date_effective"/>
-                </tree>
-            </field>
-        </record>
-        <record model="ir.ui.view" id="view_project_scrum_release_form">
-            <field name="model">project.scrum.release</field>
-            <field name="name">view.projectScrumRealease.form</field>
-            <field name="arch" type="xml">
-                <form string="Releases">
-                    <field name="name" />
-                    <field name="project_id" />
-                    <field name="delivery_date_estimated"/>
-                    <field name="delivery_date_effective"/>
-                </form>
-            </field>
-        </record>
-        <record model="ir.actions.act_window" id="action_project_scrum_release">
-            <field name="name">Release</field>
-            <field name="res_model">project.scrum.release</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-        </record>
-        <menuitem action="action_project_scrum_release" id="menu_action_project_scrum_release"
-                  parent="menu_scrum" name="Releases" />
         
         <!-- sprint -->
         <record model="ir.ui.view" id="view_project_scrum_sprint_tree">
