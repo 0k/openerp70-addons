@@ -170,27 +170,32 @@ class projectScrumDevTeamInherit(osv.osv):
         'sprint_ids': fields.one2many('project.scrum.sprint', 'scrum_devteam_id', "Sprints", help="Sprints done by this development team")
     }
 
-class projectScrumRole(osv.osv):
-    _name = 'project.scrum.role'
+#class projectScrumDone(osv.osv):
+#    _name = 'project.scrum.done'
+#    
+#    _columns = {
+#        'name': fields.char("Name", size=128, required=True),
+#        'code': fields.char("Name", size=16),
+#        'sequence': fields.integer("Sequence", required=True),
+#        'project_id': fields.many2one('project.project', "Project", required=True),
+#    }
     
+class project_scrum_stage(osv.osv):
+    """ Done for project (user for user stories : product backlog) """
+    _name = "project.scrum.stage"
+    _description = "Project Scrum Stage"
     _columns = {
-        'name' : fields.char('Name', size=128, required=True),
-        'code' : fields.char('Code', size=16),
-        'persona_name' : fields.char('Persona Name', size=128),
-        'persona_description' : fields.text('Persona Description'),
+        'name': fields.char('Stage Name', translate=True, required=True),
+        'sequence': fields.integer('Sequence', help="Used to order the user story stages"),
+        'fold': fields.boolean('Folded by Default'),
     }
-projectScrumRole()
+    _order = 'sequence asc'
+    _defaults = {
+        'fold': 0,
+        'sequence': 1,
+    }
+    #TODO add constraint for sequence be unique
 
-class projectScrumDone(osv.osv):
-    _name = 'project.scrum.done'
-    
-    _columns = {
-        'name': fields.char("Name", size=128, required=True),
-        'code': fields.char("Name", size=16),
-        'sequence': fields.integer("Sequence", required=True),
-        'project_id': fields.many2one('project.project', "Project", required=True),
-    }
-    
 class projectScrumProductBacklog(osv.osv):
     _name = 'project.scrum.product.backlog'
     
@@ -257,10 +262,15 @@ class projectScrumProductBacklog(osv.osv):
         self.write(cr, uid, ids, {'state':'pending'}, context=context)
         return True
     
+    def _get_default_stage_id(self,cr,uid,context=None):
+        ids = self.pool.get('project.scrum.stage').search(cr,uid,[], order='sequence', context=context)
+        return ids and ids[0] or False
+    
     _columns = {
         'role_id': fields.many2one('project.scrum.role', "As", required=True),
         'name' : fields.char('I want', size=128, required=True),
         'for' : fields.char('For', size=128, required=True),
+        'stage_id': fields.many2one('project.scrum.stage', 'Stage'),
         
         'description': fields.text("Description"),
         'sequence' : fields.integer('Sequence', help="Gives the sequence order when displaying a list of product backlog."),
@@ -286,6 +296,7 @@ class projectScrumProductBacklog(osv.osv):
     _defaults = {
         'state': 'draft',
         'user_id': lambda self, cr, uid, context: uid,
+        'stage_id' : _get_default_stage_id,
         'active':  1,
         'sequence': 1000, #TODO create function to compute sequence by uniq value for all product backlog
     }

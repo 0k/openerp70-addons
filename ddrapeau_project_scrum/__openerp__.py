@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name' : "Project Scrum Management",
-    'version' : "0.5",
+    'version' : "0.6",
     'author' : "Cogitae",
     'category' : "Cogitae Project Scrum",
     'summary': 'Projects, Scrum',
@@ -41,6 +41,7 @@ Thanks to report questions to david.drapeau@cogitae.net
         "project_scrum_report.xml",
         "wizard/project_scrum_backlog_create_task_view.xml",
         "wizard/project_scrum_email_view.xml",
+        "view/project_scrum_menu.xml",
         "view/project_scrum_role_view.xml",
         "view/project_scrum_view.xml",
     ],
