@@ -2,9 +2,9 @@
 <openerp>
     <data>
         <!-- development team -->
-        <record model="ir.ui.view" id="view_project_scrum_devteam_tree">
+        <record model="ir.ui.view" id="view_projectScrumDevteam_tree">
             <field name="model">project.scrum.devteam</field>
-            <field name="name">"view.project.scrum.devteam.tree"</field>
+            <field name="name">"view.projectScrumDevteam.tree"</field>
             <field name="arch" type="xml">
                 <tree string="Scrum Development Teams">
                     <field name="name" />
@@ -13,9 +13,9 @@
                 </tree>
             </field>
         </record>
-        <record model="ir.ui.view" id="view_project_scrum_devteam_form">
+        <record model="ir.ui.view" id="view_projectScrumDevteam_form">
             <field name="model">project.scrum.devteam</field>
-            <field name="name">view.project.scrum.devteam.form"</field>
+            <field name="name">view.projectScrumDevteam.form"</field>
             <field name="arch" type="xml">
                 <form string="Scrum Development Teams" version="7.0">
                     <sheet>
@@ -32,24 +32,32 @@
                             <page string="Team" name="team">
                                 <field name="developer_ids" widget="many2many" nolabel="1"/>
                             </page>
-                            <page string="Sprints affected">
-                                <field name="sprint_ids" readonly="1" nolabel="1"/>
-                            </page>
                         </notebook>
                     </sheet>
                 </form>
             </field>
         </record>
-        <record model="ir.actions.act_window" id="action_project_scrum_devteam">
+        <record model="ir.actions.act_window" id="action_projectScrumDevteam">
             <field name="name">Team</field>
             <field name="res_model">project.scrum.devteam</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
         </record>
-        <menuitem action="action_project_scrum_devteam"
-                  id="menu_action_project_scrum_devteam"
+        <menuitem action="action_projectScrumDevteam"
+                  id="menu_action_projectScrumDevteam"
                   parent="menu_scrum"
                   name="Development teams" />
         
+        <!-- inherited view of res_users_form -->
+        <record model="ir.ui.view" id="view_projectScrum_inherit_resUsers_form">
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/group/group/field[@name='company_id']" position="after">
+                    <field name="scrum_devteam_id"/>
+                </xpath>
+            </field>
+        </record>
+
     </data>
 </openerp>
