@@ -19,8 +19,10 @@
                     <button type="object" string="Pending" name="button_pending" states="open" icon="gtk-media-pause"/>
                     <button type="object" string="Close" name="button_close" states="open,pending" icon="terp-dialog-close"/>
                     <button type="object" string="Set to Draft" name="button_draft" states="cancel,done" icon="gtk-convert"/>
-                	<button name="%(ddrapeau_project_scrum.report_scrum_sprint_burndown_chart)d" states="open,draft,close,cancel"
-                                	string="Burndown Chart" type="action" icon="gtk-print"/>
+                    <button name="%(ddrapeau_project_scrum.report_scrum_sprint_burndown_chart)d"
+			    states="open,draft,close,cancel"
+			    string="Burndown Chart"
+			    type="action" icon="gtk-print"/>
              	</tree>
             </field>
         </record>
