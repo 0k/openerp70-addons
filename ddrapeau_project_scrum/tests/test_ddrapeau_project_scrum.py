@@ -4,7 +4,7 @@ import csv
 
 username = 'admin'
 pwd = 'admin'
-dbname = 'test_scrum_70_02'
+dbname = 'test_scrum_70_05'
 
 class fontColors(object):
     OKGREEN = '\033[92m'
@@ -139,7 +139,7 @@ def test_persona_adding_to_role(role_id, vals):
 
 # USER STORY DONE
 def create_scrum_done(fields):
-    return sock.execute(dbname, uid, pwd, 'project.scrum.done', 'create', fields)
+    return sock.execute(dbname, uid, pwd, 'project.scrum.stage', 'create', fields)
     
 def test_scrum_done(vals):
     role_id = create_scrum_done(vals)
@@ -199,8 +199,10 @@ delete_lines('project.task', [])
 print "delete user stories..."
 delete_lines('project.scrum.product.backlog', [])
 
-print "delete done steps..."
-delete_lines('project.scrum.done', [])
+#print "delete done steps..."
+#delete_lines('project.scrum.done', [])
+print "delete project scrum stages..."
+delete_lines('project.scrum.stage', [])
 
 print "delete roles..."
 delete_lines('project.scrum.role', [])
@@ -223,12 +225,13 @@ delete_lines('product.product', [])
 print "delete partners..."
 delete_lines('res.partner', [('id', '>', 2)])
 
-print "delete addresses..."
-delete_lines('res.partner.address', [('id', '>', 2)])
+#NOTE res.partner.address does not exist in OpenERP v7.0
+#print "delete addresses..."
+#delete_lines('res.partner.address', [('id', '>', 2)])
 
 #NOTE Delete note stages for users created during tests
-print "delete note stages..."
-delete_lines('note.stage', [('user_id', '>', 2)])
+#print "delete note stages..."
+#delete_lines('note.stage', [('user_id', '>', 2)])
 
 print "delete mail alias..."
 delete_lines('mail.alias', [('id', '>', 2)])
@@ -317,39 +320,30 @@ sprint_vals = {
 }
 sprint02_id = test_sprint(sprint_vals)
 
-print "create scrum done steps..."
+print "create scrum 'DONE' Stages..."
 scrum_done_value_step1 = {
     'name': "Draft",
-    'code': 'draft',
-    'project_id': project01_id,
     'sequence': 1,
 }
 scrum_done_step01_id = test_scrum_done(scrum_done_value_step1)
 
 scrum_done_value_step2 = {
     'name': "Todo",
-    'code': 'todo',
-    'project_id': project01_id,
     'sequence': 2,
 }
 scrum_done_step02_id = test_scrum_done(scrum_done_value_step2)
 
 scrum_done_value_step3 = {
     'name': "In progress",
-    'code': 'in_progress',
-    'project_id': project01_id,
     'sequence': 3,
 }
 scrum_done_step03_id = test_scrum_done(scrum_done_value_step3)
 
 scrum_done_value_step4 = {
     'name': "Done",
-    'code': 'done',
-    'project_id': project01_id,
     'sequence': 4,
 }
 scrum_done_step04_id = test_scrum_done(scrum_done_value_step4)
-
 
 
 print "create roles..."
