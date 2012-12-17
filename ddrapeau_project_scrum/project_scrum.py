@@ -119,16 +119,6 @@ class projectScrumDevTeamInherit(osv.osv):
     _columns = {
         'sprint_ids': fields.one2many('project.scrum.sprint', 'scrum_devteam_id', "Sprints", help="Sprints done by this development team")
     }
-
-#class projectScrumDone(osv.osv):
-#    _name = 'project.scrum.done'
-#    
-#    _columns = {
-#        'name': fields.char("Name", size=128, required=True),
-#        'code': fields.char("Name", size=16),
-#        'sequence': fields.integer("Sequence", required=True),
-#        'project_id': fields.many2one('project.project', "Project", required=True),
-#    }
     
 class project_scrum_stage(osv.osv):
     """ Done for project (user for user stories : product backlog) """
