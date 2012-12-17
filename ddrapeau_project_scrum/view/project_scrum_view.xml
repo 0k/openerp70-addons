@@ -35,19 +35,6 @@
                   name="User Stories Stages"
                   parent="menu_scrum"/>
         
-        <!-- inherited from scrum devteam -->
-        <record id="view_projectScrumDevteam_inherit_projectScrumSprint_form" model="ir.ui.view">
-            <field name="name">project.scrum.devteam.inherit_sprint.form</field>
-            <field name="model">project.scrum.devteam</field>
-            <field name="inherit_id" ref="view_project_scrum_devteam_form"/>
-            <field name="arch" type="xml">
-                <xpath expr="//form/notebook/page[@name='team']" position="after">
-                    <page string="Sprints affected">
-                        <field name="sprint_ids" readonly="1" nolabel="1"/>
-                    </page>
-                </xpath>
-            </field>
-        </record>
         
         <!-- project task work -->
         <record id="view_task_work_form" model="ir.ui.view">
@@ -76,16 +63,6 @@
                     <field name="hours" widget="float_time"/>
                     <field name="user_id"/>
                 </tree>
-            </field>
-        </record>
-        <!-- inherited view of res_users_form -->
-        <record model="ir.ui.view" id="view_project_scrum_inherit_res_users_form">
-            <field name="model">res.users</field>
-            <field name="inherit_id" ref="base.view_users_form"/>
-            <field name="arch" type="xml">
-                <xpath expr="//form/sheet/group/group/field[@name='company_id']" position="after">
-                    <!--<field name="scrum_devteam_id"/>-->
-                </xpath>
             </field>
         </record>
         
@@ -175,6 +152,20 @@
                   id="menu_action_project_scrum_sprint"
                   parent="menu_scrum"
                   name="Sprints" />
+        
+        <!-- inherited from scrum devteam -->
+        <record id="view_projectScrumDevteam_inherit_projectScrumSprint_form" model="ir.ui.view">
+            <field name="name">project.scrum.devteam.inherit_sprint.form</field>
+            <field name="model">project.scrum.devteam</field>
+            <field name="inherit_id" ref="ddrapeau_project_scrum.view_projectScrumDevteam_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/notebook/page[@string='Team']" position="after">
+                    <page string="Sprints affected">
+                        <field name="sprint_ids" readonly="1" nolabel="1"/>
+                    </page>
+                </xpath>
+            </field>
+        </record>
         
         <!-- Daily Meeting -->
         <record model="ir.ui.view" id="view_project_scrum_meeting_calendar">
