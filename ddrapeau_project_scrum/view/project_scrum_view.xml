@@ -1,41 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <openerp>
     <data>
-        <!-- Stages without menu -->
-        <record model="ir.ui.view" id="view_project_scrum_stage_form">
-          <field name="name">project.scrum.stage.form</field>
-          <field name="model">project.scrum.stage</field>
-          <field name="arch" type="xml">
-            <form string="Stage of Notes" version="7.0">
-              <group>
-                <field name="name"/>
-              </group>
-            </form>
-          </field>
-        </record>
-        <record model="ir.ui.view" id="view_project_scrum_stage_tree">
-          <field name="name">project.scrum.stage.tree</field>
-          <field name="model">project.scrum.stage</field>
-          <field name="field_parent"></field>
-          <field name="arch" type="xml">
-            <tree string="Stages of Notes" editable="bottom">
-                <field name="sequence" widget="handle"/>
-                <field name="name"/>
-                <field name="fold"/>
-            </tree>
-          </field>
-        </record>
-        <record model="ir.actions.act_window" id="action_project_scrum_stage">
-            <field name="name">Stages</field>
-            <field name="res_model">project.scrum.stage</field>
-            <field name="view_mode">tree,form</field>
-        </record>
-        <menuitem action="action_project_scrum_stage"
-                  id="menu_action_project_scrum_stage"
-                  name="User Stories Stages"
-                  parent="menu_scrum"/>
-        
-        
         <!-- project task work -->
         <record id="view_task_work_form" model="ir.ui.view">
             <field name="name">project.task.work.form</field>
@@ -226,10 +191,10 @@
             <field name="name">view.project.scrum.product.backlog.kanban</field>
             <field name="model">project.scrum.product.backlog</field>
             <field name="arch" type="xml">
-                <kanban default_group_by="stage_id" class="oe_cogiscrum oe_kanban_quickcreate_textarea" version="7.0">
+                <kanban default_group_by="state" class="oe_cogiscrum oe_kanban_quickcreate_textarea" version="7.0">
                     <field name="color"/>
-                    <field name="stage_id"/>
-                    <field name="state" groups="base.group_no_one"/>
+                    <!--field name="stage_id"/-->
+                    <field name="state"/>
                     <field name="role_id"/>
                     <field name="name"/>
                     <templates>
