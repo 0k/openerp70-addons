@@ -247,13 +247,12 @@ developer02_id = test_admin_create_user({'name': "Developer 02", 'login': "dev02
 
 print "create projects..."
 project01_id = test_project({'name': "project 001",'product_owner_id': PO01_id, 'vision' : "ceci est la vision du projet 1"})
-project02_id = test_project({'name': "project 002",'product_owner_id': PO02_id, 'vision' : "ceci est la vision du projet 1"})
-project03_id = test_project({'name': "project 003",'product_owner_id': PO02_id, 'vision' : "ceci est la vision du projet 1"})
-project04_id = test_project({'name': "project 004",'product_owner_id': PO01_id, 'vision' : "ceci est la vision du projet 1"})
+project02_id = test_project({'name': "project 002",'product_owner_id': PO02_id, 'vision' : "ceci est la vision du projet 2"})
+project03_id = test_project({'name': "project 003",'product_owner_id': PO02_id, 'vision' : "ceci est la vision du projet 3"})
+project04_id = test_project({'name': "project 004",'product_owner_id': PO01_id, 'vision' : "ceci est la vision du projet 4"})
 
 print "create releases..."
 release001_id = test_release({'name':"release 001", 'project_id':project01_id})
-
 
 print "create sprints..."
 sprint_vals = {
