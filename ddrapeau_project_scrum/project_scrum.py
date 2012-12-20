@@ -7,7 +7,6 @@ import tools
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
-
 SPRINT_STATES = [('draft','Draft'),
     ('open','Open'),
     ('pending','Pending'),
@@ -91,7 +90,6 @@ class projectScrumSprint(osv.osv):
         'effective_hours': fields.function(_compute, multi="effective_hours", method=True, string='Effective hours', help="Computed using the sum of the task work done."),
         'expected_hours': fields.function(_compute, multi="expected_hours", method=True, string='Planned Hours', help='Estimated time to do the task.'),
         'state': fields.selection(SPRINT_STATES, 'State', required=True),
-        'scrum_devteam_id': fields.many2one('project.scrum.devteam', "Development Team"),
         'sprint_goal': fields.char("Goal", size=128),
     }
     
@@ -113,13 +111,6 @@ class projectScrumSprint(osv.osv):
         (_check_dates, 'Error! sprint start-date must be lower than project end-date.', ['date_start', 'date_stop'])
     ]
 
-class projectScrumDevTeamInherit(osv.osv):
-    _inherit = "project.scrum.devteam"
-    
-    _columns = {
-        'sprint_ids': fields.one2many('project.scrum.sprint', 'scrum_devteam_id', "Sprints", help="Sprints done by this development team")
-    }
-    
 class project_scrum_stage(osv.osv):
     """ Done for project (user for user stories : product backlog) """
     _name = "project.scrum.stage"
@@ -256,13 +247,15 @@ class projectScrumTask(osv.osv):
     
     _columns = {
         'product_backlog_id': fields.many2one('project.scrum.product.backlog', 'Product Backlog',
-                                              help="Related product backlog that contains this task. Used in SCRUM methodology"),
+                help="Related product backlog that contains this task. Used in SCRUM methodology"),
         'sprint_id': fields.related('product_backlog_id','sprint_id', type='many2one', relation='project.scrum.sprint', string='Sprint',
             store={
                 'project.task': (lambda self, cr, uid, ids, c={}: ids, ['product_backlog_id'], 10),
                 'project.scrum.product.backlog': (_get_task, ['sprint_id'], 10)
             }),
         'work_ids': fields.one2many('project.task.work', 'task_id', 'Work'),
+        'pb_role': fields.related('product_id', 'role_id', type='many2one', string="Role", relation="project.scrum.role", readonly=True),
+        'pb_description': fields.related('product_id', 'description', type='text', string="Description", relation="project.scrum.role", readonly=True),
     }
     
     def _check_dates(self, cr, uid, ids, context=None):
@@ -276,13 +269,11 @@ class projectScrumTask(osv.osv):
         (_check_dates, 'Error! Date of creation must be lower than task date deadline.', ['date_deadline'])
     ]
 
-    def onchange_backlog_id(self, cr, uid, backlog_id=False):
+    def onchange_backlog_id(self, cr, uid, ids, backlog_id=False):
         if not backlog_id:
             return {}
         project_id = self.pool.get('project.scrum.product.backlog').browse(cr, uid, backlog_id).project_id.id
         return {'value': {'project_id': project_id}}
-
-    
 
 class projectScrumTaskWorkInherit(osv.osv):
     _inherit = 'project.task.work'

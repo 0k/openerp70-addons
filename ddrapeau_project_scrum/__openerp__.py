@@ -46,7 +46,6 @@ Thanks to report questions to david.drapeau@cogitae.net
         "view/project_scrum_menu.xml",
         "view/project_scrum_release_view.xml",
         "view/project_scrum_role_view.xml",
-        "view/project_scrum_devteam_view.xml",
         "view/project_scrum_view.xml",
     ],
     'css': [
