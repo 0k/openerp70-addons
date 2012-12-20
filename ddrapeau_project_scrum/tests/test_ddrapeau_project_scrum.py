@@ -137,26 +137,12 @@ def test_persona_adding_to_role(role_id, vals):
         print fontColors.FAIL + "FAILED "+ fontColors.ENDC + "add persona for role with vals ", vals
         return False
 
-
-# USER STORY DONE
-def create_scrum_done(fields):
-    return sock.execute(dbname, uid, pwd, 'project.scrum.stage', 'create', fields)
-    
-def test_scrum_done(vals):
-    role_id = create_scrum_done(vals)
-    if role_id:
-        print fontColors.OKGREEN + "OK "+ fontColors.ENDC + "create role with vals ", vals
-        return role_id
-    else:
-        print fontColors.FAIL + "FAILED "+ fontColors.ENDC + "create role with vals ", vals
-        return False
-
 # PRODUCT BACKLOG
-def create_product_backlog(fields):
+def product_owner_create_user_story(fields, uid=uid, pwd=pwd):
     return sock.execute(dbname, uid, pwd, 'project.scrum.product.backlog', 'create', fields)
     
-def test_product_backlog(vals):
-    user_story_id = create_product_backlog(vals)
+def test_product_owner_create_user_story(vals, uid=uid, pwd=pwd):
+    user_story_id = product_owner_create_user_story(vals)
     if user_story_id:
         print fontColors.OKGREEN + "OK "+ fontColors.ENDC + "create user story with vals ", vals
         return user_story_id
@@ -185,11 +171,6 @@ delete_lines('project.task', [])
 
 print "delete user stories..."
 delete_lines('project.scrum.product.backlog', [])
-
-#print "delete done steps..."
-#delete_lines('project.scrum.done', [])
-print "delete project scrum stages..."
-delete_lines('project.scrum.stage', [])
 
 print "delete roles..."
 delete_lines('project.scrum.role', [])
@@ -248,19 +229,21 @@ partner_id = test_partner(partner_vals)
 print "create products..."
 product_id = test_product({'name': "product 001"})
 
-print "create user with role 'Product Owner'..."
 group_po_id = sock.execute(dbname, uid, pwd, 'res.groups', 'search', [('name', '=', 'Product Owner')])
-PO01_id = test_admin_create_user({'name': "Product Owner 01", 'login': "po01", 'password': "a", 'lang': "fr_FR", 'groups_id': [(6, 0, group_po_id)]})
-PO02_id = test_admin_create_user({'name': "Product Owner 02", 'login': "po02", 'password': "a", 'lang': "fr_FR", 'groups_id': [(6, 0, group_po_id)]})
+print "create user with role 'Product Owner'..."
+PO01_id = test_admin_create_user({'name': "Product Owner 01", 'login': "po01", 'password': pwd_a, 'lang': "fr_FR", 'groups_id': [(6, 0, group_po_id)]})
+po01_uid = sock_common.login(dbname, 'po01', pwd_a)
+PO02_id = test_admin_create_user({'name': "Product Owner 02", 'login': "po02", 'password': pwd_a, 'lang': "fr_FR", 'groups_id': [(6, 0, group_po_id)]})
+po02_uid = sock_common.login(dbname, 'po02', pwd_a)
 
 print "create user with role 'Scrum Master'..."
 group_sm_id = sock.execute(dbname, uid, pwd, 'res.groups', 'search', [('name', '=', 'Scrum Master')])
-scrum_master_id = test_admin_create_user({'name': "Scrum Master", 'login': "sm", 'password': "a", 'lang': "fr_FR", 'groups_id': [(6, 0, group_sm_id)]})
+scrum_master_id = test_admin_create_user({'name': "Scrum Master", 'login': "sm", 'password': pwd_a, 'lang': "fr_FR", 'groups_id': [(6, 0, group_sm_id)]})
 
 print "create user with role 'Developer'..."
 group_dev_id = sock.execute(dbname, uid, pwd, 'res.groups', 'search', [('name', '=', 'Developer')])
-developer01_id = test_admin_create_user({'name': "Developer 01", 'login': "dev01", 'password': "a", 'lang': "fr_FR", 'groups_id': [(6, 0, group_dev_id)]})
-developer02_id = test_admin_create_user({'name': "Developer 02", 'login': "dev02", 'password': "a", 'lang': "fr_FR", 'groups_id': [(6, 0, group_dev_id)]})
+developer01_id = test_admin_create_user({'name': "Developer 01", 'login': "dev01", 'password': pwd_a, 'lang': "fr_FR", 'groups_id': [(6, 0, group_dev_id)]})
+developer02_id = test_admin_create_user({'name': "Developer 02", 'login': "dev02", 'password': pwd_a, 'lang': "fr_FR", 'groups_id': [(6, 0, group_dev_id)]})
 
 print "create projects..."
 project01_id = test_project({'name': "project 001",'product_owner_id': PO01_id, 'vision' : "ceci est la vision du projet 1"})
@@ -294,31 +277,6 @@ sprint_vals = {
 }
 sprint02_id = test_sprint(sprint_vals)
 
-print "create scrum 'DONE' Stages..."
-scrum_done_value_step1 = {
-    'name': "Draft",
-    'sequence': 1,
-}
-scrum_done_step01_id = test_scrum_done(scrum_done_value_step1)
-
-scrum_done_value_step2 = {
-    'name': "Todo",
-    'sequence': 2,
-}
-scrum_done_step02_id = test_scrum_done(scrum_done_value_step2)
-
-scrum_done_value_step3 = {
-    'name': "In progress",
-    'sequence': 3,
-}
-scrum_done_step03_id = test_scrum_done(scrum_done_value_step3)
-
-scrum_done_value_step4 = {
-    'name': "Done",
-    'sequence': 4,
-}
-scrum_done_step04_id = test_scrum_done(scrum_done_value_step4)
-
 
 print "create roles..."
 role01_id = test_role({'name':"role 01", 'code': "SR01"})
@@ -337,13 +295,12 @@ test_persona_adding_to_role(role01_id, persona_vals)
 print "create user stories..."
 user_story_vals = {
     'role_id': role01_id,
-    'name': "create a group Cogitae",
-    'for': "Describe rights for this role",
+    'name': "create a new sale order",
+    'for': "mailing to customer",
     'project_id': project01_id,
     'release_id': release001_id,
-    'scrum_done_id': scrum_done_step01_id,
 }
-user_story_id = test_product_backlog(user_story_vals)
+user_story_id = test_product_owner_create_user_story(user_story_vals, po01_uid, pwd_a)
 
 print "create task of user story..."
 task_vals = {
