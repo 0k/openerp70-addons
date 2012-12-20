@@ -4,6 +4,7 @@ import csv
 
 username = 'admin'
 pwd = 'admin'
+pwd_a = 'a'
 dbname = 'test_scrum_70_05'
 
 class fontColors(object):
@@ -34,11 +35,11 @@ def get_country_id(name):
         return None
 
 # USER
-def create_user(fields):
+def admin_create_user(fields):
     return sock.execute(dbname, uid, pwd, 'res.users', 'create', fields)
 
-def test_user(vals):
-    user_id = create_user(vals)
+def test_admin_create_user(vals):
+    user_id = admin_create_user(vals)
     if user_id:
         print fontColors.OKGREEN + "OK "+ fontColors.ENDC + "create user with fields ", vals
         return user_id
@@ -176,20 +177,6 @@ def test_task_of_user_story(vals):
         print fontColors.FAIL + "FAILED "+ fontColors.ENDC + "create user story with vals ", vals
         return False
 
-# DEV TEAM
-def create_devteam(fields):
-    return sock.execute(dbname, uid, pwd, 'project.scrum.devteam', 'create', fields)
-    
-def test_devteam(vals):
-    devteam_id = create_devteam(vals)
-    if devteam_id:
-        print fontColors.OKGREEN + "OK "+ fontColors.ENDC + "create Devteam with vals ", vals
-        return devteam_id
-    else:
-        print fontColors.FAIL + "FAILED "+ fontColors.ENDC + "create Devteam with vals ", vals
-        return False
-  
-
 print "delete daily meetings..."
 delete_lines('project.scrum.meeting', [])
 
@@ -222,17 +209,7 @@ delete_lines('project.project', [])
 print "delete products..."
 delete_lines('product.product', [])
 
-print "delete partners..."
-delete_lines('res.partner', [('id', '>', 2)])
-
-#NOTE res.partner.address does not exist in OpenERP v7.0
-#print "delete addresses..."
-#delete_lines('res.partner.address', [('id', '>', 2)])
-
-#NOTE Delete note stages for users created during tests
-#print "delete note stages..."
-#delete_lines('note.stage', [('user_id', '>', 2)])
-
+#NOTE Delete mail alias before res partner
 print "delete mail alias..."
 delete_lines('mail.alias', [('id', '>', 2)])
 
@@ -240,21 +217,19 @@ delete_lines('mail.alias', [('id', '>', 2)])
 #print "delete users..."
 #delete_lines('res.users', [('id', '>', 2)])
 
-print "delete devteam..."
-delete_lines('project.scrum.devteam', [])
+print "delete partners..."
+delete_lines('res.partner', [('id', '>', 2)])
+#NOTE res.partner.address does not exist in OpenERP v7.0
+#delete_lines('res.partner.address', [('id', '>', 2)])
+
+#NOTE Delete note stages for users created during tests (if module notes installed)
+#print "delete note stages..."
+#delete_lines('note.stage', [('user_id', '>', 2)])
 
 
 
 print "=========================="
 print "===== TESTS STARTING ====="
-
-print "create devteam..."
-devteam_vals = {
-    'name': "team 01",
-    'code': "TEAM01",
-    'active':True,
-}
-devteam01_id = test_devteam(devteam_vals)
 
 print "create partners..."
 partner_vals = {
@@ -275,16 +250,17 @@ product_id = test_product({'name': "product 001"})
 
 print "create user with role 'Product Owner'..."
 group_po_id = sock.execute(dbname, uid, pwd, 'res.groups', 'search', [('name', '=', 'Product Owner')])
-PO01_id = test_user({'name': "Product Owner 01", 'login': "po01", 'password': "a", 'lang': "fr_FR", 'groups_id': [(6, 0, group_po_id)]})
-PO02_id = test_user({'name': "Product Owner 02", 'login': "po02", 'password': "a", 'lang': "fr_FR", 'groups_id': [(6, 0, group_po_id)]})
+PO01_id = test_admin_create_user({'name': "Product Owner 01", 'login': "po01", 'password': "a", 'lang': "fr_FR", 'groups_id': [(6, 0, group_po_id)]})
+PO02_id = test_admin_create_user({'name': "Product Owner 02", 'login': "po02", 'password': "a", 'lang': "fr_FR", 'groups_id': [(6, 0, group_po_id)]})
 
 print "create user with role 'Scrum Master'..."
 group_sm_id = sock.execute(dbname, uid, pwd, 'res.groups', 'search', [('name', '=', 'Scrum Master')])
-scrum_master_id = test_user({'name': "Scrum Master", 'login': "sm", 'password': "a", 'lang': "fr_FR", 'groups_id': [(6, 0, group_sm_id)]})
+scrum_master_id = test_admin_create_user({'name': "Scrum Master", 'login': "sm", 'password': "a", 'lang': "fr_FR", 'groups_id': [(6, 0, group_sm_id)]})
 
 print "create user with role 'Developer'..."
 group_dev_id = sock.execute(dbname, uid, pwd, 'res.groups', 'search', [('name', '=', 'Developer')])
-developer01_id = test_user({'name': "Developer 01", 'login': "dev01", 'password': "a", 'lang': "fr_FR", 'scrum_devteam_id': devteam01_id, 'groups_id': [(6, 0, group_dev_id)]})
+developer01_id = test_admin_create_user({'name': "Developer 01", 'login': "dev01", 'password': "a", 'lang': "fr_FR", 'groups_id': [(6, 0, group_dev_id)]})
+developer02_id = test_admin_create_user({'name': "Developer 02", 'login': "dev02", 'password': "a", 'lang': "fr_FR", 'groups_id': [(6, 0, group_dev_id)]})
 
 print "create projects..."
 project01_id = test_project({'name': "project 001",'product_owner_id': PO01_id, 'vision' : "ceci est la vision du projet 1"})
@@ -304,7 +280,6 @@ sprint_vals = {
     'date_stop':'2012-11-16',
     'product_owner_id': PO01_id,
     'scrum_master_id': scrum_master_id,
-    'scrum_devteam_id': devteam01_id,
     'sprint_goal':"Premiere approche"
 }
 sprint01_id = test_sprint(sprint_vals)
@@ -316,7 +291,6 @@ sprint_vals = {
     'date_stop':'2012-11-16',
     'product_owner_id': PO01_id,
     'scrum_master_id': scrum_master_id,
-    'scrum_devteam_id': devteam01_id
 }
 sprint02_id = test_sprint(sprint_vals)
 
