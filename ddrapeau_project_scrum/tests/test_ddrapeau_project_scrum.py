@@ -5,13 +5,14 @@ import csv
 username = 'admin'
 pwd = 'admin'
 pwd_a = 'a'
-dbname = 'test_scrum_70_05'
+dbname = 'test_scrum_70_06'
 
 class fontColors(object):
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
+    OKGREEN = '\033[92m' # green
+    USERSTORY = '\033[94m' # blue
+    WARNING = '\033[93m' # red
+    FAIL = '\033[91m' # red
+    ENDC = '\033[0m' # nocolor
 
 sock_common = xmlrpclib.ServerProxy('http://localhost:8069/xmlrpc/common')
 uid = sock_common.login(dbname, username, pwd)
@@ -47,12 +48,27 @@ def test_admin_create_user(vals):
         print fontColors.FAIL + "FAILED "+ fontColors.ENDC + "create user with fields ", vals
         return False
 
-# PARTNER
-def create_partner(fields):
-    return sock.execute(dbname, uid, pwd, 'res.partner', 'create', fields)
+def check_uid(user_id=None):
+    password = ''
+    if not user_id:
+        user_id = uid
+        password = pwd
+    else:
+        if user_id == uid:
+            password = pwd
+        else:
+            password = pwd_a
+    return {'uid': user_id, 'pwd':password}
 
-def test_partner(vals):
-    partner_id = create_partner(vals)
+# PARTNER
+def create_partner(fields, user_id=None):
+    user = check_uid(user_id)
+    return sock.execute(dbname, user['uid'], user['pwd'], 'res.partner', 'create', fields)
+
+def test_create_partner(vals, user_id=None):
+    if not user_id:
+        user_id = uid
+    partner_id = create_partner(vals, user_id)
     if partner_id:
         print fontColors.OKGREEN + "OK "+ fontColors.ENDC + "create partner with fields ", vals
         return partner_id
@@ -74,11 +90,14 @@ def test_product(fields):
         return False
 
 # PROJECT
-def create_project(fields):
-    return sock.execute(dbname, uid, pwd, 'project.project', 'create', fields)
+def create_project(fields, user_id=None):
+    user = check_uid(user_id)
+    return sock.execute(dbname, user['uid'], user['pwd'], 'project.project', 'create', fields)
 
-def test_project(vals):
-    project_id = create_project(vals)
+def test_create_project(vals, user_id=None):
+    if not user_id:
+        user_id=uid
+    project_id = create_project(vals, user_id)
     if project_id:
         print fontColors.OKGREEN + "OK "+ fontColors.ENDC + "create project with vals ", vals
         return project_id
@@ -86,12 +105,32 @@ def test_project(vals):
         print fontColors.FAIL + "FAILED "+ fontColors.ENDC + "create project with vals ", vals
         return False
 
-# RELEASE
-def create_release(fields):
-    return sock.execute(dbname, uid, pwd, 'project.scrum.release', 'create', fields)
+# ADD DEVELOPER TO PROJECT
+def add_developer_to_project(fields, project_id, user_id=None):
+    user = check_uid(user_id)
+    return sock.execute(dbname, user['uid'], user['pwd'], 'project.project', 'write', project_id, fields)
 
-def test_release(vals):
-    release_id = create_release(vals)
+def test_add_developer_to_project(vals, project_id, user_id=None):
+    if not user_id:
+        user_id=uid
+    return_value = add_developer_to_project(vals, project_id, user_id)
+    if project_id:
+        print fontColors.OKGREEN + "OK "+ fontColors.ENDC + "add developer in project with vals ", vals
+        return project_id
+    else:
+        print fontColors.FAIL + "FAILED "+ fontColors.ENDC + "add developer in project with vals ", vals
+        return False
+
+
+# RELEASE
+def create_release(fields, user_id=None):
+    user = check_uid(user_id)
+    return sock.execute(dbname, user['uid'], user['pwd'], 'project.scrum.release', 'create', fields)
+
+def test_create_release(vals, user_id=None):
+    if not user_id:
+        user_id=uid
+    release_id = create_release(vals, user_id)
     if release_id:
         print fontColors.OKGREEN + "OK "+ fontColors.ENDC + "create release with vals ", vals
         return release_id
@@ -99,27 +138,15 @@ def test_release(vals):
         print fontColors.FAIL + "FAILED "+ fontColors.ENDC + "create release with vals ", vals
         return False
 
-# SPRINT
-def create_sprint(fields):
-    return sock.execute(dbname, uid, pwd, 'project.scrum.sprint', 'create', fields)
-    
-def test_sprint(vals):
-    sprint_id = create_sprint(vals)
-    if sprint_id:
-        print fontColors.OKGREEN + "OK "+ fontColors.ENDC + "create sprint with vals ", vals
-        sprint_line = sock.execute(dbname, uid, pwd, 'project.scrum.sprint', 'read', sprint_id, [])
-        print "sprint line created = ", sprint_line
-        return sprint_id
-    else:
-        print fontColors.FAIL + "FAILED "+ fontColors.ENDC + "create sprint with vals ", vals
-        return False
-
 # ROLE
-def create_role(fields):
-    return sock.execute(dbname, uid, pwd, 'project.scrum.role', 'create', fields)
+def create_role(fields, user_id=None):
+    user = check_uid(user_id)
+    return sock.execute(dbname, user['uid'], user['pwd'], 'project.scrum.role', 'create', fields)
     
-def test_role(vals):
-    role_id = create_role(vals)
+def test_create_role(vals, user_id=None):
+    if not user_id:
+        user_id=uid
+    role_id = create_role(vals, user_id)
     if role_id:
         print fontColors.OKGREEN + "OK "+ fontColors.ENDC + "create role with vals ", vals
         return role_id
@@ -138,11 +165,14 @@ def test_persona_adding_to_role(role_id, vals):
         return False
 
 # PRODUCT BACKLOG
-def product_owner_create_user_story(fields, uid=uid, pwd=pwd):
-    return sock.execute(dbname, uid, pwd, 'project.scrum.product.backlog', 'create', fields)
+def create_user_story(fields, user_id=None):
+    user = check_uid(user_id)
+    return sock.execute(dbname, user['uid'], user['pwd'], 'project.scrum.product.backlog', 'create', fields)
     
-def test_product_owner_create_user_story(vals, uid=uid, pwd=pwd):
-    user_story_id = product_owner_create_user_story(vals)
+def test_create_user_story(vals, user_id=None):
+    if not user_id:
+        user_id=uid
+    user_story_id = create_user_story(vals, user_id)
     if user_story_id:
         print fontColors.OKGREEN + "OK "+ fontColors.ENDC + "create user story with vals ", vals
         return user_story_id
@@ -150,18 +180,39 @@ def test_product_owner_create_user_story(vals, uid=uid, pwd=pwd):
         print fontColors.FAIL + "FAILED "+ fontColors.ENDC + "create user story with vals ", vals
         return False
 
-# TASK OF USER STORY
-def create_task_of_user_story(fields):
-    return sock.execute(dbname, uid, pwd, 'project.task', 'create', fields)
-
-def test_task_of_user_story(vals):
-    task_user_story_id = create_task_of_user_story(vals)
-    if task_user_story_id:
-        print fontColors.OKGREEN + "OK "+ fontColors.ENDC + "create user story with vals ", vals
-        return task_user_story_id
+# SPRINT
+def create_sprint(fields, user_id=None):
+    user = check_uid(user_id)
+    return sock.execute(dbname, user['uid'], user['pwd'], 'project.scrum.sprint', 'create', fields)
+    
+def test_create_sprint(vals, user_id=None):
+    if not user_id:
+        user_id=uid
+    sprint_id = create_sprint(vals, user_id)
+    if sprint_id:
+        print fontColors.OKGREEN + "OK "+ fontColors.ENDC + "create sprint with vals ", vals
+        return sprint_id
     else:
-        print fontColors.FAIL + "FAILED "+ fontColors.ENDC + "create user story with vals ", vals
+        print fontColors.FAIL + "FAILED "+ fontColors.ENDC + "create sprint with vals ", vals
         return False
+
+
+# FILL SPRINT WITH STORIES
+def affect_sprint_to_user_story(vals, story_id, user_id=None):
+    user = check_uid(user_id)
+    return sock.execute(dbname, user['uid'], user['pwd'], 'project.scrum.product.backlog', 'write', story_id, vals)
+    
+def test_affect_sprint_to_user_story(vals, story_id, user_id=None):
+    if not user_id:
+        user_id=uid
+    return_value = affect_sprint_to_user_story(vals, story_id, user_id)
+    if return_value:
+        print fontColors.OKGREEN + "OK "+ fontColors.ENDC + "affect sprint to user story"
+        return True
+    else:
+        print fontColors.FAIL + "FAILED "+ fontColors.ENDC + "affect sprint to user story"
+        return False
+
 
 print "delete daily meetings..."
 delete_lines('project.scrum.meeting', [])
@@ -199,9 +250,10 @@ delete_lines('mail.alias', [('id', '>', 2)])
 #delete_lines('res.users', [('id', '>', 2)])
 
 print "delete partners..."
-delete_lines('res.partner', [('id', '>', 2)])
+delete_lines('res.partner', [('id', '>', 3)])
 #NOTE res.partner.address does not exist in OpenERP v7.0
 #delete_lines('res.partner.address', [('id', '>', 2)])
+
 
 #NOTE Delete note stages for users created during tests (if module notes installed)
 #print "delete note stages..."
@@ -211,74 +263,181 @@ delete_lines('res.partner', [('id', '>', 2)])
 
 print "=========================="
 print "===== TESTS STARTING ====="
+print "=========================="
 
-print "create partners..."
-partner_vals = {
-    'name': "Client 001",
-    'is_company':True,
-    'lang': 'fr_FR',
-    'type': 'default',
-    'employee': False,
-    'supplier': False,
-    'customer': True,
-    'active': True,
-    'country_id': get_country_id('France'),
+print fontColors.USERSTORY + """
+[Administrator] create a Scrum Master
+for permit him manage projects and SCRUM
+""" + fontColors.ENDC
+#Group Partner Manager
+group_cc_id = sock.execute(dbname, uid, pwd, 'res.groups', 'search', [('name', '=', 'Contact Creation')])
+
+#Group Scrum Master
+group_sm_id = sock.execute(dbname, uid, pwd, 'res.groups', 'search', [('name', '=', 'Scrum Master')])
+
+#Group Project Manager
+group_category_project_id = sock.execute(dbname, uid, pwd, 'ir.module.category', 'search', [('name', '=', 'Project')])
+group_pm_id = sock.execute(dbname, uid, pwd, 'res.groups', 'search', [('name', '=', 'Manager'), ('category_id', '=', group_category_project_id)])
+
+#Group Employee
+group_category_hr_id = sock.execute(dbname, uid, pwd, 'ir.module.category', 'search', [('name', '=', 'Human Resources')])
+group_hr_id = sock.execute(dbname, uid, pwd, 'res.groups', 'search', [('name', '=', 'Employee'), ('category_id', '=', group_category_hr_id)])
+
+# create user
+scrum_master_vals = {
+    'name': "Scrum Master 01",
+    'login': "sm01",
+    'password': pwd_a,
+    'lang': "fr_FR",
+    'tz': 'Europe/Paris',
+    'phone': '+336 455 942 76',
+    'groups_id': [(6, 0, [group_sm_id[0], group_pm_id[0], group_hr_id[0], group_cc_id[0]])]
 }
-partner_id = test_partner(partner_vals)
+sm01_id = test_admin_create_user(scrum_master_vals)
+sm01_uid = sock_common.login(dbname, 'sm01', pwd_a)
 
-print "create products..."
-product_id = test_product({'name': "product 001"})
-
+print fontColors.USERSTORY + """
+[Administrator] create a Product Owner
+for permit Scrum Master affect him to a project
+""" + fontColors.ENDC
 group_po_id = sock.execute(dbname, uid, pwd, 'res.groups', 'search', [('name', '=', 'Product Owner')])
-print "create user with role 'Product Owner'..."
-PO01_id = test_admin_create_user({'name': "Product Owner 01", 'login': "po01", 'password': pwd_a, 'lang': "fr_FR", 'groups_id': [(6, 0, group_po_id)]})
+product_owner_vals = {
+    'name': "Product Owner 01",
+    'login': "po01",
+    'password': pwd_a,
+    'lang': "fr_FR",
+    'tz': 'Europe/Paris',
+    'groups_id': [(6, 0, group_po_id)]
+}
+po01_id = test_admin_create_user(product_owner_vals)
 po01_uid = sock_common.login(dbname, 'po01', pwd_a)
-PO02_id = test_admin_create_user({'name': "Product Owner 02", 'login': "po02", 'password': pwd_a, 'lang': "fr_FR", 'groups_id': [(6, 0, group_po_id)]})
+
+product_owner_vals = {
+    'name': "Product Owner 02",
+    'login': "po02",
+    'password': pwd_a,
+    'lang': "fr_FR",
+    'tz': 'Europe/Paris',
+    'groups_id': [(6, 0, group_po_id)]
+}
+po02_id = test_admin_create_user(product_owner_vals)
 po02_uid = sock_common.login(dbname, 'po02', pwd_a)
 
-print "create user with role 'Scrum Master'..."
-group_sm_id = sock.execute(dbname, uid, pwd, 'res.groups', 'search', [('name', '=', 'Scrum Master')])
-scrum_master_id = test_admin_create_user({'name': "Scrum Master", 'login': "sm", 'password': pwd_a, 'lang': "fr_FR", 'groups_id': [(6, 0, group_sm_id)]})
 
-print "create user with role 'Developer'..."
+print fontColors.USERSTORY + """
+[Administrator] create a developer
+for permit Scrum Master affect him to a development team of a project
+""" + fontColors.ENDC
 group_dev_id = sock.execute(dbname, uid, pwd, 'res.groups', 'search', [('name', '=', 'Developer')])
-developer01_id = test_admin_create_user({'name': "Developer 01", 'login': "dev01", 'password': pwd_a, 'lang': "fr_FR", 'groups_id': [(6, 0, group_dev_id)]})
-developer02_id = test_admin_create_user({'name': "Developer 02", 'login': "dev02", 'password': pwd_a, 'lang': "fr_FR", 'groups_id': [(6, 0, group_dev_id)]})
+developer_vals = {
+    'name': "Developer 01",
+    'login': "dev01",
+    'password': pwd_a,
+    'lang': "fr_FR",
+    'tz': 'Europe/Paris',
+    'groups_id': [(6, 0, group_dev_id)]
+}
+dev01_id = test_admin_create_user(developer_vals)
+dev01_uid = sock_common.login(dbname, 'dev01', pwd_a)
 
-print "create projects..."
-project01_id = test_project({'name': "project 001",'product_owner_id': PO01_id, 'vision' : "ceci est la vision du projet 1"})
-project02_id = test_project({'name': "project 002",'product_owner_id': PO02_id, 'vision' : "ceci est la vision du projet 2"})
-project03_id = test_project({'name': "project 003",'product_owner_id': PO02_id, 'vision' : "ceci est la vision du projet 3"})
-project04_id = test_project({'name': "project 004",'product_owner_id': PO01_id, 'vision' : "ceci est la vision du projet 4"})
+developer_vals = {
+    'name': "Developer 02",
+    'login': "dev02",
+    'password': pwd_a,
+    'lang': "fr_FR",
+    'tz': 'Europe/Paris',
+    'groups_id': [(6, 0, group_dev_id)]
+}
+dev02_id = test_admin_create_user(developer_vals)
+dev02_uid = sock_common.login(dbname, 'dev02', pwd_a)
 
-print "create releases..."
-release001_id = test_release({'name':"release 001", 'project_id':project01_id})
+#print fontColors.USERSTORY + """
+#[Scrum Master] create a partner
+#for invoice him and affect him later some projects
+#""" + fontColors.ENDC
+#partner_vals = {
+#    'name': "Client 001",
+#    'is_company':True,
+#    'lang': 'fr_FR',
+#    'tz': 'Europe/Paris',
+#    'type': 'default',
+#    'employee': False,
+#    'supplier': False,
+#    'customer': True,
+#    'active': True,
+#    'country_id': get_country_id('France'),
+#}
+#partner_id = test_create_partner(partner_vals, sm01_uid)
 
-print "create sprints..."
-sprint_vals = {
+print fontColors.USERSTORY + """
+[Scrum Master] create a Scrum project
+for affect it a Product Owner
+""" + fontColors.ENDC
+project_vals = {
+    'name': "Project 01 of sm01",
+    'is_scrum': True,
+    'product_owner_id': po01_id,
+    'goal' : "ceci est la vision du projet 1",
+}
+project01_id = test_create_project(project_vals, sm01_uid)
+
+
+print fontColors.USERSTORY + """
+[Scrum Master] add developers to project
+define a development team for Scrum Project
+""" + fontColors.ENDC
+vals = {
+    'members': [(6, 0, [dev01_id, dev02_id])]
+}
+print "vals = ", vals
+test_add_developer_to_project(vals, project01_id, sm01_uid)
+
+
+print fontColors.USERSTORY + """
+[Scrum Master] create a release
+for planification of sprints and delivery date of new version
+""" + fontColors.ENDC
+release_vals = {
+    'name':"release 01",
+    'project_id':project01_id,
+}
+release01_id = test_create_release(release_vals, sm01_uid)
+
+print fontColors.USERSTORY + """
+[Scrum Master] create a Sprint
+permit to development team to fill it with user stories
+""" + fontColors.ENDC
+vals = {
     'name': "sprint 001",
-    'release_id': release001_id,
-    'date_start':'2012-11-06',
-    'date_stop':'2012-11-16',
-    'product_owner_id': PO01_id,
-    'scrum_master_id': scrum_master_id,
-    'sprint_goal':"Premiere approche"
+    'date_start': '2012-12-24',
+    'date_stop': '2012-12-31',
+    'release_id': release01_id,
+    'product_owner_id': po01_id,
+    'scrum_master_id': sm01_id,
+    'goal':"Premiere approche"
 }
-sprint01_id = test_sprint(sprint_vals)
+sprint01_id = test_create_sprint(vals)
 
-sprint_vals = {
-    'name': "sprint 002",
-    'release_id': release001_id,
-    'date_start':'2012-11-06',
-    'date_stop':'2012-11-16',
-    'product_owner_id': PO01_id,
-    'scrum_master_id': scrum_master_id,
-}
-sprint02_id = test_sprint(sprint_vals)
+#print fontColors.USERSTORY + """
+#[Scrum Master] create a sprint
+#for affect in several user stories
+#""" + fontColors.ENDC
+#sprint_vals = {
+#    'name': "sprint 001",
+#    'release_id': release001_id,
+#    'date_start':'2012-11-06', #TODO set date of today
+#    'date_stop':'2012-11-16', #TODO set date plus 10 days
+#    'product_owner_id': po01_id,
+#    'scrum_master_id': sm01_id,
+#    'sprint_goal':"Premiere approche" #FIX change sprint_goal by goal
+#}
+#sprint01_id = test_create_sprint(sprint_vals, sm01_uid)
 
-
-print "create roles..."
-role01_id = test_role({'name':"role 01", 'code': "SR01"})
+print fontColors.USERSTORY + """
+[Product Owner]	create a role
+use it in user stories writing
+""" + fontColors.ENDC
+role01_id = test_create_role({'name':"role 01", 'code': "SR01"}, po01_uid)
 
 print "add persona name and description to roles..."
 persona_vals = {
@@ -290,20 +449,21 @@ It describes the role and what user wants and list his job.
 }
 test_persona_adding_to_role(role01_id, persona_vals)
 
-
-print "create user stories..."
+print fontColors.USERSTORY + """
+[Product Owner]	add a user story in product backlog
+permit to development team to realize it
+""" + fontColors.ENDC
 user_story_vals = {
     'role_id': role01_id,
     'name': "create a new sale order",
     'for': "mailing to customer",
     'project_id': project01_id,
-    'release_id': release001_id,
+    'release_id': release01_id,
 }
-user_story_id = test_product_owner_create_user_story(user_story_vals, po01_uid, pwd_a)
+story01_id = test_create_user_story(user_story_vals, po01_uid)
 
-print "create task of user story..."
-task_vals = {
-    'name': "task 001 of user story",
-    'product_backlog_id': user_story_id,
-}
-user_story_task01_id = test_task_of_user_story(task_vals)
+print fontColors.USERSTORY + """
+[Scrum Master] fill sprint with user stories
+planificate the sprint
+""" + fontColors.ENDC
+test_affect_sprint_to_user_story({'sprint_id': sprint01_id}, story01_id, sm01_id)
