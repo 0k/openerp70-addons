@@ -17,8 +17,8 @@
                     </group>
                 </group>
                 <page string="Tasks Stages" position="after">
-                    <page string="Vision">
-                        <field name="vision"/>
+                    <page string="Goal">
+                        <field name="goal"/>
                     </page>
                 </page>
             </field>
