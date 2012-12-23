@@ -5,6 +5,12 @@
         <field name="name">Project Scrum</field>
     </record>
 
+    <record model="res.groups" id="group_ddrapeauProjectScrum_scrumMaster">
+        <field name="name">Scrum Master</field>
+        <field name="category_id" ref="module_category_project_scrum"/>
+        <field name="implied_ids" eval="[(4, ref('project.group_project_user'))]"/>
+    </record>
+    
     <record model="res.groups" id="group_ddrapeauProjectScrum_developer">
         <field name="name">Developer</field>
         <field name="category_id" ref="module_category_project_scrum"/>
@@ -17,17 +23,6 @@
         <field name="implied_ids" eval="[(4, ref('project.group_project_user'))]"/>
     </record>
     
-    <record model="res.groups" id="group_ddrapeauProjectScrum_scrumMaster">
-        <field name="name">Scrum Master</field>
-        <field name="category_id" ref="module_category_project_scrum"/>
-        <field name="implied_ids" eval="[(4, ref('project.group_project_user'))]"/>
-    </record>
-    
-    <record model="res.groups" id="group_ddrapeauProjectScrum_projectManager">
-        <field name="name">Project Manager</field>
-        <field name="category_id" ref="module_category_project_scrum"/>
-        <field name="implied_ids" eval="[(4, ref('project.group_project_manager'))]"/>
-    </record>
 <!-- todo : so that the leader can add a member to the team, he must be in the group group_system (Administration : Droit d'accès)   -->
 </data>
 </openerp>
