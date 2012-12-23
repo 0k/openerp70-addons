@@ -70,7 +70,7 @@
                     <sheet>
                         <group> 
                             <field name="name"/>
-                            <field name="sprint_goal"/>
+                            <field name="goal"/>
                             <field name="date_start"/>
                             <field name="date_stop"/>
                             <field name="release_id"/>
@@ -193,7 +193,6 @@
             <field name="arch" type="xml">
                 <kanban default_group_by="state" class="oe_cogiscrum oe_kanban_quickcreate_textarea" version="7.0">
                     <field name="color"/>
-                    <!--field name="stage_id"/-->
                     <field name="state"/>
                     <field name="role_id"/>
                     <field name="name"/>

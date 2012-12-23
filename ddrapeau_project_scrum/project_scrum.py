@@ -80,8 +80,11 @@ class projectScrumSprint(osv.osv):
         'date_stop': fields.date('Ending Date', required=True),
         'release_id': fields.many2one('project.scrum.release', 'Release', required=True),
         'project_id': fields.related('release_id', 'project_id', type='many2one', relation='project.project', string="Project", readonly=True),
+        
+        #FIX product_owner_id and scrum_master_id are defined in project.project (delete from here)
         'product_owner_id': fields.many2one('res.users', 'Product Owner', required=True,help="The person who is responsible for the product"),
         'scrum_master_id': fields.many2one('res.users', 'Scrum Master', required=True,help="The person who is maintains the processes for the product"),
+        
         'meeting_ids': fields.one2many('project.scrum.meeting', 'sprint_id', 'Daily Scrum'),
         'review': fields.text('Sprint Review'),
         'retrospective': fields.text('Sprint Retrospective'),
@@ -90,7 +93,7 @@ class projectScrumSprint(osv.osv):
         'effective_hours': fields.function(_compute, multi="effective_hours", method=True, string='Effective hours', help="Computed using the sum of the task work done."),
         'expected_hours': fields.function(_compute, multi="expected_hours", method=True, string='Planned Hours', help='Estimated time to do the task.'),
         'state': fields.selection(SPRINT_STATES, 'State', required=True),
-        'sprint_goal': fields.char("Goal", size=128),
+        'goal': fields.char("Goal", size=128),
     }
     
     
