@@ -7,13 +7,18 @@
             <field name="model">project.project</field>
             <field name="inherit_id" ref="project.edit_project"/>
             <field name="arch" type="xml">
+                <label for="use_tasks" position="after">
+                    <field name="is_scrum" class="oe_inline"/>
+                    <label for="is_scrum"/>
+                </label>
+                <field name="user_id" position="after">
+                    <field name="product_owner_id" attrs="{'invisible':[('is_scrum', '=', False)]}"/>
+                </field>
                 <group name="misc" position="after">
                     <group col="2" colspan="2">
                         <separator string="Scrum Data" colspan="4"/>
                         <field name="done"/>
                         <field name="sprint_size"/>
-                        <field name="is_scrum"/>
-                        <field name="product_owner_id"/>
                     </group>
                 </group>
                 <page string="Tasks Stages" position="after">
