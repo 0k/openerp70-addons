@@ -118,6 +118,10 @@ class projectScrumSprint(osv.osv):
 class projectScrumProductBacklog(osv.osv):
     _name = 'project.scrum.product.backlog'
     
+    #_inherits = {
+    #    'project.task': 'task_id',
+    #}
+    
     def name_search(self, cr, uid, name, args=None, operator='ilike', context=None, limit=100):
         if not args:
             args=[]
@@ -167,8 +171,13 @@ class projectScrumProductBacklog(osv.osv):
         return True
     
     def button_open(self, cr, uid, ids, context=None):
-        self.write(cr, uid, ids, {'state':'open'}, context=context)
-        return True
+        lines = self.read(cr, uid, ids, ['sprint_id'])
+        for line in lines:
+            if line['sprint_id'] == False:
+                raise osv.except_osv("Warning !", "You must affect this user story in a sprint before open it.")
+            else:
+                self.write(cr, uid, ids, {'state':'open'}, context=context)
+                return True
     
     def button_close(self, cr, uid, ids, context=None):
         obj_project_task = self.pool.get('project.task')
@@ -198,6 +207,9 @@ class projectScrumProductBacklog(osv.osv):
         'sprint_id': fields.many2one('project.scrum.sprint', 'Sprint'),
         
         'user_id': fields.many2one('res.users', 'Author'),
+        'task_id': fields.many2one('project.task', required=False,
+            string="Related Task", ondelete='restrict',
+            help='Task-related data of the user story'),
         'tasks_id': fields.one2many('project.task', 'product_backlog_id', 'Tasks Details'),
         
         'progress': fields.function(_compute, multi="progress", group_operator="avg", type='float', method=True, string='Progress', help="Computed as: Time Spent / Total Time."),
