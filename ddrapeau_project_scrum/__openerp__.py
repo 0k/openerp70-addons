@@ -2,8 +2,8 @@
 {
     'name' : "Project Scrum Management",
     'version' : "0.6",
-    'author' : "Cogitae",
-    'category' : "Cogitae Project Scrum",
+    'author' : "David DRAPEAU",
+    'category' : "Project Scrum Management",
     'summary': 'Projects, Scrum',
     'description' : """
 Scrum Module for OpenERP 7.0 (developped by Cogitae)
