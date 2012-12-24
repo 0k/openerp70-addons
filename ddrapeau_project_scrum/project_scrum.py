@@ -225,7 +225,7 @@ class projectScrumProductBacklog(osv.osv):
     _order = "sequence"
 
 
-class projectScrumTask(osv.osv):
+class projectTaskInherit(osv.osv):
     _inherit = 'project.task'
 
     def _get_task(self, cr, uid, ids, context=None):
@@ -243,9 +243,9 @@ class projectScrumTask(osv.osv):
                 'project.task': (lambda self, cr, uid, ids, c={}: ids, ['product_backlog_id'], 10),
                 'project.scrum.product.backlog': (_get_task, ['sprint_id'], 10)
             }),
-        'work_ids': fields.one2many('project.task.work', 'task_id', 'Work'),
-        'pb_role': fields.related('product_id', 'role_id', type='many2one', string="Role", relation="project.scrum.role", readonly=True),
-        'pb_description': fields.related('product_id', 'description', type='text', string="Description", relation="project.scrum.role", readonly=True),
+        #'work_ids': fields.one2many('project.task.work', 'task_id', 'Work'),
+        #'pb_role': fields.related('product_id', 'role_id', type='many2one', string="Role", relation="project.scrum.role", readonly=True),
+        #'pb_description': fields.related('product_id', 'description', type='text', string="Description", relation="project.scrum.role", readonly=True),
     }
     
     def _check_dates(self, cr, uid, ids, context=None):
@@ -265,13 +265,13 @@ class projectScrumTask(osv.osv):
         project_id = self.pool.get('project.scrum.product.backlog').browse(cr, uid, backlog_id).project_id.id
         return {'value': {'project_id': project_id}}
 
-class projectScrumTaskWorkInherit(osv.osv):
-    _inherit = 'project.task.work'
-    
-    _columns = {
-        'task_id': fields.many2one('project.task', "Task"),
-    }
-
+#class projectScrumTaskWorkInherit(osv.osv):
+#    _inherit = 'project.task.work'
+#    
+#    _columns = {
+#        'task_id': fields.many2one('project.task', "Task"),
+#    }
+#
 
 class projectScrumMeeting(osv.osv):
     _name = 'project.scrum.meeting'

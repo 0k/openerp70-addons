@@ -1,36 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <openerp>
     <data>
-        <!-- project task work -->
-        <record id="view_task_work_form" model="ir.ui.view">
-            <field name="name">project.task.work.form</field>
-            <field name="model">project.task.work</field>
-            <field name="arch" type="xml">
-                <form string="Task Work" version="7.0">
-                    <group col="4">
-                        <field colspan="4" name="name"/>
-                        <field name="hours" widget="float_time"/>
-                        <field name="date"/>
-                        <field name="user_id" options='{"no_open": True}'/>
-                        <field name="company_id" groups="base.group_multi_company" widget="selection"/>
-                    </group>
-                </form>
-            </field>
-        </record>
-
-        <record id="view_task_work_tree" model="ir.ui.view">
-            <field name="name">project.task.work.tree</field>
-            <field name="model">project.task.work</field>
-            <field name="arch" type="xml">
-                <tree editable="top" string="Task Work">
-                    <field name="date"/>
-                    <field name="name"/>
-                    <field name="hours" widget="float_time"/>
-                    <field name="user_id"/>
-                </tree>
-            </field>
-        </record>
-        
         <!-- sprint -->
         <record model="ir.ui.view" id="view_project_scrum_sprint_tree">
             <field name="model">project.scrum.sprint</field>
@@ -292,6 +262,7 @@
                                     <field name="task_hours" class="oe_inline"/>
                                 </group>
                             </page>
+                            <!--
                             <page string="Tasks">
                                 <field colspan="4" name="tasks_id" nolabel="1" widget="one2many_list" context="{'default_project_id':project_id, 'default_sprint_id':sprint_id, 'default_product_backlog_id':active_id}">
                                     <tree string="Tasks">
@@ -299,6 +270,7 @@
                                     </tree>
                                 </field>
                             </page>
+                            -->
                             <page string="Description">
                                 <field name="description"/>
                             </page>
@@ -334,11 +306,6 @@
                     <field domain="[('project_id','=',project_id),]" name="product_backlog_id" on_change="onchange_backlog_id(product_backlog_id)" select="1"/>
                     <field name="sprint_id" domain="[('state', 'in', ['draft', 'open'])]" readonly="1"/>
                 </xpath>
-                <page string="Extra Info" position="after">
-                    <page string="Work">
-                        <field name="work_ids"/>
-                    </page>
-                </page>
             </field>
         </record>
         
