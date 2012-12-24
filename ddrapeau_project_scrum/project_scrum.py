@@ -118,10 +118,6 @@ class projectScrumSprint(osv.osv):
 class projectScrumProductBacklog(osv.osv):
     _name = 'project.scrum.product.backlog'
     
-    #_inherits = {
-    #    'project.task': 'task_id',
-    #}
-    
     def name_search(self, cr, uid, name, args=None, operator='ilike', context=None, limit=100):
         if not args:
             args=[]
@@ -174,7 +170,7 @@ class projectScrumProductBacklog(osv.osv):
         lines = self.read(cr, uid, ids, ['sprint_id'])
         for line in lines:
             if line['sprint_id'] == False:
-                raise osv.except_osv("Warning !", "You must affect this user story in a sprint before open it.")
+                raise osv.except_osv(_("Warning !"), _("You must affect this user story in a sprint before open it."))
             else:
                 self.write(cr, uid, ids, {'state':'open'}, context=context)
                 return True
