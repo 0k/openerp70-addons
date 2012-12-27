@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 {
-    'name' : "Project Scrum Management",
-    'version' : "0.6",
-    'author' : "David DRAPEAU",
-    'category' : "Project Scrum Management",
+    'name': "Project Scrum Management",
+    'version': "1.0",
+    'author': "David DRAPEAU",
+    'category': "Project Scrum Management",
     'summary': 'Projects, Scrum',
-    'description' : """
-Scrum Module for OpenERP 7.0 (developped by Cogitae)
+    'description': """
+Scrum Module for OpenERP 7.0 (developped by David DRAPEAU)
 
-This application respects the scrum org protocol (scrum.org) and has been developed and is maintened by ITIL Certified Members.
-
+This application respects the scrum org protocol (scrum.org) and has been developed and is maintened by ITIL Certified Member (in course of certification).
     * Linked to project native module
 
 Manage
@@ -20,29 +19,29 @@ Manage
         * sprint review
         * sprint retrospective
     * Product Backlog
-    * Product Owner and Scrum Master on each sprint
+        * new kanban view
+        * date_open and date_done
+        * story complexity points
     * display Burndown Chart
 
-TODO
-    * Dev Team management
-    * Others artefacts
-    * Rights "Cogitae Scrum / Product Owner", "Cogitae Scrum / Scrum Master" and "Cogitae Scrum / Developer"
-    * Complexity points
 
 Thanks to report questions to david.drapeau@cogitae.net
     """,
     
-    'website': 'http://www.cogitae.net/openerp/cogitae-addons/ddrapeau_project_scrum/',
-    'images' : [],
-    'depends' : ["base", "project"],
+    'website': 'https://github.com/ddrapeau/openerp70-addons',
+    'images': [],
+    'depends': ["base", "project"],
     'data': [
         "view/project_view.xml",
         
         "security/ddrapeau_project_scrum_security.xml",
         "security/ir.model.access.csv",
+        
         "project_scrum_report.xml",
+        
         "wizard/project_scrum_backlog_create_task_view.xml",
         "wizard/project_scrum_email_view.xml",
+        
         "view/project_scrum_menu.xml",
         "view/project_scrum_release_view.xml",
         "view/project_scrum_role_view.xml",
