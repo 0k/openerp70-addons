@@ -172,12 +172,12 @@ class projectScrumProductBacklog(osv.osv):
             if line['sprint_id'] == False:
                 raise osv.except_osv(_("Warning !"), _("You must affect this user story in a sprint before open it."))
             else:
-                self.write(cr, uid, ids, {'state':'open'}, context=context)
+                self.write(cr, uid, ids, {'state':'open', 'date_open':time.strftime('%Y-%m-%d')}, context=context)
                 return True
     
     def button_close(self, cr, uid, ids, context=None):
         obj_project_task = self.pool.get('project.task')
-        self.write(cr, uid, ids, {'state':'done'}, context=context)
+        self.write(cr, uid, ids, {'state':'done', 'date_done':time.strftime('%Y-%m-%d')}, context=context)
         for backlog in self.browse(cr, uid, ids, context=context):
             obj_project_task.write(cr, uid, [i.id for i in backlog.tasks_id], {'state': 'done'})
         return True
@@ -196,7 +196,10 @@ class projectScrumProductBacklog(osv.osv):
         'expected_hours': fields.float('Planned Hours', help='Estimated total time to do the Backlog'),
         'complexity': fields.integer('Complexity', help='Complexity of the User Story'),
         'active' : fields.boolean('Active', help="If Active field is set to true, it will allow you to hide the product backlog without removing it."),
+        
         'state': fields.selection(BACKLOG_STATES, 'State', required=True),
+        'date_open': fields.date("Date open"),
+        'date_done': fields.date("Date done"),
         
         'project_id': fields.many2one('project.project', "Project", required=True, domain=[('is_scrum', '=', True)]),
         'release_id': fields.many2one('project.scrum.release', "Release", required=True),

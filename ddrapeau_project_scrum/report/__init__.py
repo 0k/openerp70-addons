@@ -20,6 +20,7 @@
 ##############################################################################
 
 import sprint_burndown
+import sprint_burndown_story_point
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 
