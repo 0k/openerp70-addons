@@ -74,6 +74,20 @@ class projectScrumSprint(osv.osv):
         self.write(cr, uid, ids, {'state':'pending'}, context=context)
         return True
 
+
+    def _get_velocity(self, cr, uid, ids, field_names, args, context=None):
+        if not context:
+            context = {}
+        res = {}
+        story_pool = self.pool.get('project.scrum.product.backlog')
+        for sprint in self.browse(cr, uid, ids, context=context):
+            story_ids = story_pool.search(cr, uid, [('sprint_id', '=', sprint.id)])
+            velocity = 0
+            for story_id in story_ids:
+                velocity += story_pool.read(cr, uid, story_id, ['complexity'])['complexity']
+            res[sprint.id] = velocity
+        return res
+    
     _columns = {
         'name': fields.char('Sprint Name', required=True, size=64),
         'date_start': fields.date('Starting Date', required=True),
@@ -87,7 +101,11 @@ class projectScrumSprint(osv.osv):
         
         'meeting_ids': fields.one2many('project.scrum.meeting', 'sprint_id', 'Daily Scrum'),
         'review': fields.text('Sprint Review'),
-        'retrospective': fields.text('Sprint Retrospective'),
+        
+        'retrospective_start_to_do': fields.text('Start to do'),
+        'retrospective_continue_to_do': fields.text('Continue to do'),
+        'retrospective_stop_to_do': fields.text('Stop to do'),
+        
         'backlog_ids': fields.one2many('project.scrum.product.backlog', 'sprint_id', 'Sprint Backlog'),
         'progress': fields.function(_compute, group_operator="avg", type='float', multi="progress", method=True, string='Progress (0-100)', help="Computed as: Time Spent / Total Time."),
         'effective_hours': fields.function(_compute, multi="effective_hours", method=True, string='Effective hours', help="Computed using the sum of the task work done."),

@@ -60,7 +60,15 @@
                                 <field name="review"/>
                             </page>
                             <page string="Retrospective">
-                                <field name="retrospective"/>
+                                <group string="Start to do">
+                                    <field name="retrospective_start_to_do" nolabel="1"/>
+                                </group>
+                                <group string="Continue to do">
+                                    <field name="retrospective_continue_to_do" nolabel="1"/>
+                                </group>
+                                <group string="Stop to do">
+                                    <field name="retrospective_stop_to_do" nolabel="1"/>
+                                </group>
                             </page>
                         </notebook>
                     </sheet>
