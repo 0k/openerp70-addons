@@ -99,10 +99,7 @@ class projectScrumSprint(osv.osv):
         'expected_hours': fields.function(_compute, multi="expected_hours", method=True, string='Planned Hours', help='Estimated time to do the task.'),
         'state': fields.selection(SPRINT_STATES, 'State', required=True),
         'goal': fields.char("Goal", size=128),
-        
-        'planned_velocity': fields.integer("Planned velocity", help="Estimated velocity for sprint, usually set by the development team during sprint planning."),
-        'effective_velocity': fields.function(_get_velocity, string="Effective velocity", type='integer', help="Computed using the sum of the task work done."),
-    }
+        }
     
     
     _defaults = {
