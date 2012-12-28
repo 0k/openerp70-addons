@@ -57,7 +57,7 @@ class report_tasks(report_int):
             
             ar = area.T(x_grid_style=line_style.gray50_dash1,
                         x_axis=axis.X(label="Date", format=int_to_date),
-                        y_axis=axis.Y(label="Burndown Chart - Stories Points", format=1),
+                        y_axis=axis.Y(label="Burndown Chart - Stories Points"),
                         x_grid_interval=_interval_get,
                         x_range = (datas[0][0],datas[-1][0]),
                         y_range = (0, total_points),
