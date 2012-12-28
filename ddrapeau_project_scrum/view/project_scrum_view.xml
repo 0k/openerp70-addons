@@ -12,6 +12,8 @@
                     <field name="scrum_master_id"/>
                     <field name="product_owner_id" invisible="1"/>
                     <field name="date_start"/>
+                    <field name="planned_velocity"/>
+                    <field name="effective_velocity"/>
                     <field name="progress" widget="progressbar"/>
                     <field name="effective_hours" sum="Effective hours" widget="float_time"/>
                     <field name="expected_hours" sum="Planned hours" widget="float_time"/>
@@ -56,6 +58,12 @@
                         </group> 
 
                         <notebook>
+                            <page string="General">
+                                <group string="Velocity">
+                                    <field name="planned_velocity"/>
+                                    <field name="effective_velocity"/>
+                                </group>
+                            </page>
                             <page string="Sprint Review">
                                 <field name="review"/>
                             </page>
