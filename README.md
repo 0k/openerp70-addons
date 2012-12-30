@@ -13,8 +13,3 @@ ddrapeau_project_scrum : inherits from project module
  * manage story points (complexity)
  * Sprint Burndownchart based on stories points
 
-----
-ddrapeau_magento_oe70 : coming soon
- * connect Magento with OpenERP 7.0
-----
-
