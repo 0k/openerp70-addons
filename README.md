@@ -16,6 +16,5 @@ ddrapeau_project_scrum : inherits from project module
 ----
 ddrapeau_magento_oe70 : coming soon
  * connect Magento with OpenERP 7.0
- * 
 ----
 
