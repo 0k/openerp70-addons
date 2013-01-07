@@ -316,6 +316,19 @@
                   parent="menu_scrum"
                   name="Product Backlog" />
         
+        <!-- view user stories of sprint -->
+        <record model="ir.ui.view" id="view_user_stories_in_sprint_view_form">
+            <field name="model">project.scrum.sprint</field>
+            <field name="inherit_id" ref="view_project_scrum_sprint_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/notebook/page[@string='General']" position="after">
+                    <page string="User stories">
+                        <field name="product_backlog_ids"/>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+        
         <!-- tasks : inherited from project -->
         <record id="view_task_form2" model="ir.ui.view">
             <field name="name">project.task.scrum.form</field>

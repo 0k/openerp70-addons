@@ -289,13 +289,13 @@ class projectTaskInherit(osv.osv):
         project_id = self.pool.get('project.scrum.product.backlog').browse(cr, uid, backlog_id).project_id.id
         return {'value': {'project_id': project_id}}
 
-#class projectScrumTaskWorkInherit(osv.osv):
-#    _inherit = 'project.task.work'
-#    
-#    _columns = {
-#        'task_id': fields.many2one('project.task', "Task"),
-#    }
-#
+class projectScrumSprintInherit(osv.osv):
+    _inherit = 'project.scrum.sprint'
+    
+    _columns = {
+        'product_backlog_ids': fields.one2many('project.scrum.product.backlog', 'sprint_id', "User Stories"),
+    }
+
 
 class projectScrumMeeting(osv.osv):
     _name = 'project.scrum.meeting'
