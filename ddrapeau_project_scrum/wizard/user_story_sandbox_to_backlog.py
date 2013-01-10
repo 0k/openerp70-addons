@@ -32,7 +32,6 @@ class sandbox_transfer_to_backlog(osv.osv_memory):
     }
 
     def do_transfer(self, cr, uid, ids, context=None):
-        import pdb; pdb.set_trace()
         if not context:
             context = {}
         
@@ -46,7 +45,8 @@ class sandbox_transfer_to_backlog(osv.osv_memory):
                 'for_then': 'test for to fix in product backlog on for_then',
                 'project_id': sandbox.project_id.id,
             })
-            
+            if backlog_id:
+                sandbox_spg.unlink(cr, uid, sandbox.id)
         #mod_obj = self.pool.get('ir.model.data')
         #task = self.pool.get('project.task')
         #backlog_id = self.pool.get('project.scrum.product.backlog')
