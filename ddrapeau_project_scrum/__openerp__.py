@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Project Scrum Management",
-    'version': "1.0",
+    'version': "1.1",
     'author': "David DRAPEAU",
     'category': "Project Scrum Management",
     'summary': 'Projects, Scrum',
     'description': """
 Scrum Module for OpenERP 7.0 (developped by David DRAPEAU)
 
-This application respects the scrum org protocol (scrum.org) and has been developed and is maintened by ITIL Certified Member (in course of certification).
-    * Linked to project native module
+This application respects the scrum.org protocol and has been developed and is maintened by ITIL Certified Member (in course of certification).
+    * Linked to OpenERP native module 'project'
 
 Manage
     * Releases
@@ -23,9 +23,13 @@ Manage
         * date_open and date_done
         * story complexity points
     * display Burndown Chart
+        * based on story points (complexity)
+    * Sandbox
+        * a developer of development team can add a user story to sandbox 
+        * the product owner can valid it (transfer into product backlog) or delete it
 
 
-Thanks to report questions to david.drapeau@cogitae.net
+Thanks to report questions to david.drapeau@gmail.com
     """,
     
     'website': 'https://github.com/ddrapeau/openerp70-addons',
