@@ -43,7 +43,7 @@ class sandbox_transfer_to_backlog(osv.osv_memory):
             backlog_id = backlog_spg.create(cr, uid, {
                 'role_id': sandbox.role_id.id,
                 'name': sandbox.name,
-                'for': 'test for to fix in product backlog on for_then',
+                'for_then': 'test for to fix in product backlog on for_then',
                 'project_id': sandbox.project_id.id,
             })
             
