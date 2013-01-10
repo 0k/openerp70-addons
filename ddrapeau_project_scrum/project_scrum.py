@@ -223,7 +223,7 @@ class projectScrumProductBacklog(osv.osv):
         'date_done': fields.date("Date done"),
         
         'project_id': fields.many2one('project.project', "Project", required=True, domain=[('is_scrum', '=', True)]),
-        'release_id': fields.many2one('project.scrum.release', "Release", required=True),
+        'release_id': fields.many2one('project.scrum.release', "Release"),
         'sprint_id': fields.many2one('project.scrum.sprint', 'Sprint'),
         
         'user_id': fields.many2one('res.users', 'Author'),
