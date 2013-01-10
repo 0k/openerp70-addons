@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+    <data>
+        <!-- Sandbox -->
+        <record model="ir.ui.view" id="view_project_scrum_sandbox_tree">
+            <field name="model">project.scrum.sandbox</field>
+            <field name="name">view.project.scrum.sandbox.tree</field>
+            <field name="arch" type="xml">
+                <tree string="Sandbox" editable="top">
+                    <field name="role_id"/>
+                    <field name="name"/>
+                    <field name="for"/>
+                    <field name="project_id"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_project_scrum_sandbox_form">
+            <field name="model">project.scrum.sandbox</field>
+            <field name="name">view.project.scrum.sandbox.form</field>
+            <field name="arch" type="xml">
+                <form string="Sandbox">
+                    <field name="role_id"/>
+                    <field name="name"/>
+                    <field name="for"/>
+                    <field name="project_id"/>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_project_scrum_sandbox">
+            <field name="name">Sandbox</field>
+            <field name="res_model">project.scrum.sandbox</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem action="action_project_scrum_sandbox"
+                  id="menu_action_project_scrum_sandbox"
+                  parent="menu_scrum"
+                  name="Sandbox" />
+    </data>
+</openerp>
