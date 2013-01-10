@@ -5,7 +5,7 @@ import csv
 username = 'admin'
 pwd = 'admin'
 pwd_a = 'a'
-dbname = 'test_scrum_70_06'
+dbname = 'test_scrum_70_09'
 
 class fontColors(object):
     OKGREEN = '\033[92m' # green
@@ -220,8 +220,11 @@ delete_lines('project.scrum.meeting', [])
 print "delete tasks..."
 delete_lines('project.task', [])
 
-print "delete user stories..."
+print "delete product backlog..."
 delete_lines('project.scrum.product.backlog', [])
+
+print "delete sandbox..."
+delete_lines('project.scrum.sandbox', [])
 
 print "delete roles..."
 delete_lines('project.scrum.role', [])
@@ -418,21 +421,6 @@ vals = {
 }
 sprint01_id = test_create_sprint(vals)
 
-#print fontColors.USERSTORY + """
-#[Scrum Master] create a sprint
-#for affect in several user stories
-#""" + fontColors.ENDC
-#sprint_vals = {
-#    'name': "sprint 001",
-#    'release_id': release001_id,
-#    'date_start':'2012-11-06', #TODO set date of today
-#    'date_stop':'2012-11-16', #TODO set date plus 10 days
-#    'product_owner_id': po01_id,
-#    'scrum_master_id': sm01_id,
-#    'sprint_goal':"Premiere approche" #FIX change sprint_goal by goal
-#}
-#sprint01_id = test_create_sprint(sprint_vals, sm01_uid)
-
 print fontColors.USERSTORY + """
 [Product Owner]	create a role
 use it in user stories writing
@@ -456,7 +444,7 @@ permit to development team to realize it
 user_story_vals = {
     'role_id': role01_id,
     'name': "create a new sale order",
-    'for': "mailing to customer",
+    'for_then': "mailing to customer",
     'project_id': project01_id,
     'release_id': release01_id,
 }
