@@ -11,6 +11,10 @@
                     <field name="name"/>
                     <field name="for"/>
                     <field name="project_id"/>
+                    <button type="action"
+                            name="%(action_scrum_sandbox_to_backlog)d"
+                            string="Transfer to product backlog"
+                            icon="terp-stock_effects-object-colorize"/>
                 </tree>
             </field>
         </record>
