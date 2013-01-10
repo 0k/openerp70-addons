@@ -29,6 +29,7 @@ class sandbox_transfer_to_backlog(osv.osv_memory):
         'for_then' : fields.char('For', size=128),
         'project_id': fields.many2one('project.project', "Project", domain=[('is_scrum', '=', True)]),
         'developer_id': fields.many2one('res.users', 'Developer'),
+        'release_id': fields.many2one('project.scrum.release', "Release"),
     }
 
     def do_transfer(self, cr, uid, ids, context=None):
@@ -38,12 +39,15 @@ class sandbox_transfer_to_backlog(osv.osv_memory):
         sandbox_spg = self.pool.get('project.scrum.sandbox')
         backlog_spg = self.pool.get('project.scrum.product.backlog')
         sandboxes = sandbox_spg.browse(cr, uid, context['active_ids'], context=context)
+        data = self.read(cr, uid, ids, [], context=context)[0]
+        print "data = ", data
         for sandbox in sandboxes:
             backlog_id = backlog_spg.create(cr, uid, {
                 'role_id': sandbox.role_id.id,
                 'name': sandbox.name,
                 'for_then': 'test for to fix in product backlog on for_then',
                 'project_id': sandbox.project_id.id,
+                'release_id':data.get('release_id') and data['release_id'][0] or False, 
             })
             if backlog_id:
                 sandbox_spg.unlink(cr, uid, sandbox.id)

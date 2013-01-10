@@ -8,10 +8,7 @@
             <field name="arch" type="xml">
                 <form string="Transfer to backlog">
                     <group>
-                        <field name="role_id"/>
-                        <field name="name"/>
-                        <field name="for_then"/>
-                        <field name="project_id"/>
+						<field name="release_id"/>
                     </group>
                     <group col="2" colspan="2">
                         <button special="cancel"  string="_Cancel" icon='gtk-cancel'/>
