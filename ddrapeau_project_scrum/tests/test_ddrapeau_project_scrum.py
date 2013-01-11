@@ -288,8 +288,8 @@ group_hr_id = sock.execute(dbname, uid, pwd, 'res.groups', 'search', [('name', '
 
 # create user
 scrum_master_vals = {
-    'name': "Scrum Master 01",
-    'login': "sm01",
+    'name': "David SCRUMMASTERONE",
+    'login': "ddrapeau",
     'password': pwd_a,
     'lang': "fr_FR",
     'tz': 'Europe/Paris',
@@ -305,7 +305,7 @@ for permit Scrum Master affect him to a project
 """ + fontColors.ENDC
 group_po_id = sock.execute(dbname, uid, pwd, 'res.groups', 'search', [('name', '=', 'Product Owner')])
 product_owner_vals = {
-    'name': "Product Owner 01",
+    'name': "Steven OWNERONE",
     'login': "po01",
     'password': pwd_a,
     'lang': "fr_FR",
@@ -316,7 +316,7 @@ po01_id = test_admin_create_user(product_owner_vals)
 po01_uid = sock_common.login(dbname, 'po01', pwd_a)
 
 product_owner_vals = {
-    'name': "Product Owner 02",
+    'name': "Doobie OWNERTWO",
     'login': "po02",
     'password': pwd_a,
     'lang': "fr_FR",
@@ -333,7 +333,7 @@ for permit Scrum Master affect him to a development team of a project
 """ + fontColors.ENDC
 group_dev_id = sock.execute(dbname, uid, pwd, 'res.groups', 'search', [('name', '=', 'Developer')])
 developer_vals = {
-    'name': "Developer 01",
+    'name': "Maurice DEVONE",
     'login': "dev01",
     'password': pwd_a,
     'lang': "fr_FR",
@@ -344,7 +344,7 @@ dev01_id = test_admin_create_user(developer_vals)
 dev01_uid = sock_common.login(dbname, 'dev01', pwd_a)
 
 developer_vals = {
-    'name': "Developer 02",
+    'name': "Michel DEVTWO",
     'login': "dev02",
     'password': pwd_a,
     'lang': "fr_FR",
@@ -354,33 +354,15 @@ developer_vals = {
 dev02_id = test_admin_create_user(developer_vals)
 dev02_uid = sock_common.login(dbname, 'dev02', pwd_a)
 
-#print fontColors.USERSTORY + """
-#[Scrum Master] create a partner
-#for invoice him and affect him later some projects
-#""" + fontColors.ENDC
-#partner_vals = {
-#    'name': "Client 001",
-#    'is_company':True,
-#    'lang': 'fr_FR',
-#    'tz': 'Europe/Paris',
-#    'type': 'default',
-#    'employee': False,
-#    'supplier': False,
-#    'customer': True,
-#    'active': True,
-#    'country_id': get_country_id('France'),
-#}
-#partner_id = test_create_partner(partner_vals, sm01_uid)
-
 print fontColors.USERSTORY + """
 [Scrum Master] create a Scrum project
 for affect it a Product Owner
 """ + fontColors.ENDC
 project_vals = {
-    'name': "Project 01 of sm01",
+    'name': "Scrum Module for OE7.0",
     'is_scrum': True,
     'product_owner_id': po01_id,
-    'goal' : "ceci est la vision du projet 1",
+    'goal' : "Manage project with Scrum in OpenERP 7.0",
 }
 project01_id = test_create_project(project_vals, sm01_uid)
 
@@ -401,7 +383,7 @@ print fontColors.USERSTORY + """
 for planification of sprints and delivery date of new version
 """ + fontColors.ENDC
 release_vals = {
-    'name':"release 01",
+    'name':"Release 001",
     'project_id':project01_id,
 }
 release01_id = test_create_release(release_vals, sm01_uid)
@@ -411,13 +393,13 @@ print fontColors.USERSTORY + """
 permit to development team to fill it with user stories
 """ + fontColors.ENDC
 vals = {
-    'name': "sprint 001",
+    'name': "required features",
     'date_start': '2012-12-24',
     'date_stop': '2012-12-31',
     'release_id': release01_id,
     'product_owner_id': po01_id,
     'scrum_master_id': sm01_id,
-    'goal':"Premiere approche"
+    'goal':"Required features to manage projects with Scrum"
 }
 sprint01_id = test_create_sprint(vals)
 
@@ -425,14 +407,15 @@ print fontColors.USERSTORY + """
 [Product Owner]	create a role
 use it in user stories writing
 """ + fontColors.ENDC
-role01_id = test_create_role({'name':"role 01", 'code': "SR01"}, po01_uid)
+role01_id = test_create_role({'name':"Scrum Master", 'code': "SM"}, po01_uid)
+role02_id = test_create_role({'name':"Product Owner", 'code': "PO"}, po01_uid)
+role03_id = test_create_role({'name':"Developer", 'code': "DEV"}, po01_uid)
 
 print "add persona name and description to roles..."
 persona_vals = {
-    'persona_name': "Name of persona",
+    'persona_name': "David",
     'persona_description': """
-This the description of the persona.
-It describes the role and what user wants and list his job.
+Manage Scrum.
     """,
 }
 test_persona_adding_to_role(role01_id, persona_vals)
