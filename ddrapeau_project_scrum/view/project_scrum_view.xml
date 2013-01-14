@@ -230,13 +230,6 @@
                     <field name="for_then"/>
                     <field name="state"/>
                     <field name="complexity"/>
-                    <!--
-                    <button type="action"
-                            name="%(action_scrum_backlog_to_task)d"
-                            states="pending" 
-                            string="Convert to Task"
-                            icon="terp-stock_effects-object-colorize"/>
-                    -->
                 </tree>
             </field>
         </record>
@@ -293,15 +286,6 @@
                                 <field name="description"/>
                             </page>
                         </notebook>
-                        <!--
-                        <button type="action"
-                                name="%(action_scrum_backlog_to_task)d"
-                                states="pending"
-                                string="Convert to Task"
-                                domain="[('user_id', '=', uid)]"
-                                context="{'user_id': [7, 8]}"
-                                icon="terp-stock_effects-object-colorize"/>
-                        -->
                     </sheet>
                 </form>
             </field>
