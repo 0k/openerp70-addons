@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!--INFO report tag display under button "Print" (clic on button "Print" for see it)-->
+        <report auto="False"
+                id="report_scrum_sprint_burndown_chart"
+                model="project.scrum.sprint"
+                name="scrum.sprint.burndown"
+                string="Burndown Chart (Time)"/>
+        
+        <report auto="False"
+                id="report_scrum_sprint_burndown_chart_storyPoint"
+                model="project.scrum.sprint"
+                name="scrum.sprint.burndown.storyPoint"
+                string="Burndown Chart (Stories Points)"/>
+    </data>
+</openerp>

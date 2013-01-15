@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+    <data>
+        <!-- inherited view of edit_project (project.project form view) -->
+        <record id="view_project_project_form" model="ir.ui.view">
+            <field name="name">project.project.form</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="arch" type="xml">
+                <label for="use_tasks" position="after">
+                    <field name="is_scrum" class="oe_inline"/>
+                    <label for="is_scrum"/>
+                </label>
+                <field name="user_id" position="after">
+                    <field name="product_owner_id" attrs="{'invisible':[('is_scrum', '=', False)]}"/>
+                </field>
+                <page string="Tasks Stages" position="after">
+                    <page string="Goal">
+                        <field name="goal"/>
+                    </page>
+                </page>
+            </field>
+        </record>
+    </data>
+</openerp>
