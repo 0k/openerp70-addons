@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<openerp>
-    <data>
-        <menuitem id="menu_scrum"
-            name="Scrum"
-            parent="base.menu_main_pm" sequence="3"/>
-    </data>
-</openerp>
