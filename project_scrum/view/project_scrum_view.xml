@@ -253,11 +253,14 @@
                                 <field name="role_id" class="oe_inline"/>
                                 <field name="name" class="oe_inline"/>
                                 <field name="for_then" class="oe_inline"/>
-                            </group>    
+                            </group>
                             <group>
                                 <field name="active" class="oe_inline"/>
                                 <field name="progress" class="oe_inline"/>
                                 <field name="complexity" class="oe_inline"/>
+                            </group>
+                            <group colspan="2">
+                                <field name="acceptance_testing"/>
                             </group>
                             <group>
                                 <field name="project_id" class="oe_inline"/>
