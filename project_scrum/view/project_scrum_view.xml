@@ -258,7 +258,7 @@
                                 <field name="active" class="oe_inline"/>
                                 <field name="progress" class="oe_inline"/>
                                 <field name="complexity" class="oe_inline"/>
-                                <field name="value_to_user" class="oe_inline"/>
+                                <field name="value_to_user" class="oe_inline"/> 
                             </group>
                             <group colspan="2">
                                 <field name="acceptance_testing"/>
