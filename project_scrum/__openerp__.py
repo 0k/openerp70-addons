@@ -38,7 +38,7 @@ Thanks to report questions to david.drapeau@gmail.com
     'data': [
         "view/project_view.xml",
         
-        "security/ddrapeau_project_scrum_security.xml",
+        "security/project_scrum_security.xml",
         "security/ir.model.access.csv",
         
         "project_scrum_report.xml",
