@@ -218,6 +218,7 @@ class projectScrumProductBacklog(osv.osv):
         'expected_hours': fields.float('Planned Hours', help='Estimated total time to do the Backlog'),
         'complexity': fields.integer('Complexity', help='Complexity of the User Story'),
         'active' : fields.boolean('Active', help="If Active field is set to true, it will allow you to hide the product backlog without removing it."),
+        'value_to_user': fields.integer("Value to user"),
         
         'state': fields.selection(BACKLOG_STATES, 'State', required=True),
         'date_open': fields.date("Date open"),
@@ -245,6 +246,7 @@ class projectScrumProductBacklog(osv.osv):
         'user_id': lambda self, cr, uid, context: uid,
         'active':  1,
         'sequence': 1000, #TODO create function to compute sequence by uniq value for all product backlog
+        'value_to_user': 50,
     }
     
     _order = "sequence"
