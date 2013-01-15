@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Project Scrum Management",
-    'version': "1.1",
+    'version': "1.2",
     'author': "David DRAPEAU",
     'category': "Project Scrum Management",
     'summary': 'Projects, Scrum',
