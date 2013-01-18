@@ -78,13 +78,6 @@ class projectScrumSprint(osv.osv):
                 self.log(cr, uid, id, message)
         return True
     
-    #def button_open(self, cr, uid, ids, context=None):
-    #    self.write(cr, uid, ids, {'state':'open'}, context=context)
-    #    for (id, name) in self.name_get(cr, uid, ids):
-    #        message = _("The sprint '%s' has been opened.") % (name,)
-    #        self.log(cr, uid, id, message)
-    #    return True
-
     def button_close(self, cr, uid, ids, context=None):
         self.write(cr, uid, ids, {'state':'done'}, context=context)
         for (id, name) in self.name_get(cr, uid, ids):
@@ -160,6 +153,8 @@ class projectScrumSprint(osv.osv):
 
 class projectScrumProductBacklog(osv.osv):
     _name = 'project.scrum.product.backlog'
+    _description = "Product backlog where are user stories"
+    _inherit = ['mail.thread']
     
     def name_search(self, cr, uid, name, args=None, operator='ilike', context=None, limit=100):
         if not args:
