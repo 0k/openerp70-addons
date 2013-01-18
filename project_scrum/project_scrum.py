@@ -55,13 +55,35 @@ class projectScrumSprint(osv.osv):
     def button_draft(self, cr, uid, ids, context=None):
         self.write(cr, uid, ids, {'state':'draft'}, context=context)
         return True
-
+    
+    
+    def _verify_if_user_stories_in(self, cr, uid, ids, context=None):
+        story_ids = self.pool.get('project.scrum.product.backlog').search(cr, uid, [('sprint_id', 'in', ids)])
+        print "story_ids = ", story_ids
+        if story_ids == []: return False
+        else: return True
+    
     def button_open(self, cr, uid, ids, context=None):
-        self.write(cr, uid, ids, {'state':'open'}, context=context)
+        if not context:
+            context = {}
+        
         for (id, name) in self.name_get(cr, uid, ids):
-            message = _("The sprint '%s' has been opened.") % (name,)
-            self.log(cr, uid, id, message)
+            res = self._verify_if_user_stories_in(cr, uid, [id])
+            if not res:
+                raise osv.except_osv(_('Warning !'), _("You can not open sprint with no stories affected in"))
+            else:
+                self.write(cr, uid, id, {'state':'open'}, context=context)
+                message = _("The sprint '%s' has been opened.") % (name,)
+                #FIX log() is deprecated, user OpenChatter instead
+                self.log(cr, uid, id, message)
         return True
+    
+    #def button_open(self, cr, uid, ids, context=None):
+    #    self.write(cr, uid, ids, {'state':'open'}, context=context)
+    #    for (id, name) in self.name_get(cr, uid, ids):
+    #        message = _("The sprint '%s' has been opened.") % (name,)
+    #        self.log(cr, uid, id, message)
+    #    return True
 
     def button_close(self, cr, uid, ids, context=None):
         self.write(cr, uid, ids, {'state':'done'}, context=context)
