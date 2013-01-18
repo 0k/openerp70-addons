@@ -6,7 +6,7 @@
     'category': "Project Scrum Management",
     'summary': 'Projects, Scrum',
     'description': """
-Scrum Module for OpenERP 7.0 (developped by David DRAPEAU)
+Scrum Module for OpenERP 7.0 (developped by David DRAPEAU <david.drapeau@gmail.com>)
 
 This application respects the scrum.org protocol and has been developed and is maintened by ITIL Certified Member (in course of certification).
     * Linked to OpenERP native module 'project'
@@ -34,7 +34,11 @@ Thanks to report questions to david.drapeau@gmail.com
     
     'website': 'https://github.com/ddrapeau/openerp70-addons',
     'images': [],
-    'depends': ["base", "project"],
+    'depends': [
+        'base',
+        'mail',
+        'project',
+    ],
     'data': [
         "view/project_view.xml",
         
@@ -54,7 +58,7 @@ Thanks to report questions to david.drapeau@gmail.com
         "view/project_scrum_view.xml",
     ],
     'css': [
-        'static/src/css/ddrapeau_project_scrum.css',
+        'static/src/css/project_scrum.css',
     ],
     'demo': [],
     'test': [],
