@@ -5,19 +5,19 @@
         <field name="name">Project Scrum</field>
     </record>
 
-    <record model="res.groups" id="group_ddrapeauProjectScrum_scrumMaster">
+    <record model="res.groups" id="group_ProjectScrum_scrumMaster">
         <field name="name">Scrum Master</field>
         <field name="category_id" ref="module_category_project_scrum"/>
         <field name="implied_ids" eval="[(4, ref('project.group_project_user'))]"/>
     </record>
     
-    <record model="res.groups" id="group_ddrapeauProjectScrum_developer">
+    <record model="res.groups" id="group_ProjectScrum_developer">
         <field name="name">Developer</field>
         <field name="category_id" ref="module_category_project_scrum"/>
         <field name="implied_ids" eval="[(4, ref('project.group_project_user'))]"/>
     </record>
     
-    <record model="res.groups" id="group_ddrapeauProjectScrum_productOwner">
+    <record model="res.groups" id="group_ProjectScrum_productOwner">
         <field name="name">Product Owner</field>
         <field name="category_id" ref="module_category_project_scrum"/>
         <field name="implied_ids" eval="[(4, ref('project.group_project_user'))]"/>
