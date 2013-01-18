@@ -228,12 +228,14 @@ class projectScrumProductBacklog(osv.osv):
         'role_id': fields.many2one('project.scrum.role', "As", required=True),
         'name' : fields.char('I want', size=128, required=True),
         'for_then' : fields.char('For', size=128, required=True),
+        'acceptance_testing': fields.text("Acceptance testing", required=True),
         
         'description': fields.text("Description"),
         'sequence' : fields.integer('Sequence', help="Gives the sequence order when displaying a list of product backlog."),
         'expected_hours': fields.float('Planned Hours', help='Estimated total time to do the Backlog'),
         'complexity': fields.integer('Complexity', help='Complexity of the User Story'),
         'active' : fields.boolean('Active', help="If Active field is set to true, it will allow you to hide the product backlog without removing it."),
+        'value_to_user': fields.integer("Value to user"),
         
         'state': fields.selection(BACKLOG_STATES, 'State', required=True),
         'date_open': fields.date("Date open"),
@@ -261,6 +263,7 @@ class projectScrumProductBacklog(osv.osv):
         'user_id': lambda self, cr, uid, context: uid,
         'active':  1,
         'sequence': 1000, #TODO create function to compute sequence by uniq value for all product backlog
+        'value_to_user': 50,
     }
     
     _order = "sequence"

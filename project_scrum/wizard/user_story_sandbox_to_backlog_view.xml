@@ -4,7 +4,6 @@
 	<record model="ir.ui.view" id="view_scrum_sandbox_to_backlog">
             <field name="name">project.scrum.sandbox.to.backlog.form</field>
             <field name="model">project.scrum.sandbox.to.backlog</field>
-            <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="Transfer to backlog">
                     <group>
@@ -29,7 +28,6 @@
 
         <record model="ir.values" id="scrum_sandbox_to_backlog_values">
             <field name="model_id" ref="model_project_scrum_sandbox" />
-            <field name="object" eval="1" />
             <field name="name">Transfer to sandbox</field>
             <field name="key2">client_action_multi</field>
             <field name="value" eval="'ir.actions.act_window,' + str(ref('action_scrum_sandbox_to_backlog'))" />
