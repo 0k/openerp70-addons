@@ -15,10 +15,6 @@
                     <field name="planned_velocity"/>
                     <field name="effective_velocity"/>
                     <field name="progress" widget="progressbar"/>
-                    <!--
-                    <field name="effective_hours" sum="Effective hours" widget="float_time"/>
-                    <field name="expected_hours" sum="Planned hours" widget="float_time"/>
-                    -->
                     <field name="state"/>
                     <button type="object" string="Open" name="button_open" states="draft,pending" icon="terp-camera_test"/>
                     <button type="object" string="Pending" name="button_pending" states="open" icon="gtk-media-pause"/>
