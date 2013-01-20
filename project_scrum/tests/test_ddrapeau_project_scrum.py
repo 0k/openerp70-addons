@@ -358,6 +358,11 @@ developer_vals = {
 dev02_id = test_admin_create_user(developer_vals)
 dev02_uid = sock_common.login(dbname, 'dev02', pwd_a)
 
+# variables
+project_date_start  = '2013-01-05'
+release01_date_start = project_date_start
+release01_date_stop = '2013-02-26'
+
 print fontColors.USERSTORY + """
 [Scrum Master] create a Scrum project
 for affect it a Product Owner
@@ -367,6 +372,7 @@ project_vals = {
     'is_scrum': True,
     'product_owner_id': po01_id,
     'goal' : "Manage project with Scrum in OpenERP 7.0",
+    'date_start': project_date_start,
 }
 project01_id = test_create_project(project_vals, sm01_uid)
 
@@ -389,6 +395,8 @@ for planification of sprints and delivery date of new version
 release_vals = {
     'name':"Release 001",
     'project_id':project01_id,
+    'date_start': release01_date_start,
+    'date_stop': release01_date_stop,
 }
 release01_id = test_create_release(release_vals, sm01_uid)
 
