@@ -38,7 +38,8 @@
         </record>
         <menuitem action="action_project_scrum_sandbox"
                   id="menu_action_project_scrum_sandbox"
-                  parent="menu_scrum"
-                  name="Sandbox" />
+                  parent="menu_user_stories"
+                  name="Sandbox"
+                  sequence="2"/>
     </data>
 </openerp>

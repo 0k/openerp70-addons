@@ -301,8 +301,9 @@
         </record>
         <menuitem action="action_project_scrum_product_backlog"
                   id="menu_action_project_scrum_product_backlog"
-                  parent="menu_scrum"
-                  name="Product Backlog" />
+                  parent="menu_user_stories"
+                  name="Product Backlog"
+                  sequence="1"/>
         
         <!-- view user stories of sprint -->
         <record model="ir.ui.view" id="view_user_stories_in_sprint_view_form">
