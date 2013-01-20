@@ -434,9 +434,7 @@ user_story_vals = {
     'for_then': "mailing to customer",
     'project_id': project01_id,
     'release_id': release01_id,
-    'acceptance_testing': """
-Go to sales menu and clic on button 'Create'
-    """
+    'acceptance_testing': """Go to sales menu and clic on button 'Create'"""
 }
 story01_id = test_create_user_story(user_story_vals, po01_uid)
 
