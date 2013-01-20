@@ -5,7 +5,7 @@ import csv
 username = 'admin'
 pwd = 'admin'
 pwd_a = 'a'
-dbname = 'test_scrum_70_09'
+dbname = 'test_scrum_70_13'
 
 class fontColors(object):
     OKGREEN = '\033[92m' # green
@@ -286,6 +286,9 @@ group_pm_id = sock.execute(dbname, uid, pwd, 'res.groups', 'search', [('name', '
 group_category_hr_id = sock.execute(dbname, uid, pwd, 'ir.module.category', 'search', [('name', '=', 'Human Resources')])
 group_hr_id = sock.execute(dbname, uid, pwd, 'res.groups', 'search', [('name', '=', 'Employee'), ('category_id', '=', group_category_hr_id)])
 
+#Group Portal
+group_portal_id = sock.execute(dbname, uid, pwd, 'res.groups', 'search', [('name', '=', 'Portal')])
+print "group_portal_id = ", group_portal_id
 # create user
 scrum_master_vals = {
     'name': "David SCRUMMASTERONE",
@@ -294,7 +297,7 @@ scrum_master_vals = {
     'lang': "fr_FR",
     'tz': 'Europe/Paris',
     'phone': '+336 455 942 76',
-    'groups_id': [(6, 0, [group_sm_id[0], group_pm_id[0], group_hr_id[0], group_cc_id[0]])]
+    'groups_id': [(6, 0, [group_sm_id[0], group_pm_id[0], group_hr_id[0], group_cc_id[0], group_portal_id[0]])]
 }
 sm01_id = test_admin_create_user(scrum_master_vals)
 sm01_uid = sock_common.login(dbname, 'sm01', pwd_a)
@@ -304,13 +307,14 @@ print fontColors.USERSTORY + """
 for permit Scrum Master affect him to a project
 """ + fontColors.ENDC
 group_po_id = sock.execute(dbname, uid, pwd, 'res.groups', 'search', [('name', '=', 'Product Owner')])
+
 product_owner_vals = {
     'name': "Steven OWNERONE",
     'login': "po01",
     'password': pwd_a,
     'lang': "fr_FR",
     'tz': 'Europe/Paris',
-    'groups_id': [(6, 0, group_po_id)]
+    'groups_id': [(6, 0, [group_po_id[0], group_portal_id[0]])]
 }
 po01_id = test_admin_create_user(product_owner_vals)
 po01_uid = sock_common.login(dbname, 'po01', pwd_a)
@@ -321,7 +325,7 @@ product_owner_vals = {
     'password': pwd_a,
     'lang': "fr_FR",
     'tz': 'Europe/Paris',
-    'groups_id': [(6, 0, group_po_id)]
+    'groups_id': [(6, 0, [group_po_id[0], group_portal_id[0]])]
 }
 po02_id = test_admin_create_user(product_owner_vals)
 po02_uid = sock_common.login(dbname, 'po02', pwd_a)
@@ -338,7 +342,7 @@ developer_vals = {
     'password': pwd_a,
     'lang': "fr_FR",
     'tz': 'Europe/Paris',
-    'groups_id': [(6, 0, group_dev_id)]
+    'groups_id': [(6, 0, [group_dev_id[0], group_portal_id[0]])]
 }
 dev01_id = test_admin_create_user(developer_vals)
 dev01_uid = sock_common.login(dbname, 'dev01', pwd_a)
@@ -430,6 +434,9 @@ user_story_vals = {
     'for_then': "mailing to customer",
     'project_id': project01_id,
     'release_id': release01_id,
+    'acceptance_testing': """
+Go to sales menu and clic on button 'Create'
+    """
 }
 story01_id = test_create_user_story(user_story_vals, po01_uid)
 
