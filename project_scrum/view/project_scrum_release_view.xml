@@ -9,6 +9,8 @@
                 <tree string="Releases">
                     <field name="name" />
                     <field name="project_id" />
+                    <field name="date_start"/>
+                    <field name="date_stop"/>
                     <field name="delivery_date_estimated"/>
                     <field name="delivery_date_effective"/>
                 </tree>
@@ -21,6 +23,8 @@
                 <form string="Releases">
                     <field name="name" />
                     <field name="project_id" />
+                    <field name="date_start"/>
+                    <field name="date_stop"/>
                     <field name="delivery_date_estimated"/>
                     <field name="delivery_date_effective"/>
                 </form>

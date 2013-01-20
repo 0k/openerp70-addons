@@ -8,6 +8,8 @@ class projectScrumRelease(osv.osv):
     _columns = {
         'name': fields.char("Name", size=128, required=True),
         'project_id': fields.many2one('project.project', "Project", domain=[('is_scrum', '=', True)], required=True),
+        'date_start': fields.date('Starting Date'),
+        'date_stop': fields.date('Ending Date'),
         'delivery_date_estimated': fields.date("Estimated date of delivery"),
         'delivery_date_effective': fields.date("Effective date of delivery"),
     }
