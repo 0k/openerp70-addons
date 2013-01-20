@@ -117,7 +117,7 @@
             <field name="name">view.project.scrum.meeting.tree</field>
             <field name="model">project.scrum.meeting</field>
             <field name="arch" type="xml">
-                <tree string="Scrum Meeting">
+                <tree string="Daily Meetings">
                     <field name="date"/>
                     <field name="sprint_id"/>
                     <field name="user_id"/>
@@ -128,7 +128,7 @@
             <field name="name">view.project.scrum.meeting.form</field>
             <field name="model">project.scrum.meeting</field>
             <field name="arch" type="xml">
-                <form string="Scrum Meeting" version="7.0">
+                <form string="Daily Meeting" version="7.0">
                     <header></header>
                     <sheet>
                         <group colspan="4" col="8">
@@ -161,7 +161,6 @@
             </field>
         </record>
         <record model="ir.actions.act_window" id="action_meeting_form">
-            <field name="name">Scrum Meetings</field>
             <field name="res_model">project.scrum.meeting</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form,calendar</field>
@@ -170,6 +169,7 @@
         <menuitem sequence="30"
                   action="action_meeting_form"
                   id="menu_action_meeting_form"
+                  name="Daily Meeting"
                   parent="menu_scrum"/>
 
         <!-- product backlog -->
