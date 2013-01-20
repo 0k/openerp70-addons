@@ -3,5 +3,7 @@
     <data>
         <menuitem id="menu_scrum" name="Scrum" parent="base.menu_main_pm" sequence="3"/>
         <menuitem id="menu_user_stories" name="User Stories" parent="project_scrum.menu_scrum" sequence="1"/>
+        <menuitem id="menu_scrum_configuration" name="Scrum" parent="base.menu_definitions" sequence="1"/>
+        
     </data>
 </openerp>

@@ -41,7 +41,8 @@
         </record>
         <menuitem action="action_project_scrum_role"
                   id="menu_action_project_scrum_role"
-                  parent="menu_scrum"
-                  name="Roles" />
+                  parent="menu_scrum_configuration"
+                  name="Roles"
+                  sequence="1"/>
     </data>
 </openerp>
