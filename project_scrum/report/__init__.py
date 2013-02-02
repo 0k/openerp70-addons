@@ -21,6 +21,7 @@
 
 import sprint_burndown
 import sprint_burndown_story_point
+import sprint_velocity
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 

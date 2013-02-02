@@ -13,5 +13,11 @@
                 model="project.scrum.sprint"
                 name="scrum.sprint.burndown.storyPoint"
                 string="Burndown Chart (Stories Points)"/>
+        
+        <report auto="False"
+                id="report_scrum_sprint_velocity"
+                model="project.project"
+                name="scrum.sprint.velocity"
+                string="Sprints Velocities"/>
     </data>
 </openerp>

@@ -78,11 +78,29 @@ class projectScrumSprint(osv.osv):
                 self.log(cr, uid, id, message)
         return True
     
+    def _get_velocity_sprint_done(self, cr, uid, ids, context=None):
+        if not context:
+            context = {}
+        res = {}
+        story_pool = self.pool.get('project.scrum.product.backlog')
+        for sprint in self.browse(cr, uid, ids, context=context):
+            story_ids = story_pool.search(cr, uid, [('sprint_id', '=', sprint.id)])
+            velocity = 0
+            for story_id in story_ids:
+                velocity += story_pool.read(cr, uid, story_id, ['complexity'])['complexity']
+            res['effective_velocity_sprint_done'] = velocity
+            self.write(cr, uid, ids, res, context=context)
+        return True
+    
     def button_close(self, cr, uid, ids, context=None):
-        self.write(cr, uid, ids, {'state':'done'}, context=context)
-        for (id, name) in self.name_get(cr, uid, ids):
+        effective_velocity = 0
+        if context is None:
+            context = {}
+        self.write(cr, uid, ids, {'state':'done', 'effective_velocity_sprint_done': effective_velocity}, context=context)
+        self._get_velocity_sprint_done(cr, uid, ids, context=context)
+        for (sprint_id, name) in self.name_get(cr, uid, ids):
             message = _("The sprint '%s' has been closed.") % (name,)
-            self.log(cr, uid, id, message)
+            self.log(cr, uid, sprint_id, message)
         return True
 
     def button_pending(self, cr, uid, ids, context=None):
@@ -130,6 +148,7 @@ class projectScrumSprint(osv.osv):
         
         'planned_velocity': fields.integer("Planned velocity", help="Estimated velocity for sprint, usually set by the development team during sprint planning."),
         'effective_velocity': fields.function(_get_velocity, string="Effective velocity", type='integer', help="Computed using the sum of the task work done."),
+        'effective_velocity_sprint_done': fields.integer("Effective velocity"),
     }
     
     
