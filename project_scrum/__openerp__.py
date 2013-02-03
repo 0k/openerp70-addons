@@ -18,12 +18,13 @@ Manage
         * standup meetings for each user of team (TODO)
         * sprint review
         * sprint retrospective
-    * Product Backlog
+    * Product Backlog (users stories)
         * new kanban view
         * date_open and date_done
         * story complexity points
-    * display Burndown Chart
-        * based on story points (complexity)
+    * Display charts
+        * Burdown Chart (based on story points)
+        * Sprints Velocity (for each Scrum project)
     * Sandbox
         * a developer of development team can add a user story to sandbox 
         * the product owner can valid it (transfer into product backlog) or delete it
