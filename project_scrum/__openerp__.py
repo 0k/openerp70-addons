@@ -40,12 +40,12 @@ Thanks to report questions to david.drapeau@gmail.com
         'project',
     ],
     'data': [
+        "project_scrum_report.xml",
         "view/project_view.xml",
         
         "security/project_scrum_security.xml",
         "security/ir.model.access.csv",
         
-        "project_scrum_report.xml",
         
         "wizard/project_scrum_backlog_create_task_view.xml",
         "wizard/project_scrum_email_view.xml",
