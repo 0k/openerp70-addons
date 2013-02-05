@@ -263,10 +263,10 @@ class projectScrumProductBacklog(osv.osv):
         return True
     
     _columns = {
-        'role_id': fields.many2one('project.scrum.role', "As", required=True),
-        'name' : fields.char('I want', size=128, required=True),
-        'for_then' : fields.char('For', size=128, required=True),
-        'acceptance_testing': fields.text("Acceptance testing", required=True),
+        'role_id': fields.many2one('project.scrum.role', "As", required=True, readonly=True, states={'draft':[('readonly',False)]}),
+        'name' : fields.char('I want', size=128, required=True, readonly=True, states={'draft':[('readonly',False)]}),
+        'for_then' : fields.char('For', size=128, required=True, readonly=True, states={'draft':[('readonly',False)]}),
+        'acceptance_testing': fields.text("Acceptance testing", required=True, readonly=True, states={'draft':[('readonly',False)]}),
         
         'description': fields.text("Description"),
         'sequence' : fields.integer('Sequence', help="Gives the sequence order when displaying a list of product backlog."),
@@ -282,7 +282,7 @@ class projectScrumProductBacklog(osv.osv):
         'date_open': fields.date("Date open"),
         'date_done': fields.date("Date done"),
         
-        'project_id': fields.many2one('project.project', "Project", required=True), #  domain=['&',('is_scrum', '=', True),('product_owner_id.id', '=', uid)]
+        'project_id': fields.many2one('project.project', "Project", required=True),
         'release_id': fields.many2one('project.scrum.release', "Release"),
         'sprint_id': fields.many2one('project.scrum.sprint', 'Sprint'),
         
