@@ -172,11 +172,90 @@
                   name="Daily Meeting"
                   parent="menu_scrum"/>
 
+        <!-- product backlog stage -->
+        <record model="ir.ui.view" id="view_project_scrum_pb_stage_tree">
+            <field name="name">view.project.scrum.pb.stage.tree</field>
+            <field name="model">project.scrum.pb.stage</field>
+            <field name="arch" type="xml">
+                <tree string="Stages of stories" editable="bottom">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="fold"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_project_scrum_pb_stage_form">
+            <field name="name">view.project.scrum.pb.stage.form</field>
+            <field name="model">project.scrum.pb.stage</field>
+            <field name="arch" type="xml">
+                <form string="Stage of stories" version="7.0">
+                    <group>
+                        <field name="name"/>
+                        <field name="project_id"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_project_scrum_pb_stage">
+            <field name="name">Product Backlog Stages</field>
+            <field name="res_model">project.scrum.pb.stage</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem action="action_project_scrum_pb_stage"
+                  id="menu_action_project_scrum_pb_stage"
+                  parent="menu_scrum_configuration"
+                  name="Stages"
+                  sequence="1"/>
+        
         <!-- product backlog -->
         <record model="ir.ui.view" id="view_project_scrum_product_backlog_kanban">
             <field name="name">view.project.scrum.product.backlog.kanban</field>
             <field name="model">project.scrum.product.backlog</field>
             <field name="arch" type="xml">
+                <kanban default_group_by="stage_id" class="oe_cogiscrum oe_kanban_quickcreate_textarea" version="7.0">
+                    <field name="color"/>
+                    <field name="sequence"/>
+                    <field name="name"/>
+                    <field name="stage_id"/>
+                    <field name="open"/>
+                    <field name="role_id"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            
+                            <t t-set="record.group_fancy" t-value="1" />
+                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click_edit">
+                                <div class="oe_dropdown_toggle oe_dropdown_kanban">
+                                    <span class="oe_e">i</span>
+                                    <!-- dropdown menu -->
+                                    <ul class="oe_dropdown_menu">
+                                        <t t-if="widget.view.is_action_enabled('edit')"><li><a type="edit">Edit...</a></li></t>
+                                        <t t-if="widget.view.is_action_enabled('delete')"><li><a type="delete">Delete</a></li></t>
+                                        <li>
+                                          <ul class="oe_kanban_project_times" groups="project.group_time_work_estimation_tasks">
+                                            <li><a name="set_remaining_time_1" type="object" class="oe_kanban_button">1</a></li>
+                                            <li><a name="set_remaining_time_2" type="object" class="oe_kanban_button">2</a></li>
+                                            <li><a name="set_remaining_time_5" type="object" class="oe_kanban_button">5</a></li>
+                                            <li><a name="set_remaining_time_10" type="object" class="oe_kanban_button">10</a></li>
+                                            <li><a name="do_open" states="draft,done" string="Validate planned time" type="object" class="oe_kanban_button oe_kanban_button_active">!</a></li>
+                                          </ul>
+                                        </li>
+                                        <li><ul class="oe_kanban_colorpicker" data-field="color"/></li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="oe_kanban_content">
+                                    <div><b>[<field name="role_id"/>]</b> <field name="name"/></div>
+                                    <div t-attf-class="oe_kanban_global_click_edit oe_semantic_html_override oe_kanban_card">
+                                        <field name="for_then"/>
+                                    </div>
+                                    <div><b>project :</b> <font color="blue"><field name="project_id"/></font></div>
+                                    <div class="oe_clear"></div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+                <!--
                 <kanban default_group_by="state" class="oe_cogiscrum oe_kanban_quickcreate_textarea" version="7.0">
                     <field name="color"/>
                     <field name="state"/>
@@ -187,7 +266,6 @@
                         <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click_edit">
                             <div class="oe_dropdown_toggle oe_dropdown_kanban">
                                 <span class="oe_e">i</span>
-                                <!-- dropdown menu -->
                                 <ul class="oe_dropdown_menu">
                                     <t t-if="widget.view.is_action_enabled('edit')"><li><a type="edit">Edit...</a></li></t>
                                     <t t-if="widget.view.is_action_enabled('delete')"><li><a type="delete">Delete</a></li></t>
@@ -216,6 +294,7 @@
                         </t>
                     </templates>
                 </kanban>
+                -->
             </field>
         </record>
         <record model="ir.ui.view" id="view_project_scrum_product_backlog_tree">
@@ -251,6 +330,7 @@
                                 <field name="role_id" class="oe_inline"/>
                                 <field name="name" class="oe_inline"/>
                                 <field name="for_then" class="oe_inline"/>
+                                <field name="stage_id" class="oe_inline"/>
                             </group>
                             <group>
                                 <field name="active" class="oe_inline"/>
