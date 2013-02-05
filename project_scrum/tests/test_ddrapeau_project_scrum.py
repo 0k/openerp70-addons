@@ -5,7 +5,7 @@ import csv
 username = 'admin'
 pwd = 'admin'
 pwd_a = 'a'
-dbname = 'test_scrum_70_13'
+dbname = 'dev70_04'
 
 class fontColors(object):
     OKGREEN = '\033[92m' # green
@@ -419,9 +419,9 @@ print fontColors.USERSTORY + """
 [Product Owner]	create a role
 use it in user stories writing
 """ + fontColors.ENDC
-role01_id = test_create_role({'name':"Scrum Master", 'code': "SM"}, po01_uid)
-role02_id = test_create_role({'name':"Product Owner", 'code': "PO"}, po01_uid)
-role03_id = test_create_role({'name':"Developer", 'code': "DEV"}, po01_uid)
+role01_id = test_create_role({'name':"Scrum Master", 'code': "SM", 'project_id': project01_id}, po01_uid)
+role02_id = test_create_role({'name':"Product Owner", 'code': "PO", 'project_id': project01_id}, po01_uid)
+role03_id = test_create_role({'name':"Developer", 'code': "DEV", 'project_id': project01_id}, po01_uid)
 
 print "add persona name and description to roles..."
 persona_vals = {
