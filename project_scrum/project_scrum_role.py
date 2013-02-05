@@ -7,7 +7,8 @@ class projectScrumRole(osv.osv):
     _columns = {
         'name' : fields.char('Name', size=128, required=True),
         'code' : fields.char('Code', size=16),
+        'project_id': fields.many2one('project.project', "Project", required=True),
+        
         'persona_name' : fields.char('Persona Name', size=128),
         'persona_description' : fields.text('Persona Description'),
     }
-projectScrumRole()
