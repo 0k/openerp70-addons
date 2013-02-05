@@ -327,7 +327,12 @@
                     <sheet>
                         <group>
                             <group>
-                                <field name="role_id" class="oe_inline"/>
+                                <field name="project_id" class="oe_inline"/>
+                                <field name="release_id" class="oe_inline" domain="[('project_id', '=', project_id)]"/>
+                                <field name="sprint_id" class="oe_inline" domain="[('release_id', '=', release_id)]"/>
+                             </group>
+                            <group>
+                                <field name="role_id" class="oe_inline" domain="[('project_id', '=', project_id)]"/>
                                 <field name="name" class="oe_inline"/>
                                 <field name="for_then" class="oe_inline"/>
                                 <field name="stage_id" class="oe_inline"/>
@@ -335,17 +340,13 @@
                             <group>
                                 <field name="active" class="oe_inline"/>
                                 <field name="progress" class="oe_inline"/>
+                            </group><group>
                                 <field name="complexity" class="oe_inline"/>
                                 <field name="value_to_user" class="oe_inline"/> 
                             </group>
                             <group colspan="2">
                                 <field name="acceptance_testing"/>
                             </group>
-                            <group>
-                                <field name="project_id" class="oe_inline"/>
-                                <field name="release_id" class="oe_inline" domain="[('project_id', '=', project_id)]"/>
-                                <field name="sprint_id" class="oe_inline" domain="[('release_id', '=', release_id)]"/>
-                             </group>
                         </group>
                         <notebook>
                             <page string="General">

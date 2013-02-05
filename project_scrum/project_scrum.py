@@ -170,6 +170,25 @@ class projectScrumSprint(osv.osv):
     ]
 
 
+class projectScrumPBStage(osv.osv):
+    """ Category of Product Backlog """
+    _name = "project.scrum.pb.stage"
+    _description = "Product Backlog Stage"
+    _columns = {
+        'name': fields.char('Stage Name', translate=True, required=True),
+        'sequence': fields.integer('Sequence', help="Used to order the story stages"),
+        'user_id': fields.many2one('res.users', 'Owner', help="Owner of the note stage.", required=True),
+        'project_id': fields.many2one('project.project', 'Project', help="Project of the story stage.", required=True),
+        'fold': fields.boolean('Folded by Default'),
+    }
+    _order = 'sequence asc'
+    _defaults = {
+        'fold': 0,
+        'user_id': lambda self, cr, uid, ctx: uid,
+        'sequence' : 1,
+    }
+
+
 class projectScrumProductBacklog(osv.osv):
     _name = 'project.scrum.product.backlog'
     _description = "Product backlog where are user stories"
@@ -257,6 +276,9 @@ class projectScrumProductBacklog(osv.osv):
         'value_to_user': fields.integer("Value to user"),
         
         'state': fields.selection(BACKLOG_STATES, 'State', required=True),
+        #'stage_ids': fields.many2many('project.scrum.pb.stage','project_scrum_story_stage_rel','story_id','stage_id','Stages of Stories'),
+        'stage_id':fields.many2one('project.scrum.pb.stage', 'Stage'),
+        'open': fields.boolean('Active', track_visibility='onchange'),
         'date_open': fields.date("Date open"),
         'date_done': fields.date("Date done"),
         
@@ -279,6 +301,7 @@ class projectScrumProductBacklog(osv.osv):
     
     _defaults = {
         'state': 'draft',
+        'open': 1,
         'user_id': lambda self, cr, uid, context: uid,
         'active':  1,
         'sequence': 1000, #TODO create function to compute sequence by uniq value for all product backlog
@@ -286,6 +309,53 @@ class projectScrumProductBacklog(osv.osv):
     }
     
     _order = "sequence"
+
+    #def read_group(self, cr, uid, domain, fields, groupby, offset=0, limit=None, context=None, orderby=False):
+    #    if groupby and groupby[0]=="stage_id":
+    #        
+    #        #search all stages
+    #        current_stage_ids = self.pool.get('project.scrum.pb.stage').search(cr,uid,[('user_id','=',uid)], context=context)
+    #        
+    #        if current_stage_ids: #if the user have some stages
+    #            
+    #            #dict of stages: map les ids sur les noms
+    #            stage_name = dict(self.pool.get('note.stage').name_get(cr, uid, current_stage_ids, context=context))
+    #            
+    #            result = [{ #notes by stage for stages user
+    #                    '__context': {'group_by': groupby[1:]},
+    #                    '__domain': domain + [('stage_ids.id', '=', current_stage_id)],
+    #                    'stage_id': (current_stage_id, stage_name[current_stage_id]),
+    #                    'stage_id_count': self.search(cr,uid, domain+[('stage_ids', '=', current_stage_id)], context=context, count=True)
+    #                } for current_stage_id in current_stage_ids]
+    #            
+    #            #note without user's stage
+    #            nb_notes_ws = self.search(cr,uid, domain+[('stage_ids', 'not in', current_stage_ids)], context=context, count=True)
+    #            if nb_notes_ws:
+    #                result += [{ #notes for unknown stage and if stage_ids is not empty
+    #                    '__context': {'group_by': groupby[1:]},
+    #                    '__domain': domain + [('stage_ids', 'not in', current_stage_ids)],
+    #                    'stage_id': (0, 'Unknown'),
+    #                    'stage_id_count':nb_notes_ws
+    #                }]
+    #        
+    #        else: # if stage_ids is empty
+    #            
+    #            #note without user's stage
+    #            nb_notes_ws = self.search(cr,uid, domain, context=context, count=True)
+    #            if nb_notes_ws:
+    #                result = [{ #notes for unknown stage
+    #                    '__context': {'group_by': groupby[1:]},
+    #                    '__domain': domain,
+    #                    'stage_id': (0, 'Unknown'),
+    #                    'stage_id_count':nb_notes_ws
+    #                }]
+    #            else:
+    #                result = []
+    #        return result
+    #    
+    #    else:
+    #        return super(note_note, self).read_group(self, cr, uid, domain, fields, groupby, 
+    #            offset=offset, limit=limit, context=context, orderby=orderby)
 
 
 class projectTaskInherit(osv.osv):
