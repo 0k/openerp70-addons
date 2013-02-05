@@ -316,7 +316,7 @@
             <field name="name">view.project.scrum.product.backlog.form</field>
             <field name="arch" type="xml">
                 <form string="Product Backlog" version="7.0">
-                    <header>
+                    <header groups="project_scrum.group_ProjectScrum_developer">
                         <button type="object" string="Cancel" name="button_cancel" states="draft,open,pending" icon="gtk-stop"/>
                         <button type="object" string="Open" name="button_open" states="draft,pending" icon="terp-camera_test"/>
                         <button type="object" string="Pending" name="button_pending" states="open" icon="gtk-media-pause"/>
