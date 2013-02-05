@@ -282,9 +282,9 @@ class projectScrumProductBacklog(osv.osv):
         'date_open': fields.date("Date open"),
         'date_done': fields.date("Date done"),
         
-        'project_id': fields.many2one('project.project', "Project", required=True),
-        'release_id': fields.many2one('project.scrum.release', "Release"),
-        'sprint_id': fields.many2one('project.scrum.sprint', 'Sprint'),
+        'project_id': fields.many2one('project.project', "Project", required=True, readonly=True, states={'draft':[('readonly',False)]}),
+        'release_id': fields.many2one('project.scrum.release', "Release", readonly=True, states={'draft':[('readonly',False)]}),
+        'sprint_id': fields.many2one('project.scrum.sprint', "Sprint", readonly=True, states={'draft':[('readonly',False)]}),
         
         'user_id': fields.many2one('res.users', 'Author'),
         'task_id': fields.many2one('project.task', required=False,
