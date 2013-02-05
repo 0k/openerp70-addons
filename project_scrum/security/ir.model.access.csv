@@ -39,3 +39,4 @@ access_projectScrum_role_scrumMaster,projectScrum.project.scrum.role.scrumMaster
 access_projectScrum_role_productOwner,projectScrum.project.scrum.role.productOwner,model_project_scrum_role,project_scrum.group_ProjectScrum_productOwner,1,1,1,1
 access_projectScrum_role_developer,projectScrum.project.scrum.role.developer,model_project_scrum_role,project_scrum.group_ProjectScrum_developer,1,0,0,0
 
+access_base_resPartner_developer,base.res.partner.developer,base.model_res_partner,project_scrum.group_ProjectScrum_developer,1,0,0,0
