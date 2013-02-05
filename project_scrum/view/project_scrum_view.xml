@@ -327,7 +327,7 @@
                     <sheet>
                         <group>
                             <group>
-                                <field name="project_id" class="oe_inline"/>
+                                <field name="project_id" class="oe_inline" domain="[('is_scrum', '=', True),('product_owner_id.id', '=', uid)]" />
                                 <field name="release_id" class="oe_inline" domain="[('project_id', '=', project_id)]"/>
                                 <field name="sprint_id" class="oe_inline" domain="[('release_id', '=', release_id)]"/>
                              </group>

@@ -129,8 +129,8 @@ class projectScrumSprint(osv.osv):
         'project_id': fields.related('release_id', 'project_id', type='many2one', relation='project.project', string="Project", readonly=True),
         
         #FIX product_owner_id and scrum_master_id are defined in project.project (delete from here)
-        'product_owner_id': fields.many2one('res.users', 'Product Owner', required=True,help="The person who is responsible for the product"),
-        'scrum_master_id': fields.many2one('res.users', 'Scrum Master', required=True,help="The person who is maintains the processes for the product"),
+        'product_owner_id': fields.many2one('res.users', 'Product Owner', required=True, help="The person who is responsible for the product"),
+        'scrum_master_id': fields.many2one('res.users', 'Scrum Master', required=True, help="The person who is maintains the processes for the product"),
         
         'meeting_ids': fields.one2many('project.scrum.meeting', 'sprint_id', 'Daily Scrum'),
         'review': fields.text('Sprint Review'),
@@ -282,7 +282,7 @@ class projectScrumProductBacklog(osv.osv):
         'date_open': fields.date("Date open"),
         'date_done': fields.date("Date done"),
         
-        'project_id': fields.many2one('project.project', "Project", required=True, domain=[('is_scrum', '=', True)]),
+        'project_id': fields.many2one('project.project', "Project", required=True), #  domain=['&',('is_scrum', '=', True),('product_owner_id.id', '=', uid)]
         'release_id': fields.many2one('project.scrum.release', "Release"),
         'sprint_id': fields.many2one('project.scrum.sprint', 'Sprint'),
         
