@@ -184,14 +184,11 @@ class projectScrumMeeting(osv.osv):
         'question_today': fields.text('Tasks for today'),
         'question_blocks': fields.text('Blocks encountered'),
         'question_backlog': fields.text('Backlog Accurate'),
-        'task_ids': fields.many2many('project.task', 'meeting_task_rel', 'metting_id', 'task_id', 'Tasks'),
+        'task_ids': fields.many2many('project.task', 'meeting_task_rel', 'meeting_id', 'task_id', 'Tasks'),
         'user_id': fields.many2one('res.users', "Developer", readonly=True),
     }
     _order = 'date desc'
 
-    #
-    # TODO: Find the right sprint thanks to users and date (ok for date, rest for user --> think conception before)
-    #
     def _find_sprints(self, cr, uid, today):
         sprint_ids = self.pool.get('project.scrum.sprint').search(cr, uid, ['&', ('date_start', '<=', today), ('date_stop', '>=', today)])
         return sprint_ids
