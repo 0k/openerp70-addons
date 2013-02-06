@@ -144,11 +144,9 @@
                                 <field colspan="4" name="question_blocks" nolabel="1"/>
                                 <separator colspan="4" string=""/>
                             </page>
-                            <page string="Optional Info">
-                                <separator colspan="4" string="Are your Sprint Backlog estimate accurate ?"/>
-                                <field colspan="4" name="question_backlog" nolabel="1"/>
-                            </page>
-                            <page string="Links">
+                            <page string="Stories / Tasks">
+                                <separator colspan="4" string="Stories"/>
+                                <field colspan="4" name="user_story_ids" nolabel="1" domain="[('sprint_id','=',sprint_id)]"/>
                                 <separator colspan="4" string="Tasks"/>
                                 <field colspan="4" name="task_ids" nolabel="1" domain="[('sprint_id','=',sprint_id)]"/>
                             </page>
