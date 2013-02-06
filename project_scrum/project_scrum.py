@@ -169,6 +169,81 @@ class projectScrumSprint(osv.osv):
         (_check_dates, 'Error! sprint start-date must be lower than project end-date.', ['date_start', 'date_stop'])
     ]
 
+class projectScrumMeeting(osv.osv):
+    _name = 'project.scrum.meeting'
+    _description = 'Scrum Meeting'
+
+    _columns = {
+        'name' : fields.char('Meeting Name', size=64),
+        'date': fields.date('Meeting Date', required=True),
+        'sprint_id': fields.many2one('project.scrum.sprint', 'Sprint', domain=['&', ('date_start', '<=', time.strftime("%Y-%m-%d")), ('date_stop', '>=', time.strftime("%Y-%m-%d"))]),
+        'project_id': fields.related('sprint_id', 'release_id', 'project_id', type='many2one', relation='project.project', string='Project', readonly=True),
+        'scrum_master_id': fields.related('sprint_id', 'scrum_master_id', type='many2one', relation='res.users', string='Scrum Master', readonly=True),
+        'product_owner_id': fields.related('sprint_id', 'product_owner_id', type='many2one', relation='res.users', string='Product Owner', readonly=True),
+        'question_yesterday': fields.text('Tasks since yesterday'),
+        'question_today': fields.text('Tasks for today'),
+        'question_blocks': fields.text('Blocks encountered'),
+        'question_backlog': fields.text('Backlog Accurate'),
+        'task_ids': fields.many2many('project.task', 'meeting_task_rel', 'metting_id', 'task_id', 'Tasks'),
+        'user_id': fields.many2one('res.users', "Developer", readonly=True),
+    }
+    _order = 'date desc'
+
+    #
+    # TODO: Find the right sprint thanks to users and date (ok for date, rest for user --> think conception before)
+    #
+    def _find_sprints(self, cr, uid, today):
+        sprint_ids = self.pool.get('project.scrum.sprint').search(cr, uid, ['&', ('date_start', '<=', today), ('date_stop', '>=', today)])
+        return sprint_ids
+    
+    def _get_right_sprint(self, cr, uid, context=None):
+        today = time.strftime("%Y-%m-%d")
+        sprint_ids = self._find_sprints(cr, uid, today)
+        for sprint_id in sprint_ids:
+            return sprint_id
+    
+    _defaults = {
+        'date' : lambda *a: time.strftime('%Y-%m-%d'),
+        'sprint_id': _get_right_sprint,
+        'user_id': lambda self, cr, uid, context: uid,
+    }
+
+    def button_send_to_master(self, cr, uid, ids, context=None):
+        meeting_id = self.browse(cr, uid, ids, context=context)[0]
+        if meeting_id and meeting_id.sprint_id.scrum_master_id.user_email:
+            res = self.email_send(cr, uid, ids, meeting_id.sprint_id.scrum_master_id.user_email)
+            if not res:
+                raise osv.except_osv(_('Error !'), _('Email notification could not be sent to the scrum master %s') % meeting_id.sprint_id.scrum_master_id.name)
+        else:
+            raise osv.except_osv(_('Error !'), _('Please provide email address for scrum master defined on sprint.'))
+        return True
+
+    def button_send_product_owner(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        context.update({'button_send_product_owner': True})
+        meeting_id = self.browse(cr, uid, ids, context=context)[0]
+        if meeting_id.sprint_id.product_owner_id.user_email:
+            res = self.email_send(cr,uid,ids,meeting_id.sprint_id.product_owner_id.user_email)
+            if not res:
+                raise osv.except_osv(_('Error !'), _('Email notification could not be sent to the product owner %s') % meeting_id.sprint_id.product_owner_id.name)
+        else:
+            raise osv.except_osv(_('Error !'), _('Please provide email address for product owner defined on sprint.'))
+        return True
+
+    def email_send(self, cr, uid, ids, email, context=None):
+        email_from = tools.config.get('email_from', False)
+        meeting_id = self.browse(cr, uid, ids, context=context)[0]
+        user = self.pool.get('res.users').browse(cr, uid, uid, context=context)
+        user_email = email_from or user.address_id.email  or email_from
+        body = _('Hello ') + meeting_id.sprint_id.scrum_master_id.name + ",\n" + " \n" +_('I am sending you Daily Meeting Details of date')+ ' %s ' % (meeting_id.date)+ _('for the Sprint')+ ' %s\n' % (meeting_id.sprint_id.name)
+        body += "\n"+ _('*Tasks since yesterday:')+ '\n_______________________%s' % (meeting_id.question_yesterday) + '\n' +_("*Task for Today:")+ '\n_______________________ %s\n' % (meeting_id.question_today )+ '\n' +_('*Blocks encountered:') +'\n_______________________ %s' % (meeting_id.question_blocks or _('No Blocks'))
+        body += "\n\n"+_('Thank you')+",\n"+ user.name
+        sub_name = meeting_id.name or _('Scrum Meeting of %s') % meeting_id.date
+        flag = tools.email_send(user_email , [email], sub_name, body, reply_to=None, openobject_id=str(meeting_id.id))
+        if not flag:
+            return False
+        return True
 
 class projectScrumPBStage(osv.osv):
     """ Category of Product Backlog """
@@ -358,73 +433,3 @@ class projectScrumSprintInherit(osv.osv):
     }
 
 
-class projectScrumMeeting(osv.osv):
-    _name = 'project.scrum.meeting'
-    _description = 'Scrum Meeting'
-    _order = 'date desc'
-    _columns = {
-        'name' : fields.char('Meeting Name', size=64),
-        'date': fields.date('Meeting Date', required=True),
-        'sprint_id': fields.many2one('project.scrum.sprint', 'Sprint', domain=['&', ('date_start', '<=', time.strftime("%Y-%m-%d")), ('date_stop', '>=', time.strftime("%Y-%m-%d"))]),
-        'project_id': fields.many2one('project.project', 'Project'),
-        'question_yesterday': fields.text('Tasks since yesterday'),
-        'question_today': fields.text('Tasks for today'),
-        'question_blocks': fields.text('Blocks encountered'),
-        'question_backlog': fields.text('Backlog Accurate'),
-        'task_ids': fields.many2many('project.task', 'meeting_task_rel', 'metting_id', 'task_id', 'Tasks'),
-        'user_id': fields.related('sprint_id', 'scrum_master_id', type='many2one', relation='res.users', string='Scrum Master', readonly=True),
-    }
-    #
-    # TODO: Find the right sprint thanks to users and date (ok for date, rest for user --> think conception before)
-    #
-    def _find_sprints(self, cr, uid, today):
-        sprint_ids = self.pool.get('project.scrum.sprint').search(cr, uid, ['&', ('date_start', '<=', today), ('date_stop', '>=', today)])
-        return sprint_ids
-    
-    def _get_right_sprint(self, cr, uid, context=None):
-        today = time.strftime("%Y-%m-%d")
-        sprint_ids = self._find_sprints(cr, uid, today)
-        for sprint_id in sprint_ids:
-            return sprint_id
-    
-    _defaults = {
-        'sprint_id': _get_right_sprint,
-        'date' : lambda *a: time.strftime('%Y-%m-%d'),
-    }
-
-    def button_send_to_master(self, cr, uid, ids, context=None):
-        meeting_id = self.browse(cr, uid, ids, context=context)[0]
-        if meeting_id and meeting_id.sprint_id.scrum_master_id.user_email:
-            res = self.email_send(cr, uid, ids, meeting_id.sprint_id.scrum_master_id.user_email)
-            if not res:
-                raise osv.except_osv(_('Error !'), _('Email notification could not be sent to the scrum master %s') % meeting_id.sprint_id.scrum_master_id.name)
-        else:
-            raise osv.except_osv(_('Error !'), _('Please provide email address for scrum master defined on sprint.'))
-        return True
-
-    def button_send_product_owner(self, cr, uid, ids, context=None):
-        if context is None:
-            context = {}
-        context.update({'button_send_product_owner': True})
-        meeting_id = self.browse(cr, uid, ids, context=context)[0]
-        if meeting_id.sprint_id.product_owner_id.user_email:
-            res = self.email_send(cr,uid,ids,meeting_id.sprint_id.product_owner_id.user_email)
-            if not res:
-                raise osv.except_osv(_('Error !'), _('Email notification could not be sent to the product owner %s') % meeting_id.sprint_id.product_owner_id.name)
-        else:
-            raise osv.except_osv(_('Error !'), _('Please provide email address for product owner defined on sprint.'))
-        return True
-
-    def email_send(self, cr, uid, ids, email, context=None):
-        email_from = tools.config.get('email_from', False)
-        meeting_id = self.browse(cr, uid, ids, context=context)[0]
-        user = self.pool.get('res.users').browse(cr, uid, uid, context=context)
-        user_email = email_from or user.address_id.email  or email_from
-        body = _('Hello ') + meeting_id.sprint_id.scrum_master_id.name + ",\n" + " \n" +_('I am sending you Daily Meeting Details of date')+ ' %s ' % (meeting_id.date)+ _('for the Sprint')+ ' %s\n' % (meeting_id.sprint_id.name)
-        body += "\n"+ _('*Tasks since yesterday:')+ '\n_______________________%s' % (meeting_id.question_yesterday) + '\n' +_("*Task for Today:")+ '\n_______________________ %s\n' % (meeting_id.question_today )+ '\n' +_('*Blocks encountered:') +'\n_______________________ %s' % (meeting_id.question_blocks or _('No Blocks'))
-        body += "\n\n"+_('Thank you')+",\n"+ user.name
-        sub_name = meeting_id.name or _('Scrum Meeting of %s') % meeting_id.date
-        flag = tools.email_send(user_email , [email], sub_name, body, reply_to=None, openobject_id=str(meeting_id.id))
-        if not flag:
-            return False
-        return True
