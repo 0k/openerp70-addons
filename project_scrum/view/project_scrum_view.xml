@@ -286,7 +286,7 @@
                                 <field name="role_id" class="oe_inline" domain="[('project_id', '=', project_id)]"/>
                                 <field name="name" class="oe_inline"/>
                                 <field name="for_then" class="oe_inline"/>
-                                <field name="stage_id" class="oe_inline"/>
+                                <field name="stage_id" class="oe_inline" domain="[('project_id', '=', project_id)]"/>
                             </group>
                             <group>
                                 <field name="active" class="oe_inline"/>
