@@ -181,7 +181,7 @@ class projectScrumPBStage(osv.osv):
         'project_id': fields.many2one('project.project', 'Project', help="Project of the story stage.", required=True),
         'fold': fields.boolean('Folded by Default'),
     }
-    _order = 'sequence asc'
+    _order = 'project_id asc, sequence asc'
     _defaults = {
         'fold': 0,
         'user_id': lambda self, cr, uid, ctx: uid,
