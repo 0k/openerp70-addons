@@ -209,7 +209,8 @@
             <field name="name">view.project.scrum.product.backlog.kanban</field>
             <field name="model">project.scrum.product.backlog</field>
             <field name="arch" type="xml">
-                <kanban default_group_by="stage_id" class="oe_cogiscrum oe_kanban_quickcreate_textarea" version="7.0">
+                <kanban default_group_by="state" class="oe_cogiscrum oe_kanban_quickcreate_textarea" version="7.0">
+                    <field name="state"/>
                     <field name="color"/>
                     <field name="sequence"/>
                     <field name="name"/>
