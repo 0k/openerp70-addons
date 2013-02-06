@@ -176,7 +176,8 @@ class projectScrumMeeting(osv.osv):
     _columns = {
         'name' : fields.char('Meeting Name', size=64),
         'date': fields.date('Meeting Date', required=True),
-        'sprint_id': fields.many2one('project.scrum.sprint', 'Sprint', domain=['&', ('date_start', '<=', time.strftime("%Y-%m-%d")), ('date_stop', '>=', time.strftime("%Y-%m-%d"))]),
+        'user_id': fields.many2one('res.users', "Developer", readonly=True),
+        'sprint_id': fields.many2one('project.scrum.sprint', 'Sprint'),
         'project_id': fields.related('sprint_id', 'release_id', 'project_id', type='many2one', relation='project.project', string='Project', readonly=True),
         'scrum_master_id': fields.related('sprint_id', 'scrum_master_id', type='many2one', relation='res.users', string='Scrum Master', readonly=True),
         'product_owner_id': fields.related('sprint_id', 'product_owner_id', type='many2one', relation='res.users', string='Product Owner', readonly=True),
@@ -184,24 +185,12 @@ class projectScrumMeeting(osv.osv):
         'question_today': fields.text('Tasks for today'),
         'question_blocks': fields.text('Blocks encountered'),
         'question_backlog': fields.text('Backlog Accurate'),
-        'task_ids': fields.many2many('project.task', 'meeting_task_rel', 'meeting_id', 'task_id', 'Tasks'),
-        'user_id': fields.many2one('res.users', "Developer", readonly=True),
+        'task_ids': fields.many2many('project.task', 'project_scrum_meeting_task_rel', 'meeting_id', 'task_id', 'Tasks'),
     }
     _order = 'date desc'
 
-    def _find_sprints(self, cr, uid, today):
-        sprint_ids = self.pool.get('project.scrum.sprint').search(cr, uid, ['&', ('date_start', '<=', today), ('date_stop', '>=', today)])
-        return sprint_ids
-    
-    def _get_right_sprint(self, cr, uid, context=None):
-        today = time.strftime("%Y-%m-%d")
-        sprint_ids = self._find_sprints(cr, uid, today)
-        for sprint_id in sprint_ids:
-            return sprint_id
-    
     _defaults = {
         'date' : lambda *a: time.strftime('%Y-%m-%d'),
-        'sprint_id': _get_right_sprint,
         'user_id': lambda self, cr, uid, context: uid,
     }
 
