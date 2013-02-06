@@ -218,7 +218,6 @@
                     <field name="role_id"/>
                     <templates>
                         <t t-name="kanban-box">
-                            
                             <t t-set="record.group_fancy" t-value="1" />
                             <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click_edit">
                                 <div class="oe_dropdown_toggle oe_dropdown_kanban">
@@ -227,19 +226,9 @@
                                     <ul class="oe_dropdown_menu">
                                         <t t-if="widget.view.is_action_enabled('edit')"><li><a type="edit">Edit...</a></li></t>
                                         <t t-if="widget.view.is_action_enabled('delete')"><li><a type="delete">Delete</a></li></t>
-                                        <li>
-                                          <ul class="oe_kanban_project_times" groups="project.group_time_work_estimation_tasks">
-                                            <li><a name="set_remaining_time_1" type="object" class="oe_kanban_button">1</a></li>
-                                            <li><a name="set_remaining_time_2" type="object" class="oe_kanban_button">2</a></li>
-                                            <li><a name="set_remaining_time_5" type="object" class="oe_kanban_button">5</a></li>
-                                            <li><a name="set_remaining_time_10" type="object" class="oe_kanban_button">10</a></li>
-                                            <li><a name="do_open" states="draft,done" string="Validate planned time" type="object" class="oe_kanban_button oe_kanban_button_active">!</a></li>
-                                          </ul>
-                                        </li>
                                         <li><ul class="oe_kanban_colorpicker" data-field="color"/></li>
                                     </ul>
                                 </div>
-                                
                                 <div class="oe_kanban_content">
                                     <div><b>[<field name="role_id"/>]</b> <field name="name"/></div>
                                     <div t-attf-class="oe_kanban_global_click_edit oe_semantic_html_override oe_kanban_card">
@@ -252,46 +241,6 @@
                         </t>
                     </templates>
                 </kanban>
-                <!--
-                <kanban default_group_by="state" class="oe_cogiscrum oe_kanban_quickcreate_textarea" version="7.0">
-                    <field name="color"/>
-                    <field name="state"/>
-                    <field name="role_id"/>
-                    <field name="name"/>
-                    <templates>
-                        <t t-name="kanban-box">
-                        <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click_edit">
-                            <div class="oe_dropdown_toggle oe_dropdown_kanban">
-                                <span class="oe_e">i</span>
-                                <ul class="oe_dropdown_menu">
-                                    <t t-if="widget.view.is_action_enabled('edit')"><li><a type="edit">Edit...</a></li></t>
-                                    <t t-if="widget.view.is_action_enabled('delete')"><li><a type="delete">Delete</a></li></t>
-                                    <li>
-                                      <ul class="oe_kanban_project_times" groups="project.group_time_work_estimation_tasks">
-                                        <li><a name="set_remaining_time_1" type="object" class="oe_kanban_button">1</a></li>
-                                        <li><a name="set_remaining_time_2" type="object" class="oe_kanban_button">2</a></li>
-                                        <li><a name="set_remaining_time_5" type="object" class="oe_kanban_button">5</a></li>
-                                        <li><a name="set_remaining_time_10" type="object" class="oe_kanban_button">10</a></li>
-                                        <li><a name="do_open" states="draft" string="Validate planned time" type="object" class="oe_kanban_button oe_kanban_button_active">!</a></li>
-                                      </ul>
-                                    </li>
-                                    <li><ul class="oe_kanban_colorpicker" data-field="color"/></li>
-                                </ul>
-                            </div>
-                            
-                            <div class="oe_kanban_content">
-                                <div><b>[<field name="role_id"/>]</b> <field name="name"/></div>
-                                <div t-attf-class="oe_kanban_global_click_edit oe_semantic_html_override oe_kanban_card">
-                                    
-                                    <field name="for_then"/>
-                                </div>
-                                <div class="oe_clear"></div>
-                            </div>
-                        </div>
-                        </t>
-                    </templates>
-                </kanban>
-                -->
             </field>
         </record>
         <record model="ir.ui.view" id="view_project_scrum_product_backlog_tree">
