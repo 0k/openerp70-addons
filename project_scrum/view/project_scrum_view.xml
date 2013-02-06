@@ -178,6 +178,8 @@
                     <field name="sequence" widget="handle"/>
                     <field name="name"/>
                     <field name="fold"/>
+                    <field name="sequence"/>
+                    <field name="project_id"/>
                 </tree>
             </field>
         </record>
@@ -188,6 +190,8 @@
                 <form string="Stage of stories" version="7.0">
                     <group>
                         <field name="name"/>
+                        <field name="fold"/>
+                        <field name="sequence"/>
                         <field name="project_id"/>
                     </group>
                 </form>
