@@ -12,16 +12,24 @@ This application respects the scrum.org protocol and has been developed and is m
     * Linked to OpenERP native module 'project'
 
 Manage
+    * Project (inherits from project module)
+        * Scrum Master
+        * Product Owner
+        * Development Team
     * Releases
     * Sprints
         * date_start and date_stop
         * standup meetings for each user of team (TODO)
         * sprint review
         * sprint retrospective
+        * planned velocity (you write velocity desired and displayed on Sprint Velocity Chart)
+        * effective velocity (it is computed by all users stories affected to the sprint)
+        * effective velocity done (it is computed by all users stories done and displayed on Sprint Velocity Chart)
     * Product Backlog (users stories)
         * new kanban view
         * date_open and date_done
         * story complexity points
+        * text area for describe tests acceptance
     * Display charts
         * Burdown Chart (based on story points)
         * Sprints Velocity (for each Scrum project)
