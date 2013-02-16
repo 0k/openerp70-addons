@@ -19,7 +19,6 @@
 #
 ##############################################################################
 
-import sprint_burndown
 import sprint_burndown_story_point
 import sprint_velocity
 
