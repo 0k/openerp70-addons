@@ -38,7 +38,7 @@ Manage
         * the product owner can valid it (transfer into product backlog) or delete it
 
 
-Thanks to report questions to david.drapeau@gmail.com
+Thanks to report questions to david.drapeau@el2de.com
     """,
     
     'website': 'https://github.com/ddrapeau/openerp70-addons',
