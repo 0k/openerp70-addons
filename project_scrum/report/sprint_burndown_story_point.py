@@ -27,10 +27,6 @@ class report_tasks(report_int):
         date_start = sprint.date_start
         return date(int(date_start.split('-')[0]), int(date_start.split('-')[1]), int(date_start.split('-')[2]))
     
-    def _get_date_start_native(self, cr, uid, sprint_id, sprint_pool):
-        sprint = sprint_pool.browse(cr, uid, sprint_id)
-        return sprint.date_start
-    
     def _get_date_stop(self, cr, uid, sprint_id, sprint_pool):
         sprint = sprint_pool.browse(cr, uid, sprint_id)
         date_stop = sprint.date_stop
@@ -72,13 +68,9 @@ class report_tasks(report_int):
         
         while n <= nb_days:
             this_date = date_start + timedelta(days=n)
-            #this_date = (datetime.strptime(date_start, '%Y-%m-%d') + relativedelta(days=n)).strftime('%Y-%m-%d')
             total_day_velocity = self._get_day_velocity(cr, uid, sprint_id, userStory_pool, this_date)
             total_points -= total_day_velocity
             data.append((n+1, total_points))
-            #ordinal_date = this_date.toordinal()
-            #print "effective ordinal date = ", ordinal_date
-            #data.append((int(time.mktime(time.strptime(this_date,'%Y-%m-%d'))), total_points))
             n += 1
         return data
     
@@ -116,10 +108,10 @@ class report_tasks(report_int):
             ar.add_plot(draw_guideline, draw_effective_line)
             #ar.add_plot(draw_guideline)
             
-            #entr1 = pychart.legend.Entry(label="guideline", line_style=line_style.red)
-            #entr2 = pychart.legend.Entry(label="burndownchart",line_style=line_style.green)
-            #legend = pychart.legend.T(nr_rows=2, inter_row_sep=5)
-            #legend.draw(ar,[entr1,entr2],canv)
+            entr1 = pychart.legend.Entry(label="guideline", line_style=line_style.red)
+            entr2 = pychart.legend.Entry(label="burndownchart",line_style=line_style.green)
+            legend = pychart.legend.T(nr_rows=2, inter_row_sep=5)
+            legend.draw(ar,[entr1,entr2],canv)
     
             ar.draw()
         canv.close()
