@@ -6,7 +6,6 @@ from report.render import render
 from report.interface import report_int
 
 from datetime import datetime, date, timedelta
-from dateutil.relativedelta import relativedelta
 import time
 
 from pychart import *
@@ -42,7 +41,6 @@ class report_tasks(report_int):
     
     def _get_guideline_data(self, cr, uid, sprint_id, sprint_pool, total_points, nb_days):
         data = []
-        print "total points = ", total_points
         unit_per_day = float(total_points) / float(nb_days)
         date_start = self._get_date_start(cr, uid, sprint_id, sprint_pool)
         n = 0
@@ -91,9 +89,7 @@ class report_tasks(report_int):
             total_points = self._get_total_points(cr, uid, sprint.id, userStory_pool)
             nb_days = self._get_days_number(cr, uid, sprint.id, sprint_pool)
             guideline_data = self._get_guideline_data(cr, uid, sprint.id, sprint_pool, total_points, nb_days)
-            print "guideline data = ", guideline_data
             effective_data = self._get_effective_data(cr, uid, sprint.id, sprint_pool, userStory_pool, total_points, nb_days)
-            print "effective data = ", effective_data
             
             ar = area.T(x_grid_style=line_style.gray50_dash1,
                         x_axis=axis.X(label="Dates"),
@@ -106,7 +102,6 @@ class report_tasks(report_int):
             draw_guideline = line_plot.T(label="Guideline", data=guideline_data, ycol=1, line_style=line_style.red)
             draw_effective_line = line_plot.T(label="Effective", data=effective_data, ycol=1, line_style=line_style.green)
             ar.add_plot(draw_guideline, draw_effective_line)
-            #ar.add_plot(draw_guideline)
             
             entr1 = pychart.legend.Entry(label="guideline", line_style=line_style.red)
             entr2 = pychart.legend.Entry(label="burndownchart",line_style=line_style.green)
