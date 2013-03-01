@@ -20,13 +20,26 @@
             <field name="model">project.scrum.release</field>
             <field name="name">view.projectScrumRealease.form</field>
             <field name="arch" type="xml">
-                <form string="Releases">
-                    <field name="name" />
-                    <field name="project_id" />
-                    <field name="date_start"/>
-                    <field name="date_stop"/>
-                    <field name="delivery_date_estimated"/>
-                    <field name="delivery_date_effective"/>
+                <form string="Releases" version="7.0">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" class="oe_inline"/>
+                                <field name="project_id" class="oe_inline"/>
+                                <field name="date_start" class="oe_inline"/>
+                            </group>
+                            <group>
+                                <field name="date_stop" class="oe_inline"/>
+                                <field name="delivery_date_estimated" class="oe_inline"/>
+                                <field name="delivery_date_effective" class="oe_inline"/>
+                            </group>
+                            <notebook colspan="4">
+                                <page string="Goal">
+                                    <field name="goal"/>
+                                </page>
+                            </notebook>
+                        </group>
+                    </sheet>
                 </form>
             </field>
         </record>
