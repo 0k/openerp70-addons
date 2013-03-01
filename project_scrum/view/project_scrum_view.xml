@@ -361,5 +361,23 @@
             </field>
         </record>
         
+        <!-- view sprints of release -->
+        <record model="ir.ui.view" id="view_sprints_in_release_view_form">
+            <field name="name">project.sprints.in.release.view.form</field>
+            <field name="model">project.scrum.release</field>
+            <field name="inherit_id" ref="project_scrum.view_project_scrum_release_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/field[@name='delivery_date_effective']" position="after">
+                    <notebook>
+                        <page string="Sprints">
+                            <group>
+                                <field name="sprint_ids" class="oe_inline"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </xpath>
+            </field>
+        </record>
+        
     </data>
 </openerp>

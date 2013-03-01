@@ -418,4 +418,9 @@ class projectScrumSprintInherit(osv.osv):
         'product_backlog_ids': fields.one2many('project.scrum.product.backlog', 'sprint_id', "User Stories"),
     }
 
-
+class projectScrumReleaseInherit(osv.osv):
+    _inherit = "project.scrum.release"
+    
+    _columns = {
+        'sprint_ids': fields.one2many('project.scrum.sprint', 'release_id', "Sprints", readonly=True),
+    }
