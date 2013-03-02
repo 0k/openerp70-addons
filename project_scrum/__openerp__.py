@@ -1,21 +1,21 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Project Scrum Management",
-    'version': "1.2",
+    'version': "1.3",
     'author': "David DRAPEAU",
     'category': "Project Scrum Management",
     'summary': 'Projects, Scrum',
     'description': """
-Scrum Module for OpenERP 7.0 (developped by David DRAPEAU <david.drapeau@gmail.com>)
+Scrum Module for OpenERP 7.0 (developped by David DRAPEAU <david.drapeau@el2de.com.com>)
 
 This application respects the scrum.org protocol and has been developed and is maintened by ITIL Certified Member (in course of certification).
     * Linked to OpenERP native module 'project'
 
 Manage
-    * Project (inherits from project module)
+    * Project roles
         * Scrum Master
         * Product Owner
-        * Development Team
+        * Development Team (inherits from project module)
     * Releases
     * Sprints
         * date_start and date_stop
@@ -74,5 +74,6 @@ Thanks to report questions to david.drapeau@el2de.com
     'application': True,
     'installable': True,
     'auto_install': False,
+    'web': True,
     #'certificate': '',
 }
