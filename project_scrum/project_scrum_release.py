@@ -14,3 +14,10 @@ class projectScrumRelease(osv.osv):
         'delivery_date_estimated': fields.date("Estimated date of delivery"),
         'delivery_date_effective': fields.date("Effective date of delivery"),
     }
+
+class projectProjectInehrit(osv.osv):
+    _inherit = 'project.project'
+    _columns = {
+        'release_ids': fields.one2many('project.scrum.release', 'project_id', "Releases", readonly=True),
+    }
+

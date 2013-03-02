@@ -49,8 +49,23 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
         </record>
-        <menuitem action="action_project_scrum_release" id="menu_action_project_scrum_release"
-                  parent="menu_scrum" name="Releases" />
-
+        <menuitem action="action_project_scrum_release"
+                  id="menu_action_project_scrum_release"
+                  parent="menu_scrum"
+                  name="Releases" />
+        
+        <record model="ir.ui.view" id="view_releases_in_project_view_form">
+            <field name="name">view.releasesInProjectView.form</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="arch" type="xml">
+                <page string="Team" position="after">
+                    <page string="Releases" attrs="{'invisible':[('is_scrum', '=', False)]}">
+                        <field name="release_ids"/>
+                    </page>
+                </page>
+            </field>
+        </record>
+        
     </data>
 </openerp>
