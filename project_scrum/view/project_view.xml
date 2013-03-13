@@ -16,8 +16,8 @@
                     <field name="scrum_master_id" attrs="{'invisible':[('is_scrum', '=', False)]}"/>
                     <field name="product_owner_id" attrs="{'invisible':[('is_scrum', '=', False)]}"/>
                 </field>
-                <page string="Tasks Stages" position="after">
-                    <page string="Goal">
+                <page string="Team" position="after">
+                    <page string="Goal" attrs="{'invisible':[('is_scrum', '=', False)]}">
                         <field name="goal"/>
                     </page>
                 </page>
