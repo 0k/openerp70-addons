@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <menuitem name="Account" id="portal_account" parent="portal.portal_menu" sequence="40"/>
+        
+        <record id="open_view_account_fiscalyear_tree" model="ir.actions.act_window">
+            <field name="name">Projects</field>
+            <field name="res_model">account.fiscalyear</field>
+            <field name="view_type">form</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="account.view_account_fiscalyear_tree"/>
+            <field name="search_view_id" ref="account.view_account_fiscalyear_search"/>
+            <field name="context">{}</field>
+            <!--
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                  Click to create new fiscalyear.
+                </p>
+            </field>
+            -->
+        </record>
+
+        <menuitem name="Fiscal Years" id="portal_account_accountFiscalyear" parent="portal_account"
+            action="open_view_account_fiscalyear_tree" sequence="10"/>
+
+    </data>
+</openerp>
