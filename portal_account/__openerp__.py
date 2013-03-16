@@ -12,8 +12,8 @@
     
     'depends': ['account','portal'],
     'data': [
-        #'security/portal_account.xml',
-        #'security/ir.model.access.csv',
+        'security/portal_account_security.xml',
+        'security/ir.model.access.csv',
         'view/portal_account_view.xml',
     ],
     
