@@ -39,5 +39,17 @@
             action="open_view_account_account_tree" sequence="10"/>
         
         
+        <record id="open_view_account_chart_wizard_form" model="ir.actions.act_window">
+            <field name="name">Chart of Accounts</field>
+            <field name="res_model">account.chart</field>
+            <field name="view_type">form</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="account.view_account_chart"/>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem name="Chart of Accounts" id="portal_account_accountChart_wizard" parent="portal_account"
+            action="open_view_account_chart_wizard_form" sequence="1"/>
     </data>
 </openerp>
