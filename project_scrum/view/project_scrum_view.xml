@@ -217,11 +217,12 @@
                     <field name="sequence"/>
                     <field name="name"/>
                     <field name="stage_id"/>
+                    <field name="release_id"/>
                     <field name="open"/>
                     <field name="role_id"/>
                     <templates>
                         <t t-name="kanban-box">
-                            <t t-set="record.group_fancy" t-value="1" />
+                            <t t-set="record.group_fancy" t-value="1"/>
                             <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click_edit">
                                 <div class="oe_dropdown_toggle oe_dropdown_kanban">
                                     <span class="oe_e">i</span>
@@ -234,12 +235,12 @@
                                 </div>
                                 <div class="oe_kanban_content">
                                     <div><b>[<field name="role_id"/>]</b> <field name="name"/></div>
-                                    <div t-attf-class="oe_kanban_global_click_edit oe_semantic_html_override oe_kanban_card">
+                                    <div>
                                         <field name="for_then"/>
                                     </div>
-                                    <div><b>project :</b> <font color="blue"><field name="project_id"/></font></div>
+                                    <div><h4><field name="project_id"/> (<field name="release_id"/>)</h4></div>
                                     <div class="oe_clear"></div>
-                                </div>
+                                   </div>
                             </div>
                         </t>
                     </templates>
@@ -271,7 +272,7 @@
                         <button type="object" string="Pending" name="button_pending" states="open" icon="gtk-media-pause"/>
                         <button type="object" string="Close" name="button_close" states="open,pending" icon="terp-dialog-close"/>
                         <button type="object" string="Set to Draft" name="button_draft" states="cancel,done" icon="gtk-convert"/>
-                        <field name="state" widget="statusbar"/>
+                        <field name="state" widget="statusbar" statusbar_visible="open,pending,cancel,done"/>
                     </header>
                     <sheet>
                         <group>
@@ -319,7 +320,10 @@
                             </page>
                         </notebook>
                     </sheet>
-                    <field name="message_ids" colspan="4" widget="mail_thread" nolabel="1" />
+                     <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
                 </form>
             </field>
         </record>
