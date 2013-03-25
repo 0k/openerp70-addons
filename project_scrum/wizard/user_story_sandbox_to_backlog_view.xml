@@ -5,14 +5,23 @@
             <field name="name">project.scrum.sandbox.to.backlog.form</field>
             <field name="model">project.scrum.sandbox.to.backlog</field>
             <field name="arch" type="xml">
-                <form string="Transfer to backlog">
+                <form string="Transfer to backlog" version="7.0">
+                    <footer>
+                        <button name="do_transfer" string="_Transfer" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                    <separator colspan="4" string="What is the release for this backlog ?" />
                     <group>
-						<field name="release_id"/>
-                    </group>
-                    <group col="2" colspan="2">
-                        <button special="cancel"  string="_Cancel" icon='gtk-cancel'/>
-                        <button name="do_transfer" string="_Transfer" colspan="1" type="object" icon="gtk-execute"/>
-                    </group>
+						<field name="release_id" context="{'default_project_id':project_id}"/>
+                        <field name="priority_id"/>
+                        <field name="acceptance_testing"/>
+                        <field name="project_id" invisible="1"/>
+                        <field name="for_then" invisible="1"/>
+                        <field name="name" invisible="1"/>
+                        <field name="role_id" invisible="1"/>
+                        <field name="developer_id" invisible="1"/>
+                    </group>           
                 </form>
             </field>
         </record>
@@ -24,6 +33,8 @@
             <field name="view_type">form</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
+            <field name="view" ref="view_scrum_sandbox_to_backlog"/>
+            <field name="multi">True</field>
         </record>
 
         <record model="ir.values" id="scrum_sandbox_to_backlog_values">

@@ -30,6 +30,8 @@ class sandbox_transfer_to_backlog(osv.osv_memory):
         'project_id': fields.many2one('project.project', "Project", domain=[('is_scrum', '=', True)]),
         'developer_id': fields.many2one('res.users', 'Developer'),
         'release_id': fields.many2one('project.scrum.release', "Release"),
+        'acceptance_testing': fields.text("Acceptance testing", required=True,),
+        'priority_id': fields.many2one('project.scrum.priority', "Priority",help="Priority of the request."),
     }
 
     def do_transfer(self, cr, uid, ids, context=None):
@@ -40,17 +42,18 @@ class sandbox_transfer_to_backlog(osv.osv_memory):
         backlog_spg = self.pool.get('project.scrum.product.backlog')
         sandboxes = sandbox_spg.browse(cr, uid, context['active_ids'], context=context)
         data = self.read(cr, uid, ids, [], context=context)[0]
-        print "data = ", data
         for sandbox in sandboxes:
             backlog_id = backlog_spg.create(cr, uid, {
                 'role_id': sandbox.role_id.id,
                 'name': sandbox.name,
-                'for_then': 'test for to fix in product backlog on for_then',
+                'acceptance_testing': data.get('acceptance_testing', False) or "---",
+                'for_then': data.get('for_then', False),
                 'project_id': sandbox.project_id.id,
+                'priority_id': data.get('priority_id', False),
                 'release_id':data.get('release_id') and data['release_id'][0] or False, 
             })
             if backlog_id:
-                sandbox_spg.unlink(cr, uid, sandbox.id)
+                sandbox_spg.unlink(cr, uid, [sandbox.id])
         #mod_obj = self.pool.get('ir.model.data')
         #task = self.pool.get('project.task')
         #backlog_id = self.pool.get('project.scrum.product.backlog')
@@ -88,7 +91,6 @@ class sandbox_transfer_to_backlog(osv.osv_memory):
         #    'type': 'ir.actions.act_window',
         #    'search_view_id': id['res_id'],
         #}
-        print "test method do_transfer"
         return True
 
 sandbox_transfer_to_backlog()
