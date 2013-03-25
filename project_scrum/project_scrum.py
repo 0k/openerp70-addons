@@ -19,6 +19,17 @@ BACKLOG_STATES = [('draft','Draft'),
     ('done','Done'),
     ('cancel','Cancelled')]
 
+class projectScrumPriority(osv.osv):
+    _name = "project.scrum.priority"
+    _order = "sequence"
+    _columns = {
+        'name': fields.char('Priority', size=64, required=True, select=1, translate=1),
+        'sequence': fields.integer('Sequence', help="Gives the sequence order when displaying a list of priority."),
+        'icon': fields.selection(tools.icons, 'Icon', size=64),
+    }
+
+projectScrumPriority()
+
 class projectScrumSprint(osv.osv):
     _name = 'project.scrum.sprint'
     _description = 'Project Scrum Sprint'
@@ -328,6 +339,7 @@ class projectScrumProductBacklog(osv.osv):
         'name' : fields.char('I want', size=128, required=True, readonly=True, states={'draft':[('readonly',False)]}),
         'for_then' : fields.char('For', size=128, required=True, readonly=True, states={'draft':[('readonly',False)]}),
         'acceptance_testing': fields.text("Acceptance testing", required=True, readonly=True, states={'draft':[('readonly',False)]}),
+        'priority_id': fields.many2one('project.scrum.priority', "Priority",help="Priority of the request."),
         
         'description': fields.text("Description"),
         'sequence' : fields.integer('Sequence', help="Gives the sequence order when displaying a list of product backlog."),

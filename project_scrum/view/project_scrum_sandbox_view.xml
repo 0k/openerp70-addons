@@ -6,10 +6,10 @@
             <field name="model">project.scrum.sandbox</field>
             <field name="name">view.project.scrum.sandbox.tree</field>
             <field name="arch" type="xml">
-                <tree string="Sandbox" editable="top">
-                    <field name="role_id"/>
-                    <field name="name"/>
-                    <field name="for"/>
+                <tree string="Sandbox">
+                    <field name="role_id" placeholder="Role of the person that sould be able to do this request"/>
+                    <field name="name" placeholder="e.g: a button, a menu, a wizard, a form,tree,kanban ..."/>
+                    <field name="for" placeholder="What should it do ? e.g: list all partners group by country"/>
                     <field name="project_id"/>
                     <button type="action"
                             name="%(action_scrum_sandbox_to_backlog)d"
@@ -22,11 +22,31 @@
             <field name="model">project.scrum.sandbox</field>
             <field name="name">view.project.scrum.sandbox.form</field>
             <field name="arch" type="xml">
-                <form string="Sandbox">
-                    <field name="role_id"/>
-                    <field name="name"/>
-                    <field name="for"/>
-                    <field name="project_id"/>
+                <form string="Sandbox" version="7.0">
+                    <header groups="base.group_user">
+                        <button type="action" name="%(action_scrum_sandbox_to_backlog)d" string="Transfer to product backlog"
+                            class="oe_highlight" context="{'default_priority_id':priority_id, 'default_project_id':project_id, 'default_for_then':for, 'default_name':name, 'default_developer_id': developer_id, 'default_role_id': role_id}"/>
+                    </header>
+                    <sheet>
+                    <h1>
+                         <label for="project_id" class="oe_edit_only"/>
+                         <field name="project_id"/>
+                    </h1>
+                    <span class="label label-success"><field name="priority_id" placeholder="Priority"/></span>
+                    <group name="decription">
+                    <field name="role_id" placeholder="Role of the person that sould be able to do this request"/>
+                    <field name="name" placeholder="e.g: a button, a menu, a wizard, a form,tree,kanban ..."/>
+                    <field name="for" placeholder="What should it do ? e.g: list all partners group by country"/>
+                    </group>
+                    <group name="details">
+                        <field name="developer_id" invisible="1"/>
+                        <field name="note" placeholder="Details, comments, infos ..." nolabel="1"/>
+                    </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
                 </form>
             </field>
         </record>
